@@ -1,0 +1,100 @@
+site_name: Embedded Linux & Architectures Mastery Path
+site_description: A structured, module-wise embedded Linux and CPU-architecture training program from entry level to master level — boot flow, QEMU labs, BusyBox, cross-compilation, device trees, Buildroot/Yocto, ARM Cortex-A/M and x86, with NXP's i.MX95 as the running real-world platform example. No hardware required.
+site_url: https://sigilipelli.github.io/embedded-linux-mastery-path/
+repo_url: https://github.com/SIGILIPELLI/embedded-linux-mastery-path
+repo_name: embedded-linux-mastery-path
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  - Privacy Policy: privacy.md
+  - "Level 1 · Entry":
+      - Overview: level-1/index.md
+      - "01 · What Is Embedded Linux?": level-1/01-what-is-embedded-linux.md
+      - "02 · CPU Architectures 101": level-1/02-cpu-architectures-101.md
+      - "03 · The Boot Flow": level-1/03-boot-flow.md
+      - "04 · Running Embedded Linux in QEMU": level-1/04-qemu-lab.md
+      - "05 · BusyBox & the Minimal Userland": level-1/05-busybox-minimal-userland.md
+      - "06 · Cross-Compilation": level-1/06-cross-compilation.md
+      - "07 · Device Trees": level-1/07-device-trees.md
+      - "08 · Init Systems & Services": level-1/08-init-systems-services.md
+      - "09 · Building a Rootfs with Buildroot": level-1/09-buildroot-rootfs.md
+      - "10 · Capstone — Tiny Linux Appliance": level-1/10-capstone-appliance.md
+  - "Level 2 · Intermediate":
+      - Overview: level-2/index.md
+      - "01 · Yocto Fundamentals": level-2/01-yocto-fundamentals.md
+      - "02 · U-Boot Deep Dive": level-2/02-u-boot-deep-dive.md
+      - "03 · Kernel Configuration & Modules": level-2/03-kernel-config-modules.md
+      - "04 · udev & Device Management": level-2/04-udev-device-management.md
+      - "05 · Embedded Networking": level-2/05-embedded-networking.md
+      - "06 · Storage & Filesystems (UBI, overlayfs)": level-2/06-storage-filesystems.md
+      - "07 · Debugging & Tracing (gdbserver, strace)": level-2/07-debugging-tracing.md
+      - "08 · Read-Only Rootfs & Factory Reset": level-2/08-read-only-rootfs.md
+      - "09 · systemd Deep Dive": level-2/09-systemd-deep-dive.md
+      - "10 · Project — Custom Yocto Image for QEMU": level-2/10-project-yocto-qemu-image.md
+  - "Level 3 · Advanced":
+      - Overview: level-3/index.md
+      - "01 · Kernel Driver Development — Char Drivers": level-3/01-kernel-driver-development.md
+      - "02 · Platform Drivers & the Device Model": level-3/02-platform-drivers-device-model.md
+      - "03 · Device Tree Overlays": level-3/03-device-tree-overlays.md
+      - "04 · Interrupts & Kernel Concurrency": level-3/04-interrupts-kernel-concurrency.md
+      - "05 · Heterogeneous Compute — remoteproc & RPMsg": level-3/05-remoteproc-rpmsg.md
+      - "06 · Real-Time Linux (PREEMPT_RT)": level-3/06-real-time-preempt-rt.md
+      - "07 · Graphics — DRM/KMS & Wayland": level-3/07-graphics-drm-wayland.md
+      - "08 · Power Management & Thermal": level-3/08-power-management-thermal.md
+      - "09 · Performance Profiling (perf, ftrace)": level-3/09-performance-profiling.md
+      - "10 · Project — Sensor Driver + Userspace Stack": level-3/10-project-sensor-driver.md
+  - "Level 4 · Master":
+      - Overview: level-4/index.md
+      - "01 · Production BSP Maintenance": level-4/01-production-bsp-maintenance.md
+      - "02 · Secure Boot Chain (HAB/AHAB)": level-4/02-secure-boot-hab-ahab.md
+      - "03 · OTA Updates (RAUC, SWUpdate, OSTree)": level-4/03-ota-updates.md
+      - "04 · Trusted Execution — OP-TEE & TrustZone": level-4/04-op-tee-trustzone.md
+      - "05 · NPU & ML Acceleration (eIQ)": level-4/05-npu-ml-acceleration.md
+      - "06 · Containers & Virtualization on Embedded": level-4/06-containers-virtualization.md
+      - "07 · Fleet Management & Provisioning": level-4/07-fleet-management.md
+      - "08 · Security Hardening & CVE Management": level-4/08-security-hardening.md
+      - "09 · Compliance & Open-Source Licensing": level-4/09-compliance-licensing.md
+      - "10 · Capstone — Production-Grade i.MX95 Product": level-4/10-capstone-imx95-product.md
