@@ -25,9 +25,9 @@ programs, and build your own root filesystem, all on your laptop.
 | Level | Focus | Modules |
 |-------|-------|---------|
 | [Level 1 · Entry](level-1/index.md) | Embedded Linux fundamentals: architectures, boot flow, QEMU labs, BusyBox, cross-compiling, device trees, init, Buildroot | 9 topics + 1 capstone |
-| [Level 2 · Intermediate](level-2/index.md) | Yocto, U-Boot, kernel config & modules, udev, networking, storage, debugging, systemd | 9 topics + 1 project |
-| [Level 3 · Advanced](level-3/index.md) | Kernel drivers, device model, DT overlays, remoteproc/RPMsg, PREEMPT_RT, graphics, profiling | 9 topics + 1 project |
-| [Level 4 · Master](level-4/index.md) | Production BSPs, secure boot (HAB/AHAB), OTA, OP-TEE, NPU/eIQ, fleet management, compliance | 9 topics + 1 capstone |
+| Level 2 · Intermediate (coming soon) | Yocto, U-Boot, kernel config & modules, udev, networking, storage, debugging, systemd | 9 topics + 1 project |
+| Level 3 · Advanced (coming soon) | Kernel drivers, device model, DT overlays, remoteproc/RPMsg, PREEMPT_RT, graphics, profiling | 9 topics + 1 project |
+| Level 4 · Master (coming soon) | Production BSPs, secure boot (HAB/AHAB), OTA, OP-TEE, NPU/eIQ, fleet management, compliance | 9 topics + 1 capstone |
 
 ## Recommended background
 
