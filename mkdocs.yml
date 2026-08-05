@@ -62,8 +62,19 @@ nav:
       - "08 · Init Systems & Services": level-1/08-init-systems-services.md
       - "09 · Building a Rootfs with Buildroot": level-1/09-buildroot-rootfs.md
       - "10 · Capstone — Tiny Linux Appliance": level-1/10-capstone-appliance.md
+  - "Level 2 · Intermediate":
+      - Overview: level-2/index.md
+      - "01 · Yocto Fundamentals": level-2/01-yocto-fundamentals.md
+      - "02 · U-Boot Deep Dive": level-2/02-u-boot-deep-dive.md
+      - "03 · Kernel Configuration & Modules": level-2/03-kernel-config-modules.md
+      - "04 · udev & Device Management": level-2/04-udev-device-management.md
+      - "05 · Embedded Networking": level-2/05-embedded-networking.md
+      - "06 · Storage & Filesystems (UBI, overlayfs)": level-2/06-storage-filesystems.md
+      - "07 · Debugging & Tracing (gdbserver, strace)": level-2/07-debugging-tracing.md
+      - "08 · Read-Only Rootfs & Factory Reset": level-2/08-read-only-rootfs.md
+      - "09 · systemd Deep Dive": level-2/09-systemd-deep-dive.md
+      - "10 · Project — Custom Yocto Image for QEMU": level-2/10-project-yocto-qemu-image.md
 # --- auto-pruned stub levels (see AdSense low-value-content fix) ---
 exclude_docs: |
-  level-2/*.md
   level-3/*.md
   level-4/*.md
