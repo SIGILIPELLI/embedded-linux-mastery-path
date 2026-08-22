@@ -2,10 +2,6 @@
 
 Goal: go below the userland — write kernel drivers against the device model, extend hardware descriptions with device-tree overlays, use the Cortex-M coprocessor pattern with remoteproc/RPMsg, build PREEMPT_RT images, understand the modern graphics stack, and profile a whole system — ending with a sensor driver plus userspace stack project.
 
-!!! info "Coming soon"
-    Level 3 modules are being written next. The outline below is final —
-    check back soon for the full lessons.
-
 ## Modules
 
 1. [Kernel Driver Development — Char Drivers](01-kernel-driver-development.md)
@@ -19,4 +15,3 @@ Goal: go below the userland — write kernel drivers against the device model, e
 9. [Performance Profiling (perf, ftrace)](09-performance-profiling.md)
 10. [Project — Sensor Driver + Userspace Stack](10-project-sensor-driver.md)
 
-More lessons are on the way — check back soon.

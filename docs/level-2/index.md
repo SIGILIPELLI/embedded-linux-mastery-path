@@ -2,10 +2,6 @@
 
 Goal: move from using prebuilt images to owning the whole build — Yocto layers and recipes, U-Boot scripting and environment, kernel configuration and out-of-tree modules, udev rules, embedded networking, flash-aware storage, on-target debugging, read-only root filesystems, and production systemd — ending with a fully custom Yocto image booted in QEMU.
 
-!!! info "Coming soon"
-    Level 2 modules are being written next. The outline below is final —
-    check back soon for the full lessons.
-
 ## Modules
 
 1. [Yocto Fundamentals](01-yocto-fundamentals.md)
@@ -19,4 +15,3 @@ Goal: move from using prebuilt images to owning the whole build — Yocto layers
 9. [systemd Deep Dive](09-systemd-deep-dive.md)
 10. [Project — Custom Yocto Image for QEMU](10-project-yocto-qemu-image.md)
 
-More lessons are on the way — check back soon.

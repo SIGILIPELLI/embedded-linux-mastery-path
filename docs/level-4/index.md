@@ -2,10 +2,6 @@
 
 Goal: operate like a production BSP team — maintain long-lived board support, implement the secure boot chain (HAB/AHAB), ship OTA updates safely, use TrustZone/OP-TEE, accelerate ML on the NPU with eIQ, manage fleets, harden and patch for CVEs, and stay compliant with open-source licenses — ending with a production-grade i.MX95 product capstone.
 
-!!! info "Coming soon"
-    Level 4 modules are being written next. The outline below is final —
-    check back soon for the full lessons.
-
 ## Modules
 
 1. [Production BSP Maintenance](01-production-bsp-maintenance.md)
@@ -19,4 +15,3 @@ Goal: operate like a production BSP team — maintain long-lived board support, 
 9. [Compliance & Open-Source Licensing](09-compliance-licensing.md)
 10. [Capstone — Production-Grade i.MX95 Product](10-capstone-imx95-product.md)
 
-More lessons are on the way — check back soon.
