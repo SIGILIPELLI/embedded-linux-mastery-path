@@ -55,7 +55,7 @@ Two hardware facts decide whether Linux is possible:
    ~520 KB of SRAM. It's not a close call.
 
 So: an **ESP32 runs FreeRTOS or bare-metal firmware** (that's the
-[Embedded Systems Mastery Path](https://sigilipelli.github.io/embedded-skillmastery/)),
+[Embedded Systems Mastery Path](https://sigilipelli.github.io/embedded-mastery-path/)),
 while an **i.MX95 runs Linux** — because it has six Cortex-A55 cores with
 MMUs, a DDR controller, and gigabytes of RAM to manage.
 
