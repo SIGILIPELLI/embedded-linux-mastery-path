@@ -1,8 +1,8 @@
 site_name: Embedded Linux & Architectures Mastery Path
 site_description: A structured, module-wise embedded Linux and CPU-architecture training program from entry level to master level — boot flow, QEMU labs, BusyBox, cross-compilation, device trees, Buildroot/Yocto, ARM Cortex-A/M and x86, with NXP's i.MX95 as the running real-world platform example. No hardware required.
-site_url: https://sigilipelli.github.io/embedded-linux-mastery-path/
-repo_url: https://github.com/SIGILIPELLI/embedded-linux-mastery-path
-repo_name: embedded-linux-mastery-path
+site_url: https://sigilipelli.github.io/embedded-linux-skillmastery/
+repo_url: https://github.com/SIGILIPELLI/embedded-linux-skillmastery
+repo_name: embedded-linux-skillmastery
 
 theme:
   name: material
