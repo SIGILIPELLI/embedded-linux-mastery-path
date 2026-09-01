@@ -2,186 +2,186 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/privacy/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/01-what-is-embedded-linux/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/02-cpu-architectures-101/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/03-boot-flow/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/04-qemu-lab/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/05-busybox-minimal-userland/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/06-cross-compilation/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/07-device-trees/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/08-init-systems-services/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/09-buildroot-rootfs/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-1/10-capstone-appliance/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/01-yocto-fundamentals/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/02-u-boot-deep-dive/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/03-kernel-config-modules/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/04-udev-device-management/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/05-embedded-networking/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/06-storage-filesystems/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/07-debugging-tracing/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/08-read-only-rootfs/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/09-systemd-deep-dive/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-2/10-project-yocto-qemu-image/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/01-kernel-driver-development/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/02-platform-drivers-device-model/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/03-device-tree-overlays/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/04-interrupts-kernel-concurrency/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/05-remoteproc-rpmsg/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/06-real-time-preempt-rt/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/07-graphics-drm-wayland/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/08-power-management-thermal/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/09-performance-profiling/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-3/10-project-sensor-driver/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/01-production-bsp-maintenance/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/02-secure-boot-hab-ahab/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/03-ota-updates/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/04-op-tee-trustzone/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/05-npu-ml-acceleration/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/06-containers-virtualization/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/07-fleet-management/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/08-security-hardening/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/09-compliance-licensing/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://sigilipelli.github.io/embedded-linux-mastery-path/level-4/10-capstone-imx95-product/</loc>
-         <lastmod>2026-08-29</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
 </urlset>
