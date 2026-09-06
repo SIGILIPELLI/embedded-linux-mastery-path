@@ -1659,6 +1659,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2510,6 +2532,32 @@ copied from a specific SDK version, and none of this was loaded onto
 real M-core/A-core silicon from this machine — treat it as a
 conceptual and structural reference, not tested firmware.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong><code>remoteproc</code> is a boot loader for a <em>second</em> CPU, running inside your
+main CPU's kernel.</strong> The remoteproc core parses the coprocessor's
+firmware as an ELF file, walks its <code>PT_LOAD</code> segments, and copies each
+one into the memory region the SoC's hardware actually maps that
+coprocessor to see (often carved-out DDR reserved via a <code>reserved-memory</code>
+DT node, or the coprocessor's own tightly-coupled SRAM) — then pokes the
+SoC's reset/boot-address control registers to release the coprocessor's
+own core from reset, pointed at the entry address from the ELF header.
+This is genuinely the same job U-Boot does for your main CPU at power-on,
+just executed by the Linux kernel, for a different core, at any time
+after boot — which is why remoteproc firmware crashes are recoverable
+without rebooting the whole board: <code>rproc_stop</code>+<code>rproc_start</code> just
+re-does that same load-and-release sequence.</p>
+<p><strong>rpmsg is a virtio transport whose "bus" is a pair of shared-memory
+ring buffers, not a real bus.</strong> Once the coprocessor is running, both
+sides use virtio's vring format over a chunk of shared memory the DT/
+resource-table already agreed on: each side writes descriptors into a
+ring and signals the other via whatever lightweight cross-core interrupt
+mechanism the SoC provides (a mailbox IP block, or an IPI). There's no
+actual bus controller involved — "rpmsg bus" is a Linux driver-model
+abstraction laid over what is mechanically just two cores polling/
+signaling shared DDR, which is exactly why rpmsg channel setup is
+described by a <code>resource_table</code> embedded in the coprocessor's own ELF
+(a struct the firmware itself declares, that remoteproc parses out at
+load time) rather than by anything in the main CPU's device tree.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Starting from the <code>remoteproc0</code> sysfs sequence above, write a short
 shell script that loads a firmware image, waits for <code>state</code> to read

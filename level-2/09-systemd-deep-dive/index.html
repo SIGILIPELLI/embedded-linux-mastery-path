@@ -1417,6 +1417,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2349,6 +2360,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2744,6 +2766,50 @@ pass <code>systemd-analyze verify</code>. They were not booted on a target while
 writing this page — run <code>systemd-analyze verify</code> yourself after copying
 them, since directive availability varies with systemd version.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>Ordering (<code>After=</code>/<code>Before=</code>) and dependency (<code>Requires=</code>/<code>Wants=</code>)
+are genuinely separate graphs that systemd merges only at transaction
+time.</strong> Internally, every unit is a node with two distinct edge sets:
+requirement edges (should this unit even start because of that one) and
+ordering edges (if both are starting, which goes first). <code>systemd</code>'s
+<code>manager_run_generators</code>+<code>transaction_add_job</code> machinery builds the job
+transaction by first pulling in everything required, <em>then</em> topologically
+sorting the ordering edges among the units actually in that transaction —
+which is exactly why <code>Requires=</code> without a matching <code>After=</code> starts both
+units in parallel with no guaranteed order, a foot-gun this section's
+"two separate axes" framing exists specifically to prevent.</p>
+<p><strong>Socket activation works because the <em>socket itself</em> — not the service
+— is what's listening at boot.</strong> <code>systemd</code> calls <code>bind()</code>+<code>listen()</code> on
+the socket described by a <code>.socket</code> unit itself, then, on first
+connection, does the <code>fork()</code>+<code>exec()</code> of the matching <code>.service</code> and
+hands it the already-listening file descriptor over <code>sd_listen_fds()</code>
+(a documented fd-numbering contract starting at fd 3). The service never
+calls <code>bind()</code> at all in this mode — this is exactly why a socket-
+activated service can restart or crash without dropping a single pending
+connection: the kernel's accept queue for that socket is unaffected by
+the service process's lifecycle, only fd hand-off changes.</p>
+<p><strong>A hardware watchdog is petted by systemd only if the manager itself
+is still making forward progress — that's the whole point.</strong>
+<code>WatchdogSec=</code> in a unit configures <em>software</em> watchdog behavior
+(systemd kills and restarts the unit if it stops calling
+<code>sd_notify(WATCHDOG=1)</code> in time), but the separate <code>RuntimeWatchdogSec=</code>
+in <code>system.conf</code> arms the SoC's actual hardware watchdog timer via
+<code>/dev/watchdog</code>, and PID 1 itself pets that device on a timer <em>only as
+long as its own main loop is still running</em>. If systemd itself wedges —
+not just a service — nothing pets the hardware timer, and the SoC's
+watchdog IP block forces a hard reset with no software involved at all,
+which is the one failure mode software-only supervision (respawn units,
+<code>Restart=</code>) structurally cannot cover.</p>
+<p><strong>journald on flash is bounded by explicit rotation, and volatile
+storage is a deliberate wear-leveling decision, not a limitation.</strong>
+<code>Storage=volatile</code> in <code>journald.conf</code> makes journald write only to a
+<code>tmpfs</code>-backed <code>/run/log/journal</code>, discarding history on reboot;
+<code>SystemMaxUse=</code>/<code>RuntimeMaxUse=</code> cap the on-disk (or in-RAM) journal size
+and journald enforces it by rotating to a new <code>.journal</code> file and
+deleting the oldest once the cap is hit, checked on every write — the
+same log-structured-append-then-reclaim pattern as JFFS2/UBIFS, applied
+here to log data instead of a filesystem, for the identical reason:
+bounding total writes to flash.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Write <code>appd.service</code> as above for any small daemon, run
 <code>systemd-analyze verify</code> on it, then deliberately remove the <code>After=</code> line

@@ -2063,6 +2063,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2498,6 +2520,44 @@ Jailhouse static-partitioning model are checked against documented
 kernel cgroup, OCI runtime, and Jailhouse conventions; no container
 was actually run and no hypervisor cell was created on this machine.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>A container is namespaces plus cgroups plus a root filesystem change
+— there is no "container" object in the kernel at all.</strong> <code>unshare()</code>/
+<code>clone()</code> with <code>CLONE_NEWPID|CLONE_NEWNET|CLONE_NEWNS|...</code> gives the new
+process its own view of process IDs, network interfaces, and mount
+table (via a <code>pivot_root</code>/<code>chroot</code>-equivalent into the image's
+extracted rootfs), while a cgroup (covered next) bounds its resource
+consumption — Docker, <code>runc</code>, <code>containerd</code> are all just orchestration
+layers that call these same syscalls in the right order with the right
+flags. This is exactly why containers share the <em>host kernel</em> — there is
+no second kernel involved, which is both what makes them lightweight and
+exactly the isolation boundary attackers target (a kernel exploit escapes
+every namespace at once, because the namespaces are a view into one
+kernel's data structures, not separate kernels).</p>
+<p><strong>cgroups v2's unified hierarchy enforces limits by hooking the
+scheduler and memory allocator directly, and its embedded ceiling is
+real page-table/accounting overhead, not policy.</strong> A <code>memory.max</code> write
+installs a limit the kernel's page-fault/allocation path checks on every
+charge to that cgroup's counter, triggering reclaim or OOM-killing a
+process in that cgroup specifically when exceeded; <code>cpu.max</code> similarly
+throttles via the CFS bandwidth controller, injecting scheduling
+deadlines rather than just lowering nice value. On a board with 256 MB
+–1 GB RAM, the <em>bookkeeping</em> structures cgroups themselves require (per-
+cgroup page counters, memcg shrinker lists) become a non-trivial fraction
+of available memory — which is the concrete, measurable reason "just use
+Docker as-is" breaks down on small boards well before you hit the
+resource limits you actually meant to enforce.</p>
+<p><strong>Device passthrough works because a device node is just a major/minor
+pair the namespace's device cgroup either allows or denies —
+<code>--privileged</code> is a blunt instrument, not a real solution.</strong> Bind-
+mounting <code>/dev/i2c-1</code> into a container's mount namespace and adding an
+explicit <code>devices.allow</code> entry for that major/minor gives the container
+process exactly one device, with the kernel's device-cgroup access
+controller enforcing it on every <code>open()</code> — <code>--privileged</code> instead
+disables that controller and every namespace restriction on devices at
+once, which is why it "just works" for whatever hardware access you
+needed and simultaneously defeats the entire isolation model for
+everything else.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Write the systemd unit for a containerized camera-preprocessing
 service that needs <code>/dev/video0</code>, is capped at 128MB RAM and one full

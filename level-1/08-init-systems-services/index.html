@@ -986,6 +986,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2295,6 +2306,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2576,6 +2598,26 @@ aggressively, or forward logs off-device (Level 4's fleet management).</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p>BusyBox <code>init</code> is genuinely a straight-line interpreter: it reads
+<code>/etc/inittab</code> once at startup, and for every line marked <code>respawn</code> it
+<code>fork()</code>s a child, <code>exec()</code>s the given command, and blocks in a <code>wait()</code>
+loop; when that child dies for any reason, <code>wait()</code> returns and init
+immediately forks a fresh one. There's no dependency graph — order is
+whatever order the lines appear in the file, which is exactly why BusyBox
+init is fine for one appliance daemon and unworkable once two services need
+"B must not start until A's socket exists."</p>
+<p>systemd solves that ordering problem by <em>not</em> being a straight-line
+interpreter at all — at startup it parses every unit file into an in-memory
+dependency graph (<code>Requires=</code>/<code>After=</code>/<code>Wants=</code> become graph edges), computes
+a valid transaction order via topological sort, and then activates units
+in parallel wherever the graph allows — which is <em>why</em> systemd boots faster
+than sequential init despite doing more bookkeeping. Each unit's process is
+also placed into its own <strong>cgroup</strong>, so systemd learns a service crashed
+via the kernel's <code>SIGCHLD</code>/cgroup-empty notification, not by polling — the
+same mechanism module 9 covers for restart policy. journald's binary log
+format exists specifically to support O(1) structured lookups and
+deterministic size capping — a growing-string syslog file has neither.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) In the guest, extend <code>sensord-lite</code> to write a <em>pid file</em>
 (<code>echo $$ &gt; /tmp/sensord.pid</code> at the top) and prove across three kills

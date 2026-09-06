@@ -851,6 +851,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2525,6 +2547,36 @@ reason BSPs exist.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p>What actually happens <em>inside</em> each handoff is a set of concrete
+memory-and-register events, not an abstract "loads and jumps":</p>
+<ul>
+<li><strong>ROM → SPL</strong>: the ROM computes a checksum (or, on secure-boot parts,
+  verifies a signature) over the image it finds at the fixed offset its
+  fuses point to, copies it byte-for-byte into on-chip SRAM at a fixed
+  address, and does a bare <code>branch</code> to that address — there is no return.
+  If the checksum fails, the ROM falls through its list of boot devices in
+  fuse-defined order, which is why swapping an SD card for eMMC can silently
+  "fix" a boot: it changes which media the ROM tries next.</li>
+<li><strong>SPL's DDR init</strong> isn't generic — it writes dozens of registers in the
+  DDR PHY and controller (drive strength, ODT, CAS latency, refresh timing)
+  using values captured by running the vendor's DDR training tool against
+  your exact RAM part and PCB trace lengths. Get one timing wrong and you
+  don't get a crash, you get intermittent bit-flips under thermal load
+  months into production — which is why this table is board-BSP-owned and
+  never hand-edited.</li>
+<li><strong>On ARMv8 boards</strong> there's a hidden actor between SPL and U-Boot: ARM
+  Trusted Firmware (ATF/TF-A) drops the CPU from EL3 (secure monitor) to
+  EL2, installs the <strong>PSCI</strong> (Power State Coordination Interface) handler
+  that the kernel later calls to bring up secondary cores and handle
+  suspend/reset, then hands off to U-Boot at a lower exception level. This
+  is why a kernel panic sometimes still lets you power-cycle cleanly —
+  PSCI's reset path lives below Linux entirely.</li>
+<li><strong>U-Boot → kernel</strong> is a documented ABI, not a jump into the unknown: U-Boot
+  places the DTB address in register <code>x0</code> (AArch64) and the kernel's own
+  first instructions relocate themselves, decompress if needed, and only
+  then set up the MMU and jump to <code>start_kernel()</code> in C.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>From a running Linux system (your PC, or the QEMU guest you'll boot in
 module 4), reconstruct its boot story: run <code>cat /proc/cmdline</code> and identify

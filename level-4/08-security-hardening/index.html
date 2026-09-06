@@ -2130,6 +2130,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2320,6 +2331,17 @@
     <span class="md-ellipsis">
       
         Cheat sheet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
       
     </span>
   </a>
@@ -2561,6 +2583,41 @@ kernel, systemd, and AFL/clang-tidy conventions; no image was built,
 no fuzzing campaign was run, and no CVE scan was executed on this
 machine.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>Attack surface reduction works because every installed binary is a
+potential entry point regardless of whether it's ever invoked.</strong> A
+setuid shell, an unused package manager, or a full BusyBox applet set
+each represents code that will execute with real privilege the moment
+<em>any</em> path reaches it — a misconfigured cron job, an injected command
+from a compromised network service, a symlink attack — so stripping them
+from the image isn't about disk space, it's about shrinking the set of
+things a post-exploitation attacker can pivot through once they have
+<em>any</em> code execution at all, which is a different (and earlier) line of
+defense than the network/permission hardening covered next.</p>
+<p><strong>Kernel hardening options like <code>CONFIG_STACKPROTECTOR_STRONG</code> and KASLR
+work by making a specific exploitation <em>primitive</em> unreliable, not by
+detecting the bug.</strong> Stack-protector inserts a random canary value
+between local variables and the saved return address in every function
+prologue/epilogue the compiler judges at risk, and checks it before
+returning — a stack buffer overflow that overwrites the return address
+almost certainly also overwrites the canary, so the corrupted return
+never executes; the process is killed instead. KASLR randomizes the
+kernel's load address per boot so a hardcoded ROP-gadget address baked
+into an exploit written against one boot's layout simply misses on the
+next. Neither option fixes the underlying bug — they raise the cost of
+turning that bug into working code execution, which is the entire
+practical value of "hardening" as a category distinct from "fixing bugs."</p>
+<p><strong>Capability dropping narrows root itself, because <code>CAP_*</code> bits are
+what root's privilege actually decomposes into at the kernel-check
+level.</strong> Every privileged operation the kernel gates (<code>CAP_NET_BIND_
+SERVICE</code> for ports &lt;1024, <code>CAP_SYS_ADMIN</code> for mount, <code>CAP_NET_RAW</code> for
+raw sockets) is checked against the <em>calling process's</em> capability set,
+not a monolithic "is this UID 0" test — a service that
+<code>setcap</code>/<code>capsh --drop</code>s everything except the one capability it needs
+(binding port 443, say) still runs as an unprivileged process for every
+other kernel check, so a code-execution bug in it can't pivot to
+mounting filesystems or loading kernel modules even though the process
+"is root" in the traditional UID sense.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Starting from the <code>ss -tulnp</code> output above, write the specific
 systemd/opkg commands to eliminate the telnet and tftp exposure, and the

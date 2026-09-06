@@ -1536,6 +1536,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2586,6 +2608,32 @@ Level 1/2, but it was not compiled or booted on this machine (macOS
 cannot build or run a Linux kernel module). Treat it as review-verified
 source to build and test on your QEMU/target setup, not as executed code.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>A char driver's <code>file_operations</code> table is how the VFS turns a
+generic <code>read()</code> syscall into your code.</strong> When userspace opens
+<code>/dev/yourdev</code>, the VFS resolves the inode, sees its <code>i_rdev</code> matches a
+registered <code>cdev</code>, and from then on every <code>read()</code>/<code>write()</code>/<code>ioctl()</code>
+on that <code>struct file</code> is dispatched by <em>pointer indirection</em> through the
+<code>file_operations</code> you registered with <code>cdev_init()</code> — the kernel never
+"knows" what your driver does, it just calls <code>fops-&gt;read(file, buf,
+count, &amp;pos)</code> and trusts you to do the <code>copy_to_user()</code> correctly.
+That's why a driver bug here is different from a userspace bug: <code>buf</code> is
+a <em>userspace</em> pointer even though your code runs in kernel context, and
+touching it with a plain <code>memcpy</code> instead of <code>copy_to_user</code>/
+<code>copy_from_user</code> either silently corrupts kernel memory or oopses,
+because those helpers are what actually validate the address range
+against the calling process's page tables first.</p>
+<p><strong>Major/minor numbers are a routing key, not an identity.</strong> <code>dev_t</code> packs
+a 12-bit major (selects which driver's <code>file_operations</code> the kernel
+dispatches to, via the <code>cdev_map</code>) and a 20-bit minor (passed to your
+driver as-is, to distinguish instances) into one integer. <code>mknod</code>/udev
+creating <code>/dev/yourdev</code> with major 240 doesn't involve your driver code
+at all — it's purely a kernel-wide lookup table (<code>chrdevs[]</code>) populated
+by <code>register_chrdev_region()</code>/<code>cdev_add()</code> at module load, which is why
+<code>insmod</code>'ing your module <em>before</em> the device node exists still lets you
+manually <code>mknod</code> it and have it work: the routing table and the
+filesystem node are two separate, independently-created things that only
+have to agree on the major/minor pair.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Extend <code>hello_chr</code> with the three ioctls shown above, build it against
 your kernel's <code>KDIR</code>, load it in QEMU, and drive it from a small userspace

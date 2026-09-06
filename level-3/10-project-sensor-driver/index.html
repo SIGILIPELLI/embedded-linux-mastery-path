@@ -1788,6 +1788,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#stretch-goals" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#stretch-goals" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2548,6 +2570,32 @@ compiled, flashed, or run against real or emulated I2C hardware from
 this machine. Treat it as a build-and-bring-up starting point, not
 tested firmware.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>Why this driver's <code>probe()</code> fires from a DT node and not from your
+<code>insmod</code> command.</strong> As in module 2, <code>of_platform_populate()</code> (run once
+during board init, or on overlay application) walks the live device tree
+and instantiates a <code>platform_device</code> for every compatible node; the
+platform bus then matches your driver's <code>of_match_table</code> against that
+device the moment <em>both</em> are registered, in whichever order that
+happens. This is precisely why the same compiled <code>.ko</code> works whether you
+<code>insmod</code> it before or after applying the overlay that adds the sensor's
+DT node — the match is level-triggered against current bus state, not a
+one-shot event you have to sequence correctly.</p>
+<p><strong>Why the failure-mode walkthrough (modules 4/8/9) actually exercises
+independent kernel subsystems, not one code path with different
+inputs.</strong> An I2C NACK surfaces through the bus driver's transfer
+function returning <code>-ENXIO</code>/<code>-EIO</code> to your driver's regmap/i2c calls
+directly — no interrupt or concurrency machinery involved. A genuinely
+concurrent access race (two threads hitting <code>read()</code>/<code>ioctl()</code>
+simultaneously) only manifests if your locking (module 4's spinlock/
+mutex choice) is actually wrong, and only under real scheduling
+pressure. A read-only-rootfs sysfs-attribute persistence failure
+(module 8) is a VFS-level <code>EROFS</code>, unrelated to the driver's I2C code at
+all. Reproducing all three deliberately is the point: each is caught by
+different kernel instrumentation (<code>dmesg</code> I2C errors,
+<code>CONFIG_DEBUG_ATOMIC_SLEEP</code>/lockdep splats, and <code>EROFS</code> return codes,
+respectively), and a driver that only gets tested against the happy path
+never exercises any of them.</p>
 <h2 id="stretch-goals">Stretch goals<a class="headerlink" href="#stretch-goals" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Add a second trigger source (a periodic hrtimer trigger) alongside the

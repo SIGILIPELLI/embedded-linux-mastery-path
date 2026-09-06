@@ -1996,6 +1996,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2505,6 +2527,41 @@ against OP-TEE's documented <code>libteec</code>/<code>tee_internal_api</code> a
 ARM TrustZone SMC model; no TA was built, signed, or invoked against
 real or emulated Secure World hardware from this machine.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>The two worlds are a hardware-enforced CPU mode, not a software
+sandbox.</strong> ARM TrustZone adds an extra bit — the NS (Non-Secure) bit —
+to the CPU's exception state, and the bus/memory-controller fabric
+itself (TZASC for DRAM, TZPC for peripherals) is configured to reject
+Non-Secure-mode accesses to memory ranges and peripheral registers
+tagged Secure, at the hardware level, before the request even reaches
+the memory controller's arbitration logic. This is why a compromised
+Linux kernel — full root, arbitrary kernel code execution — still cannot
+read OP-TEE's Trusted Application memory or the keys it holds: the
+isolation is enforced by silicon the kernel has no instruction that can
+reach across, not by a permission check any sufficiently privileged
+software could bypass.</p>
+<p><strong>Crossing world boundaries happens through exactly one instruction:
+<code>SMC</code> (Secure Monitor Call).</strong> A Client Application's call into a
+Trusted Application doesn't jump directly into secure memory — the
+Linux <code>optee</code> driver issues an <code>SMC</code>, which traps into the Secure
+Monitor (running at the highest privilege level, EL3), which saves
+Non-Secure world CPU state, switches the NS bit, restores Secure world
+state, and hands control to OP-TEE's own scheduler running the target
+TA. Every single request/response, no matter how small, pays this full
+context-switch cost — which is precisely why TA APIs are designed
+around coarse-grained calls (a whole crypto operation per exchange) and
+never fine-grained chatty ones.</p>
+<p><strong><code>tee-supplicant</code> exists because a Trusted Application has no direct
+access to Linux resources at all.</strong> TAs run in the secure world with a
+minimal in-house OS (OP-TEE OS) — no filesystem driver, no network stack,
+no ordinary Linux syscalls. When a TA needs to persist encrypted state to
+disk (secure storage) it issues an RPC <em>back out</em> to the Normal World,
+which <code>tee-supplicant</code> (an ordinary Linux userspace daemon) receives,
+performs the actual <code>open()</code>/<code>write()</code> against a normal Linux file on
+behalf of the TA, and returns the result back across the SMC boundary —
+which is why a missing or crashed <code>tee-supplicant</code> makes TAs that use
+secure storage fail in ways that look like a storage bug but are really
+a missing IPC peer.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Sketch (client + TA pseudocode, following the pattern above) a "PIN
 verify" TA that takes a PIN attempt from Linux, compares it against a

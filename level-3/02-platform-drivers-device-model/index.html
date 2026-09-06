@@ -1575,6 +1575,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2568,6 +2590,33 @@ the same pattern GPIO, LED, and hwmon subsystems all build on internally.</p>
 core API and Level 2's device-tree material; no kernel was built or
 booted to execute this code on this machine.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>The platform bus is a matchmaking service, and <code>probe()</code> is a
+callback, not an entry point you call.</strong> Every <code>platform_device</code>
+(created from a DT node by <code>of_platform_populate</code>, or hardcoded on
+non-DT boards) and every <code>platform_driver</code> registers itself with the
+platform bus's <code>struct bus_type</code>; the bus's <code>match()</code> function
+(<code>platform_match</code>) is invoked by the driver core against <em>every</em>
+device/driver pair whenever either side changes, comparing
+<code>of_match_table</code> compatible strings (or <code>MODULE_DEVICE_TABLE</code> id
+tables) against the device's own <code>of_node-&gt;compatible</code> property. Only on
+a match does the core call your <code>probe()</code> — which means the order you
+insmod things in genuinely doesn't matter: if the driver loads first, it
+just waits registered on the bus until a matching device shows up (at DT
+population time), and vice versa. This deferred, bus-mediated binding
+is the entire reason platform drivers don't have a <code>main()</code>.</p>
+<p><strong><code>devm_*</code> APIs work by attaching cleanup callbacks to the <em>device</em>'s
+lifetime, not the driver module's.</strong> <code>devm_kzalloc()</code>,
+<code>devm_ioremap_resource()</code>, etc. register a release function on an
+internal list hanging off <code>struct device</code>, and the driver core walks
+that list and runs every release function during
+<code>device_release_driver()</code> — which fires on <code>probe()</code> failure <em>and</em> on
+normal unbind, automatically, in reverse allocation order. This is why
+switching from manual <code>kzalloc</code>/<code>iounmap</code> to <code>devm_*</code> equivalents
+eliminates whole categories of unbind-path leaks: you stop needing a
+correct <code>remove()</code> at all for anything acquired through a <code>devm_</code>
+call, because the device model itself guarantees the teardown call
+happens exactly once, at exactly the right time.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Write the DT node and platform driver for a fictional "watchdog pet"
 register block: one <code>reg</code> window, one <code>compatible</code> string, a sysfs

@@ -941,6 +941,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2261,6 +2272,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2454,6 +2476,28 @@ okay? — which is why device-tree literacy is a hiring signal in embedded.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p>A <code>.dts</code> file is source; a <code>.dtb</code> is what the kernel actually parses, and
+the translation matters. <code>dtc</code> (device tree compiler) walks the DTS,
+resolves every <code>&amp;label</code> phandle reference into a numeric handle, and emits
+a flattened binary — a linear sequence of tagged tokens (<code>FDT_BEGIN_NODE</code>,
+<code>FDT_PROP</code>, <code>FDT_END_NODE</code>) with a string table at the end holding all the
+property names once, deduplicated. This flat, pointer-free format is
+deliberate: the kernel's early boot code walks it before the MMU or heap
+allocator exists, using nothing but raw offset arithmetic (<code>libfdt</code>).</p>
+<p>At boot, the kernel doesn't just <em>read</em> the tree — it <strong>unflattens</strong> it into
+a live tree of <code>struct device_node</code> objects in normal kernel memory, then
+walks that tree matching each node's <code>compatible</code> string against every
+registered driver's <code>of_match_table</code>. A match triggers <code>probe()</code> — this is
+the exact mechanism module-2's platform-driver binding relies on, and why a
+typo in <code>compatible</code> (<code>"nxp,imx95-uart"</code> vs <code>"fsl,imx95-uart"</code>) doesn't
+error at boot, it just silently produces a device with no driver attached,
+visible only as a bare entry in <code>/sys/firmware/devicetree/base</code> with no
+matching <code>/dev</code> node. <code>#address-cells</code>/<code>#size-cells</code> and <code>reg</code> aren't
+arbitrary conventions either — they tell the parser exactly how many 32-bit
+cells to consume per address/length pair in a <em>parent-defined</em> addressing
+scheme, which is why nesting a node under the wrong parent changes how its
+own <code>reg</code> property must be written.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) From the decompiled <code>virt.dts</code>, answer: at what address does the
 interrupt controller (<code>intc</code>) live, what does the <code>memory@40000000</code> node's

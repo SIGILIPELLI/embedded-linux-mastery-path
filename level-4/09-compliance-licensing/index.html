@@ -2136,6 +2136,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2276,6 +2287,17 @@
     <span class="md-ellipsis">
       
         Cheat sheet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
       
     </span>
   </a>
@@ -2491,6 +2513,43 @@ conventions; this module is not legal advice — a real product's
 compliance program should involve counsel, and no license scan was
 actually run on this machine.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>GPLv2's "distribution" trigger is a legal event tied to what leaves
+your premises, and the kernel's own build mechanics are what make
+"corresponding source" a precise, checkable artifact.</strong> GPLv2 §3
+requires that anyone you convey the binary to also receive (or be
+offered, in writing, for at least three years) the exact source
+corresponding to that binary — which for a Yocto/Buildroot build means
+the specific recipe/patch set and <code>.config</code> that produced the shipped
+<code>zImage</code>/modules, not "the kernel.org tree" in general, because the
+kernel's own Kconfig-driven build (module 3) means two different
+<code>.config</code>s from identical source produce meaningfully different
+binaries. This is precisely why reproducible builds (module 1) and
+license compliance intersect in practice: proving "this is the exact
+source for this exact binary" is a build-reproducibility claim as much as
+a legal one.</p>
+<p><strong>License scanning tools work by matching license text/SPDX identifiers
+against every source file BitBake actually pulled in, not by inspecting
+your own code.</strong> Tools like <code>oe-core</code>'s <code>LICENSE</code>/<code>LIC_FILES_CHKSUM</code>
+mechanism checksum each recipe's declared license file at parse time and
+fail the build if it changes unexpectedly (catching an upstream license
+change silently flowing into your product), while broader scanners
+(FOSSology-style) walk the fetched source tree file-by-file, pattern-
+matching against a known corpus of license texts to catch code that
+carries a <em>different</em> license than its containing package declares —
+which happens more often than expected, since a single upstream tarball
+can bundle vendored code under a different license than the project's
+own top-level <code>LICENSE</code> file states.</p>
+<p><strong>An SBOM is a machine-readable dependency graph the same package-
+manager metadata Yocto already tracks internally can generate almost for
+free.</strong> <code>create-spdx</code>/similar Yocto classes walk the same
+<code>RDEPENDS</code>/<code>DEPENDS</code> graph BitBake's task scheduler already built to
+order the build (module 1's dependency DAG, again) and emit it as an
+SPDX or CycloneDX document — package name, version, license, and hash
+per component — because that dependency graph already <em>is</em> a complete
+bill of materials; the SBOM tooling's job is serializing existing build
+metadata into a standard auditor-readable format, not independently
+re-discovering what's in the image.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Write the written GPL source-offer text your product would ship
 (printed manual, or a settings-menu string) and describe exactly what

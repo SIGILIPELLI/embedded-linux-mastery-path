@@ -1715,6 +1715,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2522,6 +2544,34 @@ Wayland protocol behavior; no GPU driver or display pipeline was
 exercised on this machine — <code>modetest</code>/<code>drmModeAtomicCommit</code> output
 shown is representative, not captured from real hardware.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>DRM/KMS models a display pipeline as a graph of kernel objects a
+compositor wires together, not a framebuffer it just writes pixels
+into.</strong> <code>CRTC</code>, <code>encoder</code>, <code>connector</code>, and <code>plane</code> objects each
+correspond to real hardware blocks (a scanout engine, a display-
+interface serializer, a physical port, a compositing layer) exposed
+through the DRM ioctl API and <code>/sys/class/drm</code>. An atomic modeset
+(<code>DRM_IOCTL_MODE_ATOMIC</code>) submits a full proposed graph state — which
+plane feeds which CRTC, at what mode — and the kernel's atomic-check
+path validates the <em>entire</em> configuration against hardware constraints
+before committing any of it, then commits every object's state together,
+typically synced to vblank. This all-or-nothing validate-then-commit
+design is precisely what eliminates the tearing/half-applied-mode glitches
+that plagued the older non-atomic KMS API, which let you set properties
+one ioctl at a time with no consistency check across them.</p>
+<p><strong>Wayland's compositor owns the whole scanout path, which is the
+actual difference from X11.</strong> In X11, the X server itself was
+effectively the DRM client, and applications drew into shared memory the
+server later composited from a separate process. A Wayland compositor
+<em>is</em> the sole DRM client — it does the atomic modeset directly, and
+each client renders into its own buffer (via EGL/GBM, backed by DMA-BUF
+handles) that it hands to the compositor over the Wayland protocol's
+<code>wl_surface</code>/<code>wl_buffer</code> messages; the compositor then either GPU-
+composites those buffers together or, in the direct-scanout case, hands
+a client's buffer straight to a hardware plane with zero copies. That's
+why a fullscreen Wayland client can bypass compositing entirely (a real
+hardware plane swap) in a way an X11 app fundamentally couldn't — there's
+no intermediary process's compositing step required by the protocol.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Given a panel that shows a correctly-timed but half-width, doubled
 image, diagnose which DT property (lane count vs pixel clock vs timing

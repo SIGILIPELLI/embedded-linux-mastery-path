@@ -924,6 +924,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2515,6 +2537,26 @@ impossible.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p>A cross-toolchain's triplet (<code>aarch64-linux-gnu-</code>) encodes four separate
+decisions baked into every binary it produces: <strong>architecture</strong> (instruction
+encoding — <code>aarch64</code> vs <code>arm</code>), <strong>vendor</strong> (cosmetic), <strong>OS</strong> (<code>linux</code> — which
+syscall ABI and ELF conventions to target), and <strong>ABI</strong> (<code>gnu</code>/glibc vs
+<code>musl</code> vs <code>gnueabihf</code> — which C library and, for 32-bit ARM, whether
+floating point args pass in VFP registers or on the integer stack). Get the
+ABI wrong — link <code>gnueabihf</code> code against a <code>gnueabi</code> (soft-float) target —
+and you get a binary that runs but computes garbage on every float
+argument, because caller and callee disagree on which register holds it.</p>
+<p>The linker is doing more than concatenating object files: it resolves the
+gap between what your code <em>asks for at compile time</em> (a symbol name like
+<code>printf</code>) and what actually exists <em>on the target at runtime</em>. Static
+linking bakes glibc's code directly into your binary, so it runs even if the
+target's libc differs — at the cost of size. Dynamic linking defers symbol
+resolution to <code>ld.so</code> on the target, which walks the ELF's <code>DT_NEEDED</code>
+entries at process startup and <code>mmap</code>s each shared library — meaning the
+classic "cross-compiled fine, <code>-bash: not found</code> on the board" failure is
+almost always the target missing the <em>exact</em> interpreter path baked into
+your binary's <code>.interp</code> section (<code>readelf -l</code> shows it), not a compiler bug.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Cross-compile a <code>sysinfo.c</code> that prints total and free RAM using
 <code>sysinfo(2)</code> (<code>struct sysinfo</code>, fields <code>totalram</code>, <code>freeram</code>, scaled by

@@ -1339,6 +1339,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2586,6 +2608,51 @@ rather than captured, since no cross-toolchain or target build was run
 while writing this page. The outputs are useful as a guide to <em>what to
 look for</em>, not as literal expected text for your toolchain version.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong><code>strace</code> works via <code>PTRACE_SYSCALL</code>, which stops the tracee at every
+syscall boundary — it is not a log the kernel keeps.</strong> <code>strace</code> attaches
+with <code>ptrace(PTRACE_SEIZE/ATTACH, ...)</code>, then loops on
+<code>ptrace(PTRACE_SYSCALL, ...)</code> + <code>waitpid()</code>: the kernel delivers a
+<code>SIGTRAP</code> to the tracer <em>twice</em> per syscall — once on entry (registers
+hold the syscall number and arguments, readable via
+<code>PTRACE_GETREGS</code>) and once on exit (return value now in the return-value
+register) — and the tracee is fully stopped between those two points.
+That double-stop-per-syscall is exactly why straced programs run
+10–100x slower: every single syscall now costs two extra context
+switches into the tracer.</p>
+<p><strong>gdbserver splits the debugger into a thin remote stub and a full GDB,
+talking the Remote Serial Protocol.</strong> On target, <code>gdbserver</code> uses
+<code>ptrace()</code> just like <code>strace</code> does, but instead of decoding syscalls
+itself it exposes register/memory read-write and breakpoint control as a
+text protocol (<code>$g#67</code>-style packets) over a TCP socket or serial line.
+Your host-side cross-<code>gdb</code> does all the symbol resolution, source
+mapping, and expression evaluation locally — it just sends RSP commands
+for <code>Yhat</code> the low-level “write byte at address / read register” actions
+and reconstructs a source-level debugging session on top. This split is
+exactly why <code>gdbserver</code> binaries can be tiny (no DWARF parser needed
+on-target) while your host <code>gdb</code> needs the <em>unstripped</em> binary with
+matching debug symbols to make sense of the addresses coming back.</p>
+<p><strong>A core dump is a <code>PT_NOTE</code>+<code>PT_LOAD</code>-segment snapshot written by the
+kernel's own coredump code path, triggered by specific fatal signals.</strong>
+On <code>SIGSEGV</code>/<code>SIGABRT</code>/etc. with no handler, <code>do_coredump()</code> walks the
+process's VMAs and writes each mapped, dumpable region as an ELF
+<code>PT_LOAD</code> segment, plus a <code>PT_NOTE</code> segment holding <code>NT_PRSTATUS</code> (saved
+registers at the moment of the fault) and <code>NT_FILE</code> (which files were
+mapped where) — that's why <code>gdb prog core</code> can show you the exact
+faulting line and stack even though the process no longer exists: the
+register state and the mapped memory are both literally embedded in the
+file, <code>gdb</code> just needs the original binary to resolve symbols against
+those addresses.</p>
+<p><strong><code>ftrace</code>'s function tracer works by binary-patching function
+prologues at boot.</strong> With <code>CONFIG_FTRACE</code> and <code>-pg</code>-style
+instrumentation, every kernel function gets a <code>mcount</code>/<code>__fentry__</code> call
+stub compiled into its prologue; at boot, ftrace's <code>dyn_ftrace</code>
+machinery patches nearly all of those stubs back to no-ops for zero
+runtime cost when tracing is off, then re-patches only the ones you
+enable (<code>set_ftrace_filter</code>) to jump into the tracer when you actually
+turn tracing on — live code patching of the running kernel image, not a
+recompile, which is what makes flipping a trace point on/off at runtime
+cost effectively nothing when it's off.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Write a small C program with a deliberate null-pointer dereference,
 cross-compile it with <code>-O2 -g</code>, run it under <code>gdbserver</code> in QEMU, and get a

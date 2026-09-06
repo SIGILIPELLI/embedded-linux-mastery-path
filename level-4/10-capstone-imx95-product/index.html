@@ -2173,6 +2173,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#stretch-goals" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2296,6 +2307,17 @@
     <span class="md-ellipsis">
       
         Design review: where each module's failure mode was specifically designed against
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
       
     </span>
   </a>
@@ -2514,6 +2536,34 @@ signed, flashed, or run on real or emulated i.MX95 hardware from this
 machine. Treat it as the starting architecture to validate against
 your actual hardware and organizational constraints.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>Why this design's chain of trust, A/B slots, and container boundary
+compose into one property instead of three separate ones.</strong> Secure boot
+(module 2) only guarantees the <em>bootloader and kernel</em> haven't been
+tampered with at power-on; it says nothing about a vulnerability in the
+vision-pipeline container discovered after deployment. That's exactly
+the gap A/B OTA (module 3) closes — a compromised or buggy container
+image is entirely contained within the currently-active rootfs slot and
+can be replaced by flipping to a freshly-signed B slot without ever
+touching the boot chain's root of trust. And the container boundary
+(module 6) means a vulnerability <em>inside</em> the vision pipeline (a
+malformed camera frame triggering a buffer overflow, say) is scoped to
+that container's namespace and device-cgroup allowlist rather than
+having direct access to the OTA client, the secure-storage keys, or the
+fleet identity certificate — three independent modules, but each one is
+specifically what prevents a single compromise from cascading into the
+next layer.</p>
+<p><strong>Why the design review step matters mechanically, not just as
+documentation.</strong> Each module's mechanism has a <em>specific</em> failure mode
+it defends against (HAB/AHAB: boot-chain tampering; dm-verity: at-rest
+rootfs tampering; A/B: bad-update bricking; device cgroups: hardware-
+access blast radius; SPDX/SBOM: undetected license/CVE exposure). A
+production design review that maps each threat to the exact module
+mechanism defending against it — rather than a generic "we did security"
+checklist — is what surfaces gaps: a fleet with signed boot and A/B OTA
+but no dm-verity, for instance, is still vulnerable to a rootfs modified
+in place between boots, because nothing in that combination re-checks
+disk contents after the initial verified boot completes.</p>
 <h2 id="stretch-goals">Stretch goals<a class="headerlink" href="#stretch-goals" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Extend the health-check script to include a canary inference against a

@@ -1378,6 +1378,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2327,6 +2338,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2635,6 +2657,40 @@ systemd and overlayfs rules — <code>DefaultDependencies=no</code> with explici
 writing this page; run <code>systemd-analyze verify</code> on each unit and check
 <code>/proc/mounts</code> on your own image before trusting the layout.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>A read-only mount is enforced by the VFS at the superblock level, not
+by convention.</strong> Mounting with <code>-o ro</code> sets <code>MS_RDONLY</code> on the
+<code>struct super_block</code>; every write path in the VFS (<code>vfs_write</code>,
+<code>notify_change</code> for <code>chmod</code>/<code>utimes</code>, <code>vfs_unlink</code>, ...) checks that flag
+via <code>__mnt_is_readonly()</code>/<code>sb_permission</code> before doing anything else, and
+returns <code>EROFS</code> if it's set — this rejection happens before the
+underlying filesystem driver (ext4, squashfs) is even consulted, which
+is why a read-only mount is a hard, kernel-enforced property, not
+something an application can talk its way around by opening the block
+device directly (though a root process with <code>CAP_SYS_ADMIN</code> bypassing the
+mountpoint entirely still can, which is the actual attack surface
+"read-only rootfs" hardening is defending).</p>
+<p><strong>The <code>/etc</code> overlay's copy-up cost is what makes tmpfs-backed upperdirs
+the standard pattern.</strong> As covered in filesystem layering, the first
+write to any file under an overlay copies the <em>whole file</em> to
+<code>upperdir</code> before applying the change. Putting <code>upperdir</code> on <code>tmpfs</code>
+means that copy-up (and every subsequent config edit) happens purely in
+RAM with zero flash wear and zero write latency — and because tmpfs is
+backed by no persistent storage, an unclean power loss simply discards
+whatever was written since boot, restoring the pristine <code>lowerdir</code>
+config on next boot. That is the entire mechanism of "factory reset":
+there is no reset logic to run, it falls out for free from tmpfs being
+volatile.</p>
+<p><strong>Finding "what writes where" via <code>strace -f</code> across a full boot works
+because every write syscall names its target path explicitly.</strong> Tracing
+<code>open()</code>/<code>openat()</code> calls with <code>O_WRONLY</code>/<code>O_RDWR</code>/<code>O_CREAT</code> flags across
+the whole boot sequence (or grepping <code>/proc/self/mountinfo</code> write
+patterns, or using <code>fatrace</code>'s <code>fanotify</code>-based whole-system watch)
+surfaces every process that assumed a writable <code>/var</code>, <code>/etc</code>, or
+<code>/tmp</code> — because Linux has no other channel for a process to persist
+state; it has to go through one of those syscalls, so this simple
+instrumentation is exhaustive by construction, not a best-effort
+heuristic.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Convert your QEMU image to a read-only root: change the kernel cmdline
 to <code>ro</code>, add the fstab above, boot, and use

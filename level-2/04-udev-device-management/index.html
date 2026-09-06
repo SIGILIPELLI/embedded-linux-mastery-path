@@ -1266,6 +1266,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2327,6 +2338,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2645,6 +2667,44 @@ were not exercised against live hardware while writing this page. Confirm
 every rule on your own target with <code>udevadm test</code> before shipping it —
 that command exists precisely so you never have to guess.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>A device node's appearance is a kernel-to-userspace relay race, not a
+single step.</strong> When a driver calls <code>device_add()</code>, the kernel populates
+an in-memory <code>sysfs</code> node under <code>/sys/devices/.../</code> and simultaneously
+emits a <code>uevent</code> — a netlink message on <code>NETLINK_KOBJECT_UEVENT</code> carrying
+<code>ACTION=add</code>, <code>DEVPATH</code>, <code>SUBSYSTEM</code>, <code>MAJOR</code>/<code>MINOR</code>, and driver-supplied
+key/values. <code>udevd</code> (or <code>eudev</code>/<code>mdev</code> in embedded builds) is just a
+listener on that socket: it does not create <code>/dev/sdb1</code> itself out of
+thin air, it reacts to the event, matches your rules against the exact
+key/value pairs in that uevent plus anything it can read from the sysfs
+attribute tree at that path, and only then calls <code>mknod()</code>. This is why
+<code>udevadm trigger</code> can "re-run" device discovery without touching
+hardware — it replays synthetic uevents from the current sysfs state,
+it doesn't re-probe anything.</p>
+<p><strong>Rule matching is ordered, first-match-doesn't-stop.</strong> <code>udevd</code> loads
+every <code>.rules</code> file across <code>/usr/lib/udev/rules.d</code>,
+<code>/etc/udev/rules.d</code>, <code>/run/udev/rules.d</code> (in that priority order, with
+<code>/etc</code> overriding <code>/usr/lib</code> for same-named files) and evaluates <em>every</em>
+rule against <em>every</em> uevent, top to bottom, by filename sort order —
+matching lines just set properties (<code>SYMLINK+=</code>, <code>RUN+=</code>, <code>OWNER=</code>) that
+accumulate; a later rule can still append another symlink for the same
+device. This is why symlink names like <code>/dev/disk/by-id/...</code> can coexist
+with your own custom <code>/dev/ttyUSB-sensor</code> — they're independent <code>RUN</code>/
+<code>SYMLINK</code> actions triggered by the same single uevent, not competing
+outcomes.</p>
+<p><strong>Persistent naming works because it's built from immutable, cabled-in
+identity, not the enumeration order.</strong> <code>ID_SERIAL</code>, <code>ID_PATH</code>, and PCI
+"slot" names are computed by udev's built-in helpers
+(<code>ata_id</code>, <code>usb_id</code>, <code>path_id</code>) by walking the <em>physical</em> topology in
+sysfs — USB port number, PCI bus/slot, disk serial burned into the
+device's firmware — none of which depends on the order the kernel
+happened to enumerate the bus in. <code>/dev/sda</code> vs <code>/dev/sdb</code> is assigned by
+kernel probe order (races on every boot); <code>/dev/disk/by-path/...</code> is
+derived from a sysfs path string that only changes if you physically move
+the device to a different port. That's the entire mechanism behind
+"stable" names — they're recomputed identically every boot because the
+inputs (physical topology) don't change, not because udev remembers
+anything across boots by default.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) On any Linux machine, plug in a USB serial adapter (or use an existing
 device such as <code>/dev/sda</code>) and capture both <code>udevadm info --query=all</code> and

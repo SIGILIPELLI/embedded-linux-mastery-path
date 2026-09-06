@@ -896,6 +896,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2478,6 +2500,25 @@ production layouts (Level 2 goes deep on this).</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p>BusyBox's "one binary, 300 commands" trick is <code>argv[0]</code> dispatch, not magic.
+The single ELF has one <code>main()</code> that reads <code>argv[0]</code> (or, for symlinked
+invocation, resolves the symlink name it was called through), does a table
+lookup against a compiled-in applet table, and jumps straight into that
+applet's function — <code>ls</code>, <code>mount</code>, <code>ps</code> are all just entries mapping a
+string to a function pointer inside the same address space. <code>/bin/ls</code> on a
+BusyBox system is a <strong>symlink</strong> to <code>/bin/busybox</code>; there is no separate
+<code>ls</code> executable to load, which is exactly why the binary is small and why
+<code>ps</code> output shows every applet as <code>busybox</code> in some listings.</p>
+<p><code>/proc</code> and <code>/sys</code> are not files backed by storage — they're <strong>synthetic
+filesystems</strong> generated on the fly, in the kernel, at <code>read()</code> time. Every
+<code>/proc/&lt;pid&gt;/status</code> read triggers a kernel function that walks that
+process's <code>task_struct</code> and formats live fields into text; nothing is
+cached to disk. <code>/sys</code> goes further: each file under <code>/sys/class/...</code>
+usually maps directly to a <code>sysfs_ops</code> <code>show()</code>/<code>store()</code> pair the driver
+registered — writing to a <code>/sys/.../brightness</code> file literally calls into
+driver code synchronously, which is why sysfs became the standard
+one-value-per-file API for kernel-to-userspace control on embedded systems.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Inside the guest, answer each question <strong>using only <code>/proc</code> and <code>/sys</code>
 reads</strong> (no <code>ps</code>, <code>top</code>, <code>free</code>, or <code>ip</code>): (1) exactly how many kB of RAM

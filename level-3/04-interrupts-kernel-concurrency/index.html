@@ -1631,6 +1631,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2572,6 +2594,35 @@ described are real, well-documented failure classes, but no code here
 was compiled, booted, or stress-tested on real SMP hardware from this
 machine.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>The top-half/bottom-half split exists because the CPU's interrupt
+controller genuinely can't wait.</strong> When hardware asserts an IRQ line,
+the CPU vectors into <code>handle_irq_event()</code> with <em>that</em> interrupt (and, on
+most controllers, all interrupts at or below its priority) masked at the
+GIC/APIC level — your registered handler runs in true interrupt context,
+where the kernel forbids sleeping (no mutex, no <code>copy_from_user</code>, no
+allocations that can block) because there's no scheduler context to
+switch away <em>to</em>. <code>request_threaded_irq</code>'s primary handler is meant to
+do the absolute minimum (read a status register, ack the device, decide
+"was this mine?") and return <code>IRQ_WAKE_THREAD</code>, which wakes the paired
+kernel thread — the actual bottom-half work runs later, fully
+preemptible, with the hardware interrupt line already re-armed. Skipping
+this split and doing real work in the primary handler is what causes the
+classic "interrupts stay disabled for milliseconds, everything else on
+that core stalls" pathology.</p>
+<p><strong>Spinlocks vs mutexes is a decision forced by context, not style.</strong> A
+spinlock's <code>lock()</code> busy-waits without ever calling <code>schedule()</code> — safe
+to call from interrupt context (nothing to switch to) but disastrous to
+hold across anything that sleeps, since another CPU spinning on it burns
+100% of a core the entire time. A mutex's <code>lock()</code> calls <code>schedule()</code>
+and parks the calling task on a wait queue if contended — which means it
+<em>must never</em> be taken from interrupt/atomic context, because there is no
+valid task to schedule out from an IRQ handler. <code>might_sleep()</code> calls
+compiled into mutex/allocation paths under
+<code>CONFIG_DEBUG_ATOMIC_SLEEP</code> are precisely instrumentation to catch this
+class of bug — calling a sleeping primitive while a spinlock is held or
+inside <code>atomic_t</code>-protected sections — at the exact call site, in a
+debug kernel, rather than as an intermittent hang.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Take Module 2's <code>mydev</code> platform driver, add an interrupt line with a
 threaded handler using <code>IRQF_ONESHOT</code>, and move the (imagined) I2C

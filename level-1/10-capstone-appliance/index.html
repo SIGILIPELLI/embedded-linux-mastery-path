@@ -1091,6 +1091,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2393,6 +2404,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2686,6 +2708,47 @@ about <code>sensord.c</code> or <code>healthcheck.sh</code> changes at all:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>Why <code>BR2_ROOTFS_OVERLAY</code> doesn't need a package.</strong> Buildroot builds the
+root filesystem in <code>output/target/</code> by unpacking every selected package's
+<code>.ipk</code>/<code>.tar</code>-equivalent staging output into that tree, then running
+<code>fakeroot</code>-wrapped permission/device-node fixups, then handing the tree to
+the filesystem generator (<code>genext2fs</code>/<code>mke2fs</code>, <code>mksquashfs</code>, ...). The
+overlay step runs <em>after</em> every package is merged and <em>before</em> the image
+is generated: it is a plain recursive copy (<code>cp -a</code>) of your overlay
+directory on top of <code>output/target/</code>, so anything you put there — your
+<code>sensord</code> binary, <code>healthcheck.sh</code>, a custom <code>/etc/issue</code> — simply wins if
+paths collide with a package. This is why the overlay can inject files
+without you writing a Buildroot package/recipe at all; it is a filesystem
+merge, not a build step, and it has zero awareness of what any package
+installed.</p>
+<p><strong>Cross-compilation, concretely.</strong> Buildroot's toolchain wrapper resolves
+<code>CC</code> to something like
+<code>output/host/bin/arm-buildroot-linux-gnueabihf-gcc</code>, which is a real GCC
+built with <code>--target=arm-buildroot-linux-gnueabihf</code> and a sysroot pointing
+at <code>output/host/arm-buildroot-linux-gnueabihf/sysroot</code>. <code>sensord.c</code> never
+touches your host's headers or libc — every <code>#include</code> resolves inside
+that sysroot, and the linker embeds an ELF <code>PT_INTERP</code> of
+<code>/lib/ld-musl-armhf.so.1</code> (or glibc/uClibc equivalent) so the <em>target's</em>
+dynamic linker, not the host's, is what resolves it at boot. <code>file</code> on
+the resulting binary shows <code>ELF 32-bit LSB, ARM</code> — that's the proof the
+sysroot substitution worked, and it's also why you can't just <code>gcc -o
+sensord sensord.c</code> on your host and drop the result in.</p>
+<p><strong>The two init paths hit different PID-1 code paths, not just different
+config syntax.</strong> BusyBox <code>init</code>'s <code>inittab</code> parser reads
+<code>/etc/inittab</code> once at boot, and a <code>respawn</code>-tagged line goes into an
+in-memory action table that <code>init</code>'s main loop <code>waitpid()</code>s against
+forever — when <code>sensord</code> exits, <code>init</code> gets <code>SIGCHLD</code>, looks up the dead
+PID in that table, sees <code>respawn</code>, and <code>fork()+exec()</code>s it again,
+uncoditionally, with no backoff. systemd's <code>Restart=always</code> is a unit
+property consumed by <code>systemd</code>'s <code>manager_dispatch_run_queue</code>; each
+service unit is its own cgroup, restart goes through a <code>START_LIMIT</code>
+rate-check (<code>StartLimitIntervalSec</code>/<code>StartLimitBurst</code>, default 5 tries in
+10s) before it will actually respawn, and journald captures stdout/stderr
+per-unit automatically — behavior BusyBox init has no equivalent for at
+all. Killing <code>sensord</code> and watching it come back on both images is really
+exercising two structurally different supervision engines, not one
+feature toggled two ways.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Take this capstone one step further, in the QEMU image you already have:
 (1) make <code>sensord</code> write its reading to <code>/sys</code>-style location isn't

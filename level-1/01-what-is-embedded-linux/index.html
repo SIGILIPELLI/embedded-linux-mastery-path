@@ -773,6 +773,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2261,6 +2272,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2517,6 +2539,27 @@ you a custom Linux distribution.</em></p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p>The MCU/MPU split isn't a marketing category — it's a memory-management fact.
+An MPU (Cortex-A) has an <strong>MMU</strong>: a hardware page-table walker that gives
+every process its own virtual address space, enforces user/kernel privilege
+separation, and lets the kernel demand-page and swap. Linux's process model
+<em>requires</em> this — <code>fork()</code>, <code>exec()</code>, and memory protection between processes
+don't exist without it. An MCU (Cortex-M) has, at best, an <strong>MPU</strong>
+(Memory Protection Unit — a much smaller cousin that just fences off address
+ranges) and executes everything in one flat physical address space. That's
+why RTOSes like FreeRTOS or Zephyr run on Cortex-M and Linux cannot: Linux's
+kernel itself assumes it can remap virtual-to-physical mappings per process,
+something a flat-address MCU has no hardware for.</p>
+<p>The software stack you saw (bootloader → kernel → rootfs → application) is
+also a sequence of privilege handoffs, not just a checklist. Each stage runs
+in a <em>less</em> trusted, <em>more</em> general-purpose context than the last: the boot
+ROM trusts nothing and can only run signed/fixed code; U-Boot trusts the
+media it reads from; the kernel trusts its own compiled-in drivers and
+whatever device tree it's handed; and your application trusts the kernel's
+syscall contract while having zero direct hardware access itself. Every
+later module in this course is really an elaboration of one link in that
+chain.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Pick two devices you own that you suspect run Linux (router, TV, camera, car
 head unit...). For each, find evidence online: search

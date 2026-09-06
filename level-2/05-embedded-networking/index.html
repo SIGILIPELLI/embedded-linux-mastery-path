@@ -1283,6 +1283,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2620,6 +2642,49 @@ written so <code>nft -c -f</code> can check it before it is ever applied. Live
 hardware testing was not possible while writing this page — run the
 check-only commands on your own target first.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong><code>ip</code>/netlink replaced <code>ifconfig</code>/<code>route</code> because the kernel's network
+state is exposed as a structured, queryable object model, not text.</strong>
+<code>ip addr</code>/<code>ip route</code> speak <code>NETLINK_ROUTE</code> — a socket protocol where
+requests and replies are binary <code>nlmsghdr</code> + <code>rtattr</code> structures
+(<code>RTM_NEWADDR</code>, <code>RTM_GETROUTE</code>, ...), the same protocol the kernel uses
+internally to notify listeners of changes. <code>ifconfig</code> was built on the
+much older <code>ioctl(SIOCSIFADDR, ...)</code> interface, which can't represent
+multiple addresses per interface or IPv6 scopes cleanly — that's the
+actual reason it was retired, not just command-syntax fashion.
+<code>systemd-networkd</code> itself is just another netlink client: it doesn't
+patch files the kernel reads, it opens the same <code>NETLINK_ROUTE</code> socket
+and issues the same <code>RTM_NEWADDR</code>/<code>RTM_NEWLINK</code> requests your <code>ip</code>
+commands would.</p>
+<p><strong>DNS resolution order is decided by NSS, not by "the network stack."</strong>
+<code>/etc/nsswitch.conf</code>'s <code>hosts:</code> line tells glibc's Name Service Switch
+which shared objects (<code>libnss_files.so</code>, <code>libnss_dns.so</code>,
+<code>libnss_resolve.so</code> if <code>systemd-resolved</code> is in play) to <code>dlopen()</code> and
+query, in order, for every <code>getaddrinfo()</code> call any program makes —
+including <code>ping</code>, <code>curl</code>, and your own code. This is why editing
+<code>/etc/resolv.conf</code> has zero effect on a box using <code>systemd-resolved</code>'s
+stub: NSS is pointed at <code>libnss_resolve</code>, which queries the resolved
+daemon over D-Bus/a Unix socket instead of ever parsing that file.</p>
+<p><strong><code>wpa_supplicant</code> is a state machine driving the kernel's <code>nl80211</code>
+interface, and the 4-way handshake is real cryptographic protocol, not
+config.</strong> After association, <code>wpa_supplicant</code> receives EAPOL frames from
+the kernel's <code>cfg80211</code>/driver stack via a dedicated Ethertype
+(<code>0x888e</code>), and executes RSN's 4-way handshake purely in userspace:
+deriving the PTK from the PMK (itself from the PSK via <code>PBKDF2</code> over the
+passphrase+SSID) and nonces exchanged in messages 1–4, then installing
+the resulting session keys into the kernel driver via <code>nl80211</code>
+<code>SET_KEY</code> commands — only after that does the interface actually pass
+traffic. <code>wpa_cli status</code> showing <code>wpa_state=COMPLETED</code> means that
+exact key-installation step succeeded, not merely "associated to an AP."</p>
+<p><strong>nftables rules are compiled into a kernel bytecode VM, evaluated per
+packet at defined hook points.</strong> <code>nft</code> translates your rule text into
+the netlink <code>NFT_MSG_NEWRULE</code> binary format, which the kernel loads as a
+sequence of expressions run by an in-kernel interpreter at Netfilter hook
+points (<code>NF_INET_PRE_ROUTING</code>, <code>NF_INET_LOCAL_IN</code>, ...) baked into the
+IP stack's packet-processing path itself — a <code>DROP</code> in a <code>chain</code> isn't
+"redirecting" traffic, it's a hook callback returning <code>NF_DROP</code> before the
+packet ever reaches the routing/socket-delivery code that would otherwise
+run next.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) In your QEMU image, bring <code>eth0</code> up entirely by hand with <code>ip</code> (address,
 route, and a nameserver in <code>/etc/resolv.conf</code>), confirm with

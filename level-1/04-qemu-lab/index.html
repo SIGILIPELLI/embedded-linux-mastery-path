@@ -868,6 +868,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2550,6 +2572,28 @@ Everything you learned here transfers directly.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p>QEMU's <code>virt</code> machine is not "a fake ARM board" in the sense of imitating a
+specific SoC — it's a <strong>synthetic platform</strong> invented purely so the kernel
+has something regular to describe, generated fresh from QEMU's internal
+device model each run as a device tree blob and handed to the guest kernel
+exactly the way a real bootloader would. That's why <code>-machine virt</code> boots
+generic kernels with no board-specific patches: there's no real silicon
+underneath to disagree with the description.</p>
+<p>Under the hood, QEMU runs your guest one of two fundamentally different
+ways depending on host/target match. On matching-architecture hosts (an
+Apple Silicon Mac running an AArch64 guest) it uses <strong>KVM/HVF hardware
+virtualization</strong> — guest instructions execute directly on the host CPU with
+the hypervisor only trapping privileged operations, which is why this feels
+fast. On a mismatched pair (x86 host, ARM guest) QEMU falls back to
+<strong>TCG</strong> (Tiny Code Generator) — it translates each block of guest
+instructions into host instructions in software, caches the translation,
+and executes that; this is why cross-architecture emulation is measurably
+slower and why <code>-cpu max</code> matters: TCG has to know exactly which ARM
+instructions to emit code for. The serial console you interact with is
+itself emulated hardware (a PL011 UART on <code>virt</code>) wired to your terminal's
+stdio — the same UART driver your kernel would use to talk to a real
+16550-class chip on physical silicon.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Boot the guest three more times, changing one thing each time, and write
 down what you observe: (1) <code>-smp 4 -m 1024M</code> — confirm the changes from

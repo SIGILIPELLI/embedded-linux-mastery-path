@@ -1614,6 +1614,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2327,6 +2338,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2553,6 +2575,32 @@ interface were checked against the documented DT overlay ABI and
 dtc behavior; the U-Boot and configfs command sequences were reviewed
 for correctness but not executed on real hardware or QEMU here.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>An overlay is a second, smaller FDT blob applied by <em>tree-merge</em>
+semantics, not textual patching.</strong> A compiled <code>.dtbo</code> is itself a valid
+FDT with <code>/fragment@N</code> nodes, each carrying a <code>target</code>/<code>target-path</code>
+property and an <code>__overlay__</code> subnode. <code>fdtoverlay</code> (or the kernel's
+in-tree <code>of_overlay_apply</code> for runtime application) walks each fragment,
+resolves the target against the base tree's phandles/paths, and does a
+<em>node-level</em> merge: new properties are added, same-named properties are
+replaced wholesale, and new child nodes are grafted in — there is no
+line-based diffing anywhere in this pipeline, which is why two overlays
+touching the same target node but different properties compose cleanly,
+while two overlays setting the <em>same</em> property produce a last-applied-
+wins outcome with no conflict warning.</p>
+<p><strong>Phandle resolution is why overlays need a <code>symbols</code> metadata pass at
+all.</strong> The base DTB's phandles are just small integers assigned at
+compile time; an overlay compiled independently has no way to know what
+integer the base tree assigned to, say, <code>&amp;i2c1</code>. <code>dtc</code>'s <code>-@</code> flag emits
+a <code>__symbols__</code> node listing every labeled node's path, and the overlay
+compiler emits <code>__fixups__</code> describing which of its own properties (like
+an <code>interrupt-parent</code> reference) need which named symbol patched in at
+apply time — <code>fdtoverlay</code>/<code>of_overlay_apply</code> reads both tables and
+rewrites the overlay's raw phandle integers to match the <em>actual</em>
+values found in the live base tree before merging. Skip <code>-@</code> on either
+side and the reference silently resolves to phandle 0, which is the
+single most common "overlay applied with no error, device didn't show
+up" bug in this whole area.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Write a base tree with an unpopulated <code>spi1</code> node and an overlay that
 adds a <code>spi-nor</code> flash child at chip-select 0, compile it with <code>dtc -@</code>,

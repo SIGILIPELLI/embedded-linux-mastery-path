@@ -1008,6 +1008,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2522,6 +2544,30 @@ included) or maintaining a product line.</strong></p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><code>make menuconfig</code>'s output — <code>.config</code> — isn't consumed directly by the
+build; Buildroot treats it as the input to a dependency graph built from
+every package's <code>.mk</code> file. Each package declares
+<code>&lt;PKG&gt;_DEPENDENCIES</code>, and Buildroot's top-level <code>Makefile</code> topologically
+sorts the whole set before building anything, so enabling <code>openssl</code> doesn't
+just add one package, it silently pulls in <code>zlib</code>, rebuilds <code>host-openssl</code>
+first (a <em>host</em> copy, used only so target <code>openssl</code>'s build scripts can run
+tools like its own code generator), and only then cross-compiles the
+target copy against your toolchain. This host/target package duplication
+is why Buildroot's <code>output/host/</code> and <code>output/target/</code> trees both exist.</p>
+<p>The three-stage pipeline (toolchain → kernel → rootfs) is a strict
+dependency order, not just a menu layout: the kernel build needs the
+cross-toolchain's headers to compile against, and the rootfs's C library
+must be the <em>exact</em> one the toolchain was built with — mixing a glibc
+toolchain with a musl rootfs produces binaries the target's dynamic linker
+can't load, because glibc and musl disagree on internal ABI details
+(<code>errno</code> handling, <code>dlopen</code> behavior). The final image assembly step walks
+<code>TARGET_DIR</code>, applies your permission table (<code>/etc/device_table</code> or the
+newer <code>S_IFCHR</code> syntax) to fix up device nodes and ownership that can't
+survive being built as a non-root user, then hands the tree to <code>genext2fs</code>
+or <code>mksquashfs</code> to produce the actual boot image — the point where a
+missing file in <code>TARGET_DIR</code> becomes a missing file in the booted system,
+with no build error in between.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Add <code>nano</code> and <code>htop</code> to Target packages, rebuild (<code>make -j$(nproc)</code> —
 only the changed pieces recompile), and confirm both run in the booted

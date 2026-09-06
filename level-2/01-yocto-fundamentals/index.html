@@ -1182,6 +1182,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2327,6 +2338,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2608,6 +2630,40 @@ nothing, which is the single most common Yocto beginner bug.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>BitBake is a dependency graph solver, not a script runner.</strong> Each
+<code>.bb</code> recipe is parsed into a <code>bb.data.DataSmart</code> namespace of variables
+and <em>tasks</em> (<code>do_fetch</code>, <code>do_unpack</code>, <code>do_patch</code>, <code>do_configure</code>,
+<code>do_compile</code>, <code>do_install</code>, <code>do_package</code>, ...), each a shell or Python
+function with declared <code>[deptask]</code>/<code>[rdeptask]</code> flags. Before building
+anything, BitBake's <code>RunQueue</code> walks every recipe reachable from your
+image's <code>IMAGE_INSTALL</code>/<code>DEPENDS</code>/<code>RDEPENDS</code> and builds one giant task
+graph across <em>all</em> recipes — this is why a first <code>bitbake core-image-*</code>
+resolves and orders hundreds of recipes before a single compiler runs.
+Layers (<code>meta</code>, <code>meta-poky</code>, <code>meta-yourbsp</code>) only contribute
+<code>.bbclass</code>/<code>.bb</code>/<code>.bbappend</code> files and <code>bblayers.conf</code> priority — they
+don't nest or namespace, they merge, with <code>BBFILE_PRIORITY</code> breaking ties
+when two layers provide the same recipe name.</p>
+<p><strong>Why a <code>.bbappend</code> doesn't need to repeat the whole recipe.</strong> BitBake
+matches <code>busybox_%.bbappend</code> against <code>busybox_1.36.1.bb</code> by filename glob
+at parse time, then <em>replays</em> the append's variable assignments and
+<code>do_install:append()</code> functions into the same <code>DataSmart</code> datastore the
+base recipe already populated — it's a second pass over the same
+in-memory config, not a text merge or an overlay file. That's also why a
+typo in the version-matching part of the filename (missing the <code>%</code>, or a
+stale pinned version) makes the append parse successfully but silently
+never attach — Yocto's most common footgun.</p>
+<p><strong>Where the sysroot boundary actually lives.</strong> <code>do_populate_sysroot</code>
+copies each recipe's staged headers/libraries into
+<code>tmp/sysroots-components/&lt;arch&gt;/&lt;recipe&gt;/</code>, and every other recipe's
+<code>do_configure</code>/<code>do_compile</code> only ever sees that shared per-recipe sysroot
+tree via <code>-I</code>/<code>-L</code> flags injected by the toolchain wrapper — never your
+build host's <code>/usr/include</code>. Shared-state (<code>sstate</code>) then hashes each
+task's <em>inputs</em> (recipe metadata, dependency task hashes, not just file
+timestamps) into a signature; a cache hit swaps in a prebuilt tarball for
+that task and skips it entirely, which is why identical builds on two
+machines with a shared sstate-cache mirror can finish in minutes instead
+of hours.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Set up poky on the <code>scarthgap</code> branch, build <code>core-image-minimal</code> for
 <code>MACHINE = "qemuarm64"</code>, and boot it with <code>runqemu</code>; record the wall-clock

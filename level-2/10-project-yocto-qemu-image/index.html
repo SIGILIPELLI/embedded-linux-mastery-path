@@ -1445,6 +1445,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#stretch-goals" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2349,6 +2360,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#stretch-goals" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2665,6 +2687,31 @@ Linux host, 50+ GB of disk and hours of CPU — so treat the task counts
 and image sizes as representative rather than exact, and expect to
 adjust variable names on a different release branch.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>Why a custom image recipe inherits <code>core-image</code> instead of listing
+files directly.</strong> <code>IMAGE_INSTALL</code> in your <code>.bb</code> is just a package list;
+the actual filesystem assembly happens in <code>rootfs.py</code>'s <code>RootfsBase</code>
+class (invoked at <code>do_rootfs</code>), which resolves that list plus every
+transitive <code>RDEPENDS</code> through the same package-manager backend
+(<code>opkg</code>/<code>rpm</code>/<code>dpkg</code>, chosen by <code>PACKAGE_CLASSES</code>) that a real device
+would use for field updates — installing into a scratch root exactly the
+way <code>opkg install</code> would on a live system, then running post-install
+<code>pkg_postinst</code> scripts in a <code>pseudo</code>-wrapped fakeroot so <code>chown</code>/device
+nodes work without real root. <code>IMAGE_FSTYPES</code> then hands that finished
+tree to per-format generators (<code>mkfs.ext4</code>, <code>mksquashfs</code>) — the image
+recipe is a <em>manifest</em>, the real construction work happens in shared
+BitBake classes every image recipe reuses.</p>
+<p><strong>Why QEMU boots the exact same kernel/rootfs a board would.</strong> <code>runqemu</code>
+doesn't emulate your target SoC's actual silicon — it boots a QEMU
+machine model (<code>qemu-system-arm -M virt</code>, or SoC-specific machine for
+some BSPs) using the <em>same</em> <code>Image</code>/<code>zImage</code> and <code>rootfs.ext4</code> BitBake
+just produced, with a device tree describing QEMU's virtual peripherals
+instead of your board's real ones. This is exactly why the same
+<code>core-image-minimal</code> artifact set can target both — the kernel and
+userland are architecture- and driver-generic; only the DTB (and
+occasionally a machine-specific kernel config fragment) changes between
+"boots under QEMU" and "boots on real hardware," which is the practical
+value of testing your Yocto build in QEMU before ever touching a board.</p>
 <h2 id="stretch-goals">Stretch goals<a class="headerlink" href="#stretch-goals" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Make it one image.</strong> Replace <code>ext4</code> in <code>IMAGE_FSTYPES</code> with <code>wic</code> and

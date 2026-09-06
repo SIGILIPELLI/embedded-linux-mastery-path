@@ -1743,6 +1743,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2558,6 +2580,35 @@ frameworks; the suspend/resume driver code follows the documented
 <code>dev_pm_ops</code> contract but was not compiled or exercised through an
 actual suspend/resume cycle on real hardware from this machine.</p>
 </div>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p><strong>cpufreq and cpuidle are two independent decision loops with different
+knobs, one for "how fast" and one for "how off."</strong> cpufreq's governor
+(<code>schedutil</code> on modern kernels) is fed CPU utilization directly from the
+scheduler's per-run-queue load tracking and, on that signal, requests a
+new OPM (operating performance point — a paired voltage/frequency step
+from the SoC's <code>opp-table</code> DT node) from the platform's <code>clk</code>/regulator
+drivers, which reprogram the PLL and voltage regulator through whatever
+SoC-specific PMIC I2C/SPI protocol is involved — a real, non-trivial
+hardware transaction, which is why frequency transitions have measurable
+latency and governors hysteresis-dampen how often they'll trigger one.
+cpuidle instead runs when the scheduler finds <em>nothing</em> runnable on a
+CPU, and picks among idle states (<code>WFI</code>, clock-gated, power-gated) whose
+<code>exit_latency</code>/<code>target_residency</code> values (again from DT) are used to
+predict whether the next wake will happen soon enough that a deep,
+slow-to-exit state isn't worth entering — two separate governors,
+reacting to load and idleness respectively, that only interact indirectly
+through the same CPU.</p>
+<p><strong>Thermal throttling is a userspace-invisible feedback loop closed
+entirely in-kernel.</strong> A <code>thermal_zone</code>'s polling (or interrupt-driven, on
+SoCs with a real thermal-sensor IRQ) temperature reads are compared
+against <code>trip_point</code> thresholds from DT; crossing one invokes a bound
+<em>cooling device</em> — typically the same cpufreq framework, capped via
+<code>freq_qos_add_request</code> to a ceiling below what the governor would
+otherwise pick — so the CPU can visibly stay "at" a frequency the
+governor never asked for. This is why a thermally-throttled board shows
+utilization pegged at 100% while frequency stays pinned low: the
+scheduler's utilization signal and the QoS-capped frequency ceiling are
+computed independently, and the cap simply wins.</p>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>(1) Add <code>suspend</code>/<code>resume</code> callbacks to Module 2's <code>mydev</code> platform driver
 that correctly save and restore the one register it writes in <code>probe</code>,
