@@ -219,6 +219,48 @@ an A/B update scheme (Level 4) possible at all.
     every rule on your own target with `udevadm test` before shipping it —
     that command exists precisely so you never have to guess.
 
+## How It Actually Works
+
+**A device node's appearance is a kernel-to-userspace relay race, not a
+single step.** When a driver calls `device_add()`, the kernel populates
+an in-memory `sysfs` node under `/sys/devices/.../` and simultaneously
+emits a `uevent` — a netlink message on `NETLINK_KOBJECT_UEVENT` carrying
+`ACTION=add`, `DEVPATH`, `SUBSYSTEM`, `MAJOR`/`MINOR`, and driver-supplied
+key/values. `udevd` (or `eudev`/`mdev` in embedded builds) is just a
+listener on that socket: it does not create `/dev/sdb1` itself out of
+thin air, it reacts to the event, matches your rules against the exact
+key/value pairs in that uevent plus anything it can read from the sysfs
+attribute tree at that path, and only then calls `mknod()`. This is why
+`udevadm trigger` can "re-run" device discovery without touching
+hardware — it replays synthetic uevents from the current sysfs state,
+it doesn't re-probe anything.
+
+**Rule matching is ordered, first-match-doesn't-stop.** `udevd` loads
+every `.rules` file across `/usr/lib/udev/rules.d`,
+`/etc/udev/rules.d`, `/run/udev/rules.d` (in that priority order, with
+`/etc` overriding `/usr/lib` for same-named files) and evaluates *every*
+rule against *every* uevent, top to bottom, by filename sort order —
+matching lines just set properties (`SYMLINK+=`, `RUN+=`, `OWNER=`) that
+accumulate; a later rule can still append another symlink for the same
+device. This is why symlink names like `/dev/disk/by-id/...` can coexist
+with your own custom `/dev/ttyUSB-sensor` — they're independent `RUN`/
+`SYMLINK` actions triggered by the same single uevent, not competing
+outcomes.
+
+**Persistent naming works because it's built from immutable, cabled-in
+identity, not the enumeration order.** `ID_SERIAL`, `ID_PATH`, and PCI
+"slot" names are computed by udev's built-in helpers
+(`ata_id`, `usb_id`, `path_id`) by walking the *physical* topology in
+sysfs — USB port number, PCI bus/slot, disk serial burned into the
+device's firmware — none of which depends on the order the kernel
+happened to enumerate the bus in. `/dev/sda` vs `/dev/sdb` is assigned by
+kernel probe order (races on every boot); `/dev/disk/by-path/...` is
+derived from a sysfs path string that only changes if you physically move
+the device to a different port. That's the entire mechanism behind
+"stable" names — they're recomputed identically every boot because the
+inputs (physical topology) don't change, not because udev remembers
+anything across boots by default.
+
 ## Exercise
 
 (1) On any Linux machine, plug in a USB serial adapter (or use an existing

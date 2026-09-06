@@ -250,6 +250,56 @@ sources.
     while writing this page. The outputs are useful as a guide to *what to
     look for*, not as literal expected text for your toolchain version.
 
+## How It Actually Works
+
+**`strace` works via `PTRACE_SYSCALL`, which stops the tracee at every
+syscall boundary — it is not a log the kernel keeps.** `strace` attaches
+with `ptrace(PTRACE_SEIZE/ATTACH, ...)`, then loops on
+`ptrace(PTRACE_SYSCALL, ...)` + `waitpid()`: the kernel delivers a
+`SIGTRAP` to the tracer *twice* per syscall — once on entry (registers
+hold the syscall number and arguments, readable via
+`PTRACE_GETREGS`) and once on exit (return value now in the return-value
+register) — and the tracee is fully stopped between those two points.
+That double-stop-per-syscall is exactly why straced programs run
+10–100x slower: every single syscall now costs two extra context
+switches into the tracer.
+
+**gdbserver splits the debugger into a thin remote stub and a full GDB,
+talking the Remote Serial Protocol.** On target, `gdbserver` uses
+`ptrace()` just like `strace` does, but instead of decoding syscalls
+itself it exposes register/memory read-write and breakpoint control as a
+text protocol (`$g#67`-style packets) over a TCP socket or serial line.
+Your host-side cross-`gdb` does all the symbol resolution, source
+mapping, and expression evaluation locally — it just sends RSP commands
+for `Yhat` the low-level “write byte at address / read register” actions
+and reconstructs a source-level debugging session on top. This split is
+exactly why `gdbserver` binaries can be tiny (no DWARF parser needed
+on-target) while your host `gdb` needs the *unstripped* binary with
+matching debug symbols to make sense of the addresses coming back.
+
+**A core dump is a `PT_NOTE`+`PT_LOAD`-segment snapshot written by the
+kernel's own coredump code path, triggered by specific fatal signals.**
+On `SIGSEGV`/`SIGABRT`/etc. with no handler, `do_coredump()` walks the
+process's VMAs and writes each mapped, dumpable region as an ELF
+`PT_LOAD` segment, plus a `PT_NOTE` segment holding `NT_PRSTATUS` (saved
+registers at the moment of the fault) and `NT_FILE` (which files were
+mapped where) — that's why `gdb prog core` can show you the exact
+faulting line and stack even though the process no longer exists: the
+register state and the mapped memory are both literally embedded in the
+file, `gdb` just needs the original binary to resolve symbols against
+those addresses.
+
+**`ftrace`'s function tracer works by binary-patching function
+prologues at boot.** With `CONFIG_FTRACE` and `-pg`-style
+instrumentation, every kernel function gets a `mcount`/`__fentry__` call
+stub compiled into its prologue; at boot, ftrace's `dyn_ftrace`
+machinery patches nearly all of those stubs back to no-ops for zero
+runtime cost when tracing is off, then re-patches only the ones you
+enable (`set_ftrace_filter`) to jump into the tracer when you actually
+turn tracing on — live code patching of the running kernel image, not a
+recompile, which is what makes flipping a trace point on/off at runtime
+cost effectively nothing when it's off.
+
 ## Exercise
 
 (1) Write a small C program with a deliberate null-pointer dereference,

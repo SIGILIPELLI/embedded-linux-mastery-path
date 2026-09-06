@@ -174,6 +174,49 @@ gap exactly at that handoff.
     reviewed syntax to validate on disposable hardware, never as a
     tested, ready-to-fuse procedure.
 
+## How It Actually Works
+
+**The chain of trust is a sequence of signature checks each stage
+performs on the *next* stage, rooted in a hash burned into one-time-
+programmable fuses.** Boot ROM (immutable silicon) computes a SHA-256
+over the SRK (Super Root Key) table and compares it against the SRK hash
+fused into OTP at manufacturing — this is the actual root of trust,
+because it's the one link in the chain that can never be updated or
+attacked via software. Only after that comparison passes does ROM
+verify the CSF (Command Sequence File) signature on SPL using one of the
+SRK-chain public keys, and only a verified SPL is allowed to execute;
+SPL then repeats the same verify-then-jump pattern against U-Boot proper,
+and U-Boot (if `CONFIG_FIT_SIGNATURE` is enabled) against the kernel
+FIT image. Break any single link — skip verifying U-Boot, say — and
+everything downstream of that link is unverified regardless of how solid
+the earlier links were, which is the actual security argument for "chain"
+rather than "a signature check somewhere."
+
+**AHAB moves verification into a dedicated coprocessor instead of trusting
+the same core that runs your untrusted code.** HAB's verification runs
+on the main Cortex-A core itself before handing off, using ROM code — a
+single execution environment an attacker who finds *any* ROM
+vulnerability can potentially subvert. AHAB (i.MX8/9) instead delegates
+image authentication to a separate on-chip security enclave (the
+EdgeLock Enclave) running its own firmware, communicating with the main
+core over a message-passing interface — so a fault-injection or glitch
+attack against the main core's boot path doesn't have direct access to
+the key material or verification logic at all, because it never executes
+on that core.
+
+**dm-verity extends the same idea to a live, mounted filesystem via a
+Merkle tree, checked block-by-block on every read.** Rather than
+verifying the whole rootfs image once at boot (impractical for a large
+partition and blind to a filesystem being served from flash directly),
+`dm-verity` precomputes a Merkle hash tree over the image's blocks, roots
+it in one hash embedded in the (already boot-chain-verified) kernel
+command line or FIT signature, and the device-mapper target verifies each
+block's hash against that tree *on every read* as the block is
+requested. Any single tampered sector, even one nobody has read yet,
+fails verification the moment something tries to read it — that's the
+mechanism that closes the gap HAB/AHAB leave (they verify the kernel and
+initial boot artifacts, not a rootfs that keeps growing after boot).
+
 ## Exercise
 
 (1) Write out, in order, every validation step you would perform on

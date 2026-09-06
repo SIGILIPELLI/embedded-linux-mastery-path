@@ -191,6 +191,37 @@ cause of "smooth in isolation, stutters once a second client is running"
     exercised on this machine — `modetest`/`drmModeAtomicCommit` output
     shown is representative, not captured from real hardware.
 
+## How It Actually Works
+
+**DRM/KMS models a display pipeline as a graph of kernel objects a
+compositor wires together, not a framebuffer it just writes pixels
+into.** `CRTC`, `encoder`, `connector`, and `plane` objects each
+correspond to real hardware blocks (a scanout engine, a display-
+interface serializer, a physical port, a compositing layer) exposed
+through the DRM ioctl API and `/sys/class/drm`. An atomic modeset
+(`DRM_IOCTL_MODE_ATOMIC`) submits a full proposed graph state — which
+plane feeds which CRTC, at what mode — and the kernel's atomic-check
+path validates the *entire* configuration against hardware constraints
+before committing any of it, then commits every object's state together,
+typically synced to vblank. This all-or-nothing validate-then-commit
+design is precisely what eliminates the tearing/half-applied-mode glitches
+that plagued the older non-atomic KMS API, which let you set properties
+one ioctl at a time with no consistency check across them.
+
+**Wayland's compositor owns the whole scanout path, which is the
+actual difference from X11.** In X11, the X server itself was
+effectively the DRM client, and applications drew into shared memory the
+server later composited from a separate process. A Wayland compositor
+*is* the sole DRM client — it does the atomic modeset directly, and
+each client renders into its own buffer (via EGL/GBM, backed by DMA-BUF
+handles) that it hands to the compositor over the Wayland protocol's
+`wl_surface`/`wl_buffer` messages; the compositor then either GPU-
+composites those buffers together or, in the direct-scanout case, hands
+a client's buffer straight to a hardware plane with zero copies. That's
+why a fullscreen Wayland client can bypass compositing entirely (a real
+hardware plane swap) in a way an X11 app fundamentally couldn't — there's
+no intermediary process's compositing step required by the protocol.
+
 ## Exercise
 
 (1) Given a panel that shows a correctly-timed but half-width, doubled

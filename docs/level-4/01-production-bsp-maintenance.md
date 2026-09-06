@@ -173,6 +173,41 @@ later has no way to distinguish "this bug was in the shipped build" from
     Yocto/BitBake conventions and Level 2's build material; no image was
     actually built or CVE-scanned on this machine.
 
+## How It Actually Works
+
+**Layer pinning locks a graph of independent git histories, and BitBake
+only cares about the resulting file content, not the pin mechanism.**
+`bblayers.conf` lists layer paths, but each layer is its own git repo
+with its own tags/branches — "pinning" means recording an exact commit
+SHA per layer (in a manifest, or as submodule pins) because BitBake
+itself has zero version awareness beyond whatever `.bb`/`.conf` files
+happen to be on disk when it parses. Two builds against "the same
+release branch" of `meta-openembedded` taken a month apart can produce
+different output because the branch moved — pinning to SHAs, not
+branches, is what actually makes a build reproducible, since BitBake
+resolves everything by walking layer directories fresh every parse.
+
+**A backport succeeds or fails based on whether the patch context lines
+still match your tree, not the CVE description.** `git cherry-pick` or a
+recipe `.patch` applies by finding the unchanged context lines around
+the change and failing (or worse, silently applying to the wrong
+location if fuzz is allowed) if your kernel's surrounding code has
+diverged from upstream at that point — which is exactly why backporting
+a fix to an old LTS kernel or vendor BSP-forked source often needs manual
+patch surgery: the fix is conceptually simple, but the diff's anchor
+points no longer exist verbatim in your fork's history.
+
+**Reproducible builds work by making every non-deterministic input
+either fixed or excluded from the hash.** `BUILD_REPRODUCIBLE_BINARIES`
+and friends set `SOURCE_DATE_EPOCH` (read by GCC, `ar`, `python`,
+tarball generators, etc. wherever they'd otherwise embed the current
+wall-clock time) to a fixed value derived from your source
+metadata, and BitBake's sstate hashing is already keyed off task inputs
+rather than timestamps — so "who built this artifact" becomes provable
+because two independent builds from the same pinned layer SHAs and the
+same `SOURCE_DATE_EPOCH` produce byte-identical output, checkable with a
+plain `sha256sum`, not a trust assertion.
+
 ## Exercise
 
 (1) Write the `.bbappend` and directory layout needed to backport a

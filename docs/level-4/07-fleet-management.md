@@ -178,6 +178,45 @@ as SSH access to every unit.
     TrustZone material; no fleet backend, CA, or provisioning flow was
     actually run from this machine.
 
+## How It Actually Works
+
+**Device identity has to be rooted in hardware the device can prove it
+possesses, or the whole fleet trust model collapses to "whatever a
+device claims about itself."** A per-device certificate whose private
+key is generated *inside* a secure element or TPM (and marked
+non-exportable at the hardware level) means the fleet backend's mutual-
+TLS handshake is cryptographically verifying "a device holding this
+specific chip's key material," not just "a device that read a
+provisioning file" — a cloned SD card or copied rootfs image cannot also
+clone a key that was generated inside silicon and never left it. This is
+the mechanistic reason zero-touch provisioning at manufacturing scale
+inserts identity at the *hardware* step (secure-element personalization
+during flashing) rather than baking a certificate into the golden image
+that every unit would then share.
+
+**Staged rollout works because population-level failure signals are
+statistically detectable long before 100% exposure, if the canary
+percentage is large enough to be significant.** Rolling to 1% of a
+10,000-unit fleet (100 devices) and comparing crash-rate/rollback-rate
+telemetry against the baseline fleet gives you a real sample size to
+distinguish "this update has a 5% regression" from noise — the entire
+technique is applied statistics over the telemetry pipeline described
+just above it, not a separate mechanism; staged rollout literally cannot
+work without the aggregate telemetry to read between stages.
+
+**Remote diagnostics without full remote shell is a scoped-command
+allowlist enforced server-side, not a client feature.** Rather than
+exposing SSH (an unbounded remote-code-execution surface across an
+entire fleet — one credential leak compromises every reachable device),
+a diagnostics agent on-device polls or subscribes for a small set of
+pre-defined command IDs (`collect-logs`, `restart-service:X`,
+`report-sensor-health`) whose *implementations* are fixed at build time;
+the fleet backend can request only those IDs, and the device never
+executes arbitrary shell text it receives over the network — the
+security property comes from the fact that "what can happen" is
+enumerated in code shipped months earlier, not in a message an operator
+sends today.
+
 ## Exercise
 
 (1) Write the provisioning script's idempotency check so it survives a

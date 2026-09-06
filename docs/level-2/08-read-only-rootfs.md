@@ -268,6 +268,44 @@ code review will.
     writing this page; run `systemd-analyze verify` on each unit and check
     `/proc/mounts` on your own image before trusting the layout.
 
+## How It Actually Works
+
+**A read-only mount is enforced by the VFS at the superblock level, not
+by convention.** Mounting with `-o ro` sets `MS_RDONLY` on the
+`struct super_block`; every write path in the VFS (`vfs_write`,
+`notify_change` for `chmod`/`utimes`, `vfs_unlink`, ...) checks that flag
+via `__mnt_is_readonly()`/`sb_permission` before doing anything else, and
+returns `EROFS` if it's set — this rejection happens before the
+underlying filesystem driver (ext4, squashfs) is even consulted, which
+is why a read-only mount is a hard, kernel-enforced property, not
+something an application can talk its way around by opening the block
+device directly (though a root process with `CAP_SYS_ADMIN` bypassing the
+mountpoint entirely still can, which is the actual attack surface
+"read-only rootfs" hardening is defending).
+
+**The `/etc` overlay's copy-up cost is what makes tmpfs-backed upperdirs
+the standard pattern.** As covered in filesystem layering, the first
+write to any file under an overlay copies the *whole file* to
+`upperdir` before applying the change. Putting `upperdir` on `tmpfs`
+means that copy-up (and every subsequent config edit) happens purely in
+RAM with zero flash wear and zero write latency — and because tmpfs is
+backed by no persistent storage, an unclean power loss simply discards
+whatever was written since boot, restoring the pristine `lowerdir`
+config on next boot. That is the entire mechanism of "factory reset":
+there is no reset logic to run, it falls out for free from tmpfs being
+volatile.
+
+**Finding "what writes where" via `strace -f` across a full boot works
+because every write syscall names its target path explicitly.** Tracing
+`open()`/`openat()` calls with `O_WRONLY`/`O_RDWR`/`O_CREAT` flags across
+the whole boot sequence (or grepping `/proc/self/mountinfo` write
+patterns, or using `fatrace`'s `fanotify`-based whole-system watch)
+surfaces every process that assumed a writable `/var`, `/etc`, or
+`/tmp` — because Linux has no other channel for a process to persist
+state; it has to go through one of those syscalls, so this simple
+instrumentation is exhaustive by construction, not a best-effort
+heuristic.
+
 ## Exercise
 
 (1) Convert your QEMU image to a read-only root: change the kernel cmdline

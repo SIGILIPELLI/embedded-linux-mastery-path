@@ -220,6 +220,45 @@ CVSS score alone.
     no fuzzing campaign was run, and no CVE scan was executed on this
     machine.
 
+## How It Actually Works
+
+**Attack surface reduction works because every installed binary is a
+potential entry point regardless of whether it's ever invoked.** A
+setuid shell, an unused package manager, or a full BusyBox applet set
+each represents code that will execute with real privilege the moment
+*any* path reaches it — a misconfigured cron job, an injected command
+from a compromised network service, a symlink attack — so stripping them
+from the image isn't about disk space, it's about shrinking the set of
+things a post-exploitation attacker can pivot through once they have
+*any* code execution at all, which is a different (and earlier) line of
+defense than the network/permission hardening covered next.
+
+**Kernel hardening options like `CONFIG_STACKPROTECTOR_STRONG` and KASLR
+work by making a specific exploitation *primitive* unreliable, not by
+detecting the bug.** Stack-protector inserts a random canary value
+between local variables and the saved return address in every function
+prologue/epilogue the compiler judges at risk, and checks it before
+returning — a stack buffer overflow that overwrites the return address
+almost certainly also overwrites the canary, so the corrupted return
+never executes; the process is killed instead. KASLR randomizes the
+kernel's load address per boot so a hardcoded ROP-gadget address baked
+into an exploit written against one boot's layout simply misses on the
+next. Neither option fixes the underlying bug — they raise the cost of
+turning that bug into working code execution, which is the entire
+practical value of "hardening" as a category distinct from "fixing bugs."
+
+**Capability dropping narrows root itself, because `CAP_*` bits are
+what root's privilege actually decomposes into at the kernel-check
+level.** Every privileged operation the kernel gates (`CAP_NET_BIND_
+SERVICE` for ports <1024, `CAP_SYS_ADMIN` for mount, `CAP_NET_RAW` for
+raw sockets) is checked against the *calling process's* capability set,
+not a monolithic "is this UID 0" test — a service that
+`setcap`/`capsh --drop`s everything except the one capability it needs
+(binding port 443, say) still runs as an unprivileged process for every
+other kernel check, so a code-execution bug in it can't pivot to
+mounting filesystems or loading kernel modules even though the process
+"is root" in the traditional UID sense.
+
 ## Exercise
 
 (1) Starting from the `ss -tulnp` output above, write the specific

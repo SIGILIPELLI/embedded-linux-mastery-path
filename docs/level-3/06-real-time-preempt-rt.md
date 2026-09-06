@@ -160,6 +160,34 @@ faults don't add latency to the measurement itself.
     above is representative formatting, not a real measurement — no RT
     kernel was booted or measured on this machine.
 
+## How It Actually Works
+
+**PREEMPT_RT's core trick is converting spinlocks into sleepable,
+priority-inheriting mutexes.** Mainline spinlocks disable preemption
+(and, for `_irqsave` variants, interrupts) for their entire critical
+section — fine when sections are microseconds long, catastrophic for
+real-time when a low-priority task holds one and a high-priority task is
+waiting, because the high-priority task simply cannot run on that CPU
+until the lock is dropped, regardless of priority. RT's `rt_mutex`-backed
+`spinlock_t` replacement makes nearly every spinlock in the kernel
+*sleepable* and priority-inheriting: a task blocked on one temporarily
+boosts the lock holder's priority to its own, so the holder is scheduled
+promptly and the wait is bounded — the classic priority-inversion fix,
+applied kernel-wide rather than just to userspace mutexes.
+
+**Interrupt handling becomes threaded almost everywhere under RT, which
+is what actually bounds latency.** Mainline runs most hard-IRQ handlers
+directly in interrupt context; RT forces nearly all of them through the
+`IRQF_TIMER`/threaded-IRQ path covered earlier, so what runs in true
+non-preemptible interrupt context shrinks to a handful of cycles, and
+the real work happens in SCHED_FIFO kernel threads that the scheduler can
+preempt on priority just like any other task. `cyclictest`'s measured
+latency number is, mechanically, "time from hardware timer IRQ to the
+moment the scheduler actually resumes the waiting SCHED_FIFO test
+thread" — and every one of PREEMPT_RT's changes exists to shrink and
+bound the handful of remaining non-preemptible windows between those two
+events.
+
 ## Exercise
 
 (1) Write the `pthread_mutexattr_setprotocol(PTHREAD_PRIO_INHERIT)` setup

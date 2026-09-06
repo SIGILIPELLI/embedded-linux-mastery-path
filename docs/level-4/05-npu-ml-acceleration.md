@@ -168,6 +168,40 @@ here to model quality metrics instead of boot success.
     actually trained, quantized, or run against real or emulated NPU
     hardware from this machine — output shown is illustrative.
 
+## How It Actually Works
+
+**Quantization changes the actual arithmetic the NPU executes, not just
+the file size.** Most embedded NPUs implement fast fixed-function paths
+only for INT8 (sometimes INT16) MAC (multiply-accumulate) operations —
+their silicon-level datapath literally doesn't contain an FP32 ALU wide
+enough to run at full throughput. Post-training quantization computes,
+per tensor (or per-channel for weights), a scale and zero-point that
+maps the observed float range onto the INT8 range, then rewrites every
+weight and (via a calibration pass over sample inputs) every activation's
+expected range into that fixed-point representation — inference then
+runs as genuine integer multiply-accumulate against those quantized
+values, with the NPU's compiler re-inserting scale corrections only at
+tensor boundaries. This is exactly why a model can "quantize" cleanly on
+paper but silently fall back to CPU: if a layer's operator isn't in the
+NPU compiler's supported INT8 op set (a fused activation the compiler
+doesn't recognize, a reshape at an unsupported axis), that layer is
+excluded from the fused NPU graph and executed on CPU instead — checkable
+only by actually inspecting the compiler's per-layer placement report,
+not by looking at the quantized file.
+
+**"What actually landed on the NPU" is answerable because the vendor
+compiler emits a real placement decision, not a guess.** Tools like
+`eIQ`'s graph analyzer or the NPU vendor's delegate/compiler
+(`vx_delegate`, `NNAPI` delegate, TensorRT's engine build log) partition
+the model graph into subgraphs at compile time and record, per node,
+which backend executes it — the same static-analysis step a JIT compiler
+does when deciding which code path to specialize, applied to a neural
+net graph instead of bytecode. A model that "should" run entirely on the
+NPU but silently falls back for one unsupported op still returns correct
+results, just an order of magnitude slower on that op, since every
+fallback also pays a data-copy round trip between NPU-accessible memory
+and normal system RAM.
+
 ## Exercise
 
 (1) Given a delegate placement log showing 40 NPU-resident ops and 2

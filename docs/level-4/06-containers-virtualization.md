@@ -167,6 +167,48 @@ rebalanceable) resource partitioning decided ahead of time.
     kernel cgroup, OCI runtime, and Jailhouse conventions; no container
     was actually run and no hypervisor cell was created on this machine.
 
+## How It Actually Works
+
+**A container is namespaces plus cgroups plus a root filesystem change
+— there is no "container" object in the kernel at all.** `unshare()`/
+`clone()` with `CLONE_NEWPID|CLONE_NEWNET|CLONE_NEWNS|...` gives the new
+process its own view of process IDs, network interfaces, and mount
+table (via a `pivot_root`/`chroot`-equivalent into the image's
+extracted rootfs), while a cgroup (covered next) bounds its resource
+consumption — Docker, `runc`, `containerd` are all just orchestration
+layers that call these same syscalls in the right order with the right
+flags. This is exactly why containers share the *host kernel* — there is
+no second kernel involved, which is both what makes them lightweight and
+exactly the isolation boundary attackers target (a kernel exploit escapes
+every namespace at once, because the namespaces are a view into one
+kernel's data structures, not separate kernels).
+
+**cgroups v2's unified hierarchy enforces limits by hooking the
+scheduler and memory allocator directly, and its embedded ceiling is
+real page-table/accounting overhead, not policy.** A `memory.max` write
+installs a limit the kernel's page-fault/allocation path checks on every
+charge to that cgroup's counter, triggering reclaim or OOM-killing a
+process in that cgroup specifically when exceeded; `cpu.max` similarly
+throttles via the CFS bandwidth controller, injecting scheduling
+deadlines rather than just lowering nice value. On a board with 256 MB
+–1 GB RAM, the *bookkeeping* structures cgroups themselves require (per-
+cgroup page counters, memcg shrinker lists) become a non-trivial fraction
+of available memory — which is the concrete, measurable reason "just use
+Docker as-is" breaks down on small boards well before you hit the
+resource limits you actually meant to enforce.
+
+**Device passthrough works because a device node is just a major/minor
+pair the namespace's device cgroup either allows or denies —
+`--privileged` is a blunt instrument, not a real solution.** Bind-
+mounting `/dev/i2c-1` into a container's mount namespace and adding an
+explicit `devices.allow` entry for that major/minor gives the container
+process exactly one device, with the kernel's device-cgroup access
+controller enforcing it on every `open()` — `--privileged` instead
+disables that controller and every namespace restriction on devices at
+once, which is why it "just works" for whatever hardware access you
+needed and simultaneously defeats the entire isolation model for
+everything else.
+
 ## Exercise
 
 (1) Write the systemd unit for a containerized camera-preprocessing

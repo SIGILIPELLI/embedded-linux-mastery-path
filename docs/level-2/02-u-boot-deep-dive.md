@@ -250,6 +250,54 @@ Do that once and every command above stops being theory.
 | `boot_targets` | Distro-boot device search order |
 | `bdinfo` / `version` / `help <cmd>` | Board info / build info / per-command help |
 
+## How It Actually Works
+
+**SPL is a separate, tinier U-Boot.** On most modern SoCs, boot ROM
+(fixed in silicon) can only read a few KB from the first flash/MMC
+sector, so it loads the *Secondary Program Loader* — a stripped U-Boot
+build (`u-boot-spl.bin`, often under 64 KB, no environment, no shell, no
+network stack) whose only job is to bring up DRAM (via a hand-tuned DDR
+timing blob) and load the *real* U-Boot proper (`u-boot.bin` /
+`u-boot.itb`) from flash into that now-available DRAM. This is why a bad
+DDR config bricks a board at a stage you can't even get serial output
+for — SPL runs from SRAM before DRAM controller init succeeds, and a
+timing mistake there hangs before U-Boot's console driver is even alive.
+
+**The environment is a CRC-checked block, not a text file.** `saveenv`
+serializes every `name=value` pair from U-Boot's in-memory hash table
+into a fixed-size flash/MMC sector, prefixed with a CRC32 and (if
+`CONFIG_ENV_ADDR_REDUND` is set) written to two alternating slots so a
+power-loss mid-write leaves one valid copy. On boot, U-Boot reads that
+sector, checks the CRC, and falls back to the compiled-in
+`CONFIG_EXTRA_ENV_SETTINGS` default only if the check fails — which is
+exactly why `env default -a; saveenv` is the fix for a corrupted
+environment, and why editing `bootcmd` in RAM with `setenv` has zero
+effect on the next cold boot unless you `saveenv`.
+
+**Distro boot is `bootcmd` running a variable-expansion program, not a
+config file U-Boot "reads."** `distro_bootcmd` iterates
+`BOOT_TARGETS`, and for each target expands `bootcmd_<target>` — itself
+built from a template like `boot_scr_data` — which runs the *hush*
+shell's variable substitution recursively: `${devtype}`, `${devnum}`,
+`${distro_bootpart}` all get textually substituted before the resulting
+string is executed as commands. `extlinux.conf` parsing
+(`sysboot`/`pxe boot`) walks the FAT/ext partition looking for
+`/boot/extlinux/extlinux.conf`, then issues the same `load`/`fdt
+addr`/`booti` primitives you used by hand — distro boot is a convention
+implemented entirely in boot-script text, not a separate boot mode
+compiled into U-Boot.
+
+**FDT relocation happens twice.** The kernel's `Image`/`zImage` is loaded
+to one address and the DTB to another (`fdt addr 0x83000000`), but
+`booti`/`bootz` first calls U-Boot's own `fdt_check_header` +
+`fdt_open_into` to grow the tree in-place and patch in `/chosen` (kernel
+command line, initrd location) and memory nodes from `bdinfo` — then the
+kernel, once running, does its *own* `unflatten_device_tree()` pass to
+turn that patched blob into the live kernel object tree. If `fdt addr`
+points at the wrong blob (say, one for a different board revision) both
+passes "succeed" against garbage, which is the classic silent-hang-after-
+"Starting kernel..." symptom.
+
 ## Exercise
 
 (1) Build U-Boot with `qemu_arm64_defconfig` and run it under

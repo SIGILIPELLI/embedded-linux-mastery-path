@@ -187,6 +187,31 @@ hangs.
 | `poweroff` (in guest) | Clean shutdown |
 | `/dev/ttyAMA0` | The PL011 serial UART — your console device |
 
+## How It Actually Works
+
+QEMU's `virt` machine is not "a fake ARM board" in the sense of imitating a
+specific SoC — it's a **synthetic platform** invented purely so the kernel
+has something regular to describe, generated fresh from QEMU's internal
+device model each run as a device tree blob and handed to the guest kernel
+exactly the way a real bootloader would. That's why `-machine virt` boots
+generic kernels with no board-specific patches: there's no real silicon
+underneath to disagree with the description.
+
+Under the hood, QEMU runs your guest one of two fundamentally different
+ways depending on host/target match. On matching-architecture hosts (an
+Apple Silicon Mac running an AArch64 guest) it uses **KVM/HVF hardware
+virtualization** — guest instructions execute directly on the host CPU with
+the hypervisor only trapping privileged operations, which is why this feels
+fast. On a mismatched pair (x86 host, ARM guest) QEMU falls back to
+**TCG** (Tiny Code Generator) — it translates each block of guest
+instructions into host instructions in software, caches the translation,
+and executes that; this is why cross-architecture emulation is measurably
+slower and why `-cpu max` matters: TCG has to know exactly which ARM
+instructions to emit code for. The serial console you interact with is
+itself emulated hardware (a PL011 UART on `virt`) wired to your terminal's
+stdio — the same UART driver your kernel would use to talk to a real
+16550-class chip on physical silicon.
+
 ## Exercise
 
 Boot the guest three more times, changing one thing each time, and write

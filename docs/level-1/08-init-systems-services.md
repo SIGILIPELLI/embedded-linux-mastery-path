@@ -175,6 +175,29 @@ aggressively, or forward logs off-device (Level 4's fleet management).
 | `Storage=volatile` / tmpfs `/var/log` | Spare the flash |
 | `ps -p 1 -o comm=` | Identify the init system you're on |
 
+## How It Actually Works
+
+BusyBox `init` is genuinely a straight-line interpreter: it reads
+`/etc/inittab` once at startup, and for every line marked `respawn` it
+`fork()`s a child, `exec()`s the given command, and blocks in a `wait()`
+loop; when that child dies for any reason, `wait()` returns and init
+immediately forks a fresh one. There's no dependency graph — order is
+whatever order the lines appear in the file, which is exactly why BusyBox
+init is fine for one appliance daemon and unworkable once two services need
+"B must not start until A's socket exists."
+
+systemd solves that ordering problem by *not* being a straight-line
+interpreter at all — at startup it parses every unit file into an in-memory
+dependency graph (`Requires=`/`After=`/`Wants=` become graph edges), computes
+a valid transaction order via topological sort, and then activates units
+in parallel wherever the graph allows — which is *why* systemd boots faster
+than sequential init despite doing more bookkeeping. Each unit's process is
+also placed into its own **cgroup**, so systemd learns a service crashed
+via the kernel's `SIGCHLD`/cgroup-empty notification, not by polling — the
+same mechanism module 9 covers for restart policy. journald's binary log
+format exists specifically to support O(1) structured lookups and
+deterministic size capping — a growing-string syslog file has neither.
+
 ## Exercise
 
 (1) In the guest, extend `sensord-lite` to write a *pid file*

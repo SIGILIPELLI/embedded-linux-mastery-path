@@ -129,6 +129,28 @@ uses.
 | RISC-V | Open, license-free ISA; same embedded concepts apply |
 | `uname -m`, `/proc/cpuinfo` | Identify ISA and core from a running system |
 
+## How It Actually Works
+
+An ISA is a *contract*, not an implementation: it fixes the instruction
+encoding, register set, and memory model that software is compiled against,
+while the microarchitecture underneath — pipeline depth, branch predictor,
+cache hierarchy, out-of-order execution window — is free to change every
+silicon generation without breaking a single compiled binary. This is why
+your `armv8-a` cross-compiler output from module 6 runs unmodified on a
+Cortex-A53 and a Cortex-A78: same ISA (AArch64/ARMv8-A), wildly different
+microarchitectures underneath.
+
+The three ARM profiles differ in *what hardware the ISA guarantees exists*.
+Cortex-A mandates an MMU and (usually) a cache hierarchy tuned for running
+an OS with many processes. Cortex-R drops the MMU for a simpler MPU and adds
+lockstep execution and tightly-coupled, deterministic-latency memory —
+because a brake controller cares about worst-case cycle count, not average
+throughput. Cortex-M strips further to a fixed low-latency interrupt
+controller (NVIC) and no cache at all on the smallest parts, trading
+performance for microsecond-predictable, sub-milliwatt operation. Reading a
+spec sheet is really asking "which of these three hardware guarantees does
+this core give me" before asking about clock speed.
+
 ## Exercise
 
 Do a spec-sheet teardown of **two** chips using the five-row method above

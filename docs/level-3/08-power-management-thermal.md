@@ -224,6 +224,38 @@ enclosure thermal design, with zero software change.
     `dev_pm_ops` contract but was not compiled or exercised through an
     actual suspend/resume cycle on real hardware from this machine.
 
+## How It Actually Works
+
+**cpufreq and cpuidle are two independent decision loops with different
+knobs, one for "how fast" and one for "how off."** cpufreq's governor
+(`schedutil` on modern kernels) is fed CPU utilization directly from the
+scheduler's per-run-queue load tracking and, on that signal, requests a
+new OPM (operating performance point — a paired voltage/frequency step
+from the SoC's `opp-table` DT node) from the platform's `clk`/regulator
+drivers, which reprogram the PLL and voltage regulator through whatever
+SoC-specific PMIC I2C/SPI protocol is involved — a real, non-trivial
+hardware transaction, which is why frequency transitions have measurable
+latency and governors hysteresis-dampen how often they'll trigger one.
+cpuidle instead runs when the scheduler finds *nothing* runnable on a
+CPU, and picks among idle states (`WFI`, clock-gated, power-gated) whose
+`exit_latency`/`target_residency` values (again from DT) are used to
+predict whether the next wake will happen soon enough that a deep,
+slow-to-exit state isn't worth entering — two separate governors,
+reacting to load and idleness respectively, that only interact indirectly
+through the same CPU.
+
+**Thermal throttling is a userspace-invisible feedback loop closed
+entirely in-kernel.** A `thermal_zone`'s polling (or interrupt-driven, on
+SoCs with a real thermal-sensor IRQ) temperature reads are compared
+against `trip_point` thresholds from DT; crossing one invokes a bound
+*cooling device* — typically the same cpufreq framework, capped via
+`freq_qos_add_request` to a ceiling below what the governor would
+otherwise pick — so the CPU can visibly stay "at" a frequency the
+governor never asked for. This is why a thermally-throttled board shows
+utilization pegged at 100% while frequency stays pinned low: the
+scheduler's utilization signal and the QoS-capped frequency ceiling are
+computed independently, and the cap simply wins.
+
 ## Exercise
 
 (1) Add `suspend`/`resume` callbacks to Module 2's `mydev` platform driver

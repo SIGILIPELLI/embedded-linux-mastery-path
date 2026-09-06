@@ -199,6 +199,35 @@ error pointing at the real cause.
     dtc behavior; the U-Boot and configfs command sequences were reviewed
     for correctness but not executed on real hardware or QEMU here.
 
+## How It Actually Works
+
+**An overlay is a second, smaller FDT blob applied by *tree-merge*
+semantics, not textual patching.** A compiled `.dtbo` is itself a valid
+FDT with `/fragment@N` nodes, each carrying a `target`/`target-path`
+property and an `__overlay__` subnode. `fdtoverlay` (or the kernel's
+in-tree `of_overlay_apply` for runtime application) walks each fragment,
+resolves the target against the base tree's phandles/paths, and does a
+*node-level* merge: new properties are added, same-named properties are
+replaced wholesale, and new child nodes are grafted in — there is no
+line-based diffing anywhere in this pipeline, which is why two overlays
+touching the same target node but different properties compose cleanly,
+while two overlays setting the *same* property produce a last-applied-
+wins outcome with no conflict warning.
+
+**Phandle resolution is why overlays need a `symbols` metadata pass at
+all.** The base DTB's phandles are just small integers assigned at
+compile time; an overlay compiled independently has no way to know what
+integer the base tree assigned to, say, `&i2c1`. `dtc`'s `-@` flag emits
+a `__symbols__` node listing every labeled node's path, and the overlay
+compiler emits `__fixups__` describing which of its own properties (like
+an `interrupt-parent` reference) need which named symbol patched in at
+apply time — `fdtoverlay`/`of_overlay_apply` reads both tables and
+rewrites the overlay's raw phandle integers to match the *actual*
+values found in the live base tree before merging. Skip `-@` on either
+side and the reference silently resolves to phandle 0, which is the
+single most common "overlay applied with no error, device didn't show
+up" bug in this whole area.
+
 ## Exercise
 
 (1) Write a base tree with an unpopulated `spi1` node and an overlay that

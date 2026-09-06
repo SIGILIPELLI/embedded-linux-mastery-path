@@ -160,6 +160,47 @@ processes.
     compliance program should involve counsel, and no license scan was
     actually run on this machine.
 
+## How It Actually Works
+
+**GPLv2's "distribution" trigger is a legal event tied to what leaves
+your premises, and the kernel's own build mechanics are what make
+"corresponding source" a precise, checkable artifact.** GPLv2 §3
+requires that anyone you convey the binary to also receive (or be
+offered, in writing, for at least three years) the exact source
+corresponding to that binary — which for a Yocto/Buildroot build means
+the specific recipe/patch set and `.config` that produced the shipped
+`zImage`/modules, not "the kernel.org tree" in general, because the
+kernel's own Kconfig-driven build (module 3) means two different
+`.config`s from identical source produce meaningfully different
+binaries. This is precisely why reproducible builds (module 1) and
+license compliance intersect in practice: proving "this is the exact
+source for this exact binary" is a build-reproducibility claim as much as
+a legal one.
+
+**License scanning tools work by matching license text/SPDX identifiers
+against every source file BitBake actually pulled in, not by inspecting
+your own code.** Tools like `oe-core`'s `LICENSE`/`LIC_FILES_CHKSUM`
+mechanism checksum each recipe's declared license file at parse time and
+fail the build if it changes unexpectedly (catching an upstream license
+change silently flowing into your product), while broader scanners
+(FOSSology-style) walk the fetched source tree file-by-file, pattern-
+matching against a known corpus of license texts to catch code that
+carries a *different* license than its containing package declares —
+which happens more often than expected, since a single upstream tarball
+can bundle vendored code under a different license than the project's
+own top-level `LICENSE` file states.
+
+**An SBOM is a machine-readable dependency graph the same package-
+manager metadata Yocto already tracks internally can generate almost for
+free.** `create-spdx`/similar Yocto classes walk the same
+`RDEPENDS`/`DEPENDS` graph BitBake's task scheduler already built to
+order the build (module 1's dependency DAG, again) and emit it as an
+SPDX or CycloneDX document — package name, version, license, and hash
+per component — because that dependency graph already *is* a complete
+bill of materials; the SBOM tooling's job is serializing existing build
+metadata into a standard auditor-readable format, not independently
+re-discovering what's in the image.
+
 ## Exercise
 
 (1) Write the written GPL source-offer text your product would ship

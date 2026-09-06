@@ -198,6 +198,49 @@ rootfs image download every release is a real cost.
     Level 4's secure-boot module; no update bundle was built, signed, or
     installed against real or emulated hardware from this machine.
 
+## How It Actually Works
+
+**A/B works because the bootloader — not the running OS — decides which
+copy to try next, closing the window where an update can brick a
+device.** Both `rootfsA` and `rootfsB` are full, independently bootable
+partitions; U-Boot's environment holds which slot is "active" plus a
+boot-attempt counter. Applying an update means writing the *inactive*
+slot in full while the active one keeps running the device normally, then
+flipping the U-Boot env pointer — a single small environment write,
+not a partition-sized one, so the actual "commit" step is effectively
+atomic even against power loss (worst case: the env write itself is
+torn, and the redundant-env CRC scheme from module 2 makes U-Boot fall
+back to the previous, still-valid slot pointer).
+
+**The mark-good/boot-counter mechanism turns "atomic switch" into "safe
+switch" by requiring the new slot to prove itself before it's
+permanent.** U-Boot increments a boot-attempt counter in its environment
+before jumping to the newly-flipped slot; userspace (RAUC's or
+SWUpdate's own supervisor) must explicitly call a "mark good" action
+after confirming the new rootfs actually came up healthy — networking
+works, critical services started — which resets that counter. If the
+counter reaches a configured limit without a mark-good, U-Boot's
+`bootcmd` logic flips the active-slot pointer *back* on its own, with no
+network or userspace cooperation required, because the decision lives
+entirely in the boot environment the bootloader already controls. This
+is the actual rollback mechanism — it's a bootloader-side timeout, not a
+running-system self-check.
+
+**RAUC's bundle vs. SWUpdate's stream vs. OSTree's checkout are three
+different tradeoffs on the same problem: how much of the target must be
+staged before you know the update is good.** A RAUC/SWUpdate bundle is
+verified (signature over the whole thing) before any slot write begins,
+trading update-time disk usage for an all-or-nothing apply. SWUpdate's
+streaming mode instead verifies and writes concurrently in fixed chunks,
+trading some of that all-or-nothing guarantee for lower peak storage on
+memory-constrained devices. OSTree sidesteps slot-swapping entirely:
+it's a git-like content-addressed object store where an update is a
+new *commit* checked out via hardlinks into a fresh deployment
+directory and boot to a new bootloader entry — atomic because the
+final "switch" is one directory-rename-equivalent, but every file that
+didn't change is deduplicated by content hash rather than re-flashed at
+all.
+
 ## Exercise
 
 (1) Write the full boot-counter U-Boot environment sequence for a fresh

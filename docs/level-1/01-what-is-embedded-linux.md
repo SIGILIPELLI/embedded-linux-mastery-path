@@ -130,6 +130,30 @@ you a custom Linux distribution.*
 | Buildroot / Yocto | Build systems that produce complete images from source |
 | Heterogeneous SoC | Chip mixing core types, e.g. i.MX95's Cortex-A55 (Linux) + Cortex-M7 (real-time) |
 
+## How It Actually Works
+
+The MCU/MPU split isn't a marketing category — it's a memory-management fact.
+An MPU (Cortex-A) has an **MMU**: a hardware page-table walker that gives
+every process its own virtual address space, enforces user/kernel privilege
+separation, and lets the kernel demand-page and swap. Linux's process model
+*requires* this — `fork()`, `exec()`, and memory protection between processes
+don't exist without it. An MCU (Cortex-M) has, at best, an **MPU**
+(Memory Protection Unit — a much smaller cousin that just fences off address
+ranges) and executes everything in one flat physical address space. That's
+why RTOSes like FreeRTOS or Zephyr run on Cortex-M and Linux cannot: Linux's
+kernel itself assumes it can remap virtual-to-physical mappings per process,
+something a flat-address MCU has no hardware for.
+
+The software stack you saw (bootloader → kernel → rootfs → application) is
+also a sequence of privilege handoffs, not just a checklist. Each stage runs
+in a *less* trusted, *more* general-purpose context than the last: the boot
+ROM trusts nothing and can only run signed/fixed code; U-Boot trusts the
+media it reads from; the kernel trusts its own compiled-in drivers and
+whatever device tree it's handed; and your application trusts the kernel's
+syscall contract while having zero direct hardware access itself. Every
+later module in this course is really an elaboration of one link in that
+chain.
+
 ## Exercise
 
 Pick two devices you own that you suspect run Linux (router, TV, camera, car

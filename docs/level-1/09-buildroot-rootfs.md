@@ -149,6 +149,33 @@ included) or maintaining a product line.**
 | `-kernel` / `-drive ...virtio-blk...` (QEMU) | Boot your own kernel + disk instead of an ISO |
 | Buildroot vs Yocto | Single fixed image vs layered, multi-product distro builder |
 
+## How It Actually Works
+
+`make menuconfig`'s output — `.config` — isn't consumed directly by the
+build; Buildroot treats it as the input to a dependency graph built from
+every package's `.mk` file. Each package declares
+`<PKG>_DEPENDENCIES`, and Buildroot's top-level `Makefile` topologically
+sorts the whole set before building anything, so enabling `openssl` doesn't
+just add one package, it silently pulls in `zlib`, rebuilds `host-openssl`
+first (a *host* copy, used only so target `openssl`'s build scripts can run
+tools like its own code generator), and only then cross-compiles the
+target copy against your toolchain. This host/target package duplication
+is why Buildroot's `output/host/` and `output/target/` trees both exist.
+
+The three-stage pipeline (toolchain → kernel → rootfs) is a strict
+dependency order, not just a menu layout: the kernel build needs the
+cross-toolchain's headers to compile against, and the rootfs's C library
+must be the *exact* one the toolchain was built with — mixing a glibc
+toolchain with a musl rootfs produces binaries the target's dynamic linker
+can't load, because glibc and musl disagree on internal ABI details
+(`errno` handling, `dlopen` behavior). The final image assembly step walks
+`TARGET_DIR`, applies your permission table (`/etc/device_table` or the
+newer `S_IFCHR` syntax) to fix up device nodes and ownership that can't
+survive being built as a non-root user, then hands the tree to `genext2fs`
+or `mksquashfs` to produce the actual boot image — the point where a
+missing file in `TARGET_DIR` becomes a missing file in the booted system,
+with no build error in between.
+
 ## Exercise
 
 (1) Add `nano` and `htop` to Target packages, rebuild (`make -j$(nproc)` —

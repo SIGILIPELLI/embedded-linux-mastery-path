@@ -188,6 +188,45 @@ most commonly goes wrong on a new board port.
     ARM TrustZone SMC model; no TA was built, signed, or invoked against
     real or emulated Secure World hardware from this machine.
 
+## How It Actually Works
+
+**The two worlds are a hardware-enforced CPU mode, not a software
+sandbox.** ARM TrustZone adds an extra bit — the NS (Non-Secure) bit —
+to the CPU's exception state, and the bus/memory-controller fabric
+itself (TZASC for DRAM, TZPC for peripherals) is configured to reject
+Non-Secure-mode accesses to memory ranges and peripheral registers
+tagged Secure, at the hardware level, before the request even reaches
+the memory controller's arbitration logic. This is why a compromised
+Linux kernel — full root, arbitrary kernel code execution — still cannot
+read OP-TEE's Trusted Application memory or the keys it holds: the
+isolation is enforced by silicon the kernel has no instruction that can
+reach across, not by a permission check any sufficiently privileged
+software could bypass.
+
+**Crossing world boundaries happens through exactly one instruction:
+`SMC` (Secure Monitor Call).** A Client Application's call into a
+Trusted Application doesn't jump directly into secure memory — the
+Linux `optee` driver issues an `SMC`, which traps into the Secure
+Monitor (running at the highest privilege level, EL3), which saves
+Non-Secure world CPU state, switches the NS bit, restores Secure world
+state, and hands control to OP-TEE's own scheduler running the target
+TA. Every single request/response, no matter how small, pays this full
+context-switch cost — which is precisely why TA APIs are designed
+around coarse-grained calls (a whole crypto operation per exchange) and
+never fine-grained chatty ones.
+
+**`tee-supplicant` exists because a Trusted Application has no direct
+access to Linux resources at all.** TAs run in the secure world with a
+minimal in-house OS (OP-TEE OS) — no filesystem driver, no network stack,
+no ordinary Linux syscalls. When a TA needs to persist encrypted state to
+disk (secure storage) it issues an RPC *back out* to the Normal World,
+which `tee-supplicant` (an ordinary Linux userspace daemon) receives,
+performs the actual `open()`/`write()` against a normal Linux file on
+behalf of the TA, and returns the result back across the SMC boundary —
+which is why a missing or crashed `tee-supplicant` makes TAs that use
+secure storage fail in ways that look like a storage bug but are really
+a missing IPC peer.
+
 ## Exercise
 
 (1) Sketch (client + TA pseudocode, following the pattern above) a "PIN

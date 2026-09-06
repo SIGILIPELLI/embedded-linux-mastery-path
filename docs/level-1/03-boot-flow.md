@@ -136,6 +136,37 @@ reason BSPs exist.
 | init / PID 1 | First process; parents everything; prints `login:` via getty |
 | UEFI + ACPI | The x86 equivalents of (SPL+U-Boot) + device tree |
 
+## How It Actually Works
+
+What actually happens *inside* each handoff is a set of concrete
+memory-and-register events, not an abstract "loads and jumps":
+
+- **ROM → SPL**: the ROM computes a checksum (or, on secure-boot parts,
+  verifies a signature) over the image it finds at the fixed offset its
+  fuses point to, copies it byte-for-byte into on-chip SRAM at a fixed
+  address, and does a bare `branch` to that address — there is no return.
+  If the checksum fails, the ROM falls through its list of boot devices in
+  fuse-defined order, which is why swapping an SD card for eMMC can silently
+  "fix" a boot: it changes which media the ROM tries next.
+- **SPL's DDR init** isn't generic — it writes dozens of registers in the
+  DDR PHY and controller (drive strength, ODT, CAS latency, refresh timing)
+  using values captured by running the vendor's DDR training tool against
+  your exact RAM part and PCB trace lengths. Get one timing wrong and you
+  don't get a crash, you get intermittent bit-flips under thermal load
+  months into production — which is why this table is board-BSP-owned and
+  never hand-edited.
+- **On ARMv8 boards** there's a hidden actor between SPL and U-Boot: ARM
+  Trusted Firmware (ATF/TF-A) drops the CPU from EL3 (secure monitor) to
+  EL2, installs the **PSCI** (Power State Coordination Interface) handler
+  that the kernel later calls to bring up secondary cores and handle
+  suspend/reset, then hands off to U-Boot at a lower exception level. This
+  is why a kernel panic sometimes still lets you power-cycle cleanly —
+  PSCI's reset path lives below Linux entirely.
+- **U-Boot → kernel** is a documented ABI, not a jump into the unknown: U-Boot
+  places the DTB address in register `x0` (AArch64) and the kernel's own
+  first instructions relocate themselves, decompress if needed, and only
+  then set up the MMU and jump to `start_kernel()` in C.
+
 ## Exercise
 
 From a running Linux system (your PC, or the QEMU guest you'll boot in

@@ -157,6 +157,28 @@ production layouts (Level 2 goes deep on this).
 | `/sys/firmware/devicetree/base/` | The live device tree (ARM) |
 | `mount`, `df -h` | What's mounted, from where, ro or rw |
 
+## How It Actually Works
+
+BusyBox's "one binary, 300 commands" trick is `argv[0]` dispatch, not magic.
+The single ELF has one `main()` that reads `argv[0]` (or, for symlinked
+invocation, resolves the symlink name it was called through), does a table
+lookup against a compiled-in applet table, and jumps straight into that
+applet's function — `ls`, `mount`, `ps` are all just entries mapping a
+string to a function pointer inside the same address space. `/bin/ls` on a
+BusyBox system is a **symlink** to `/bin/busybox`; there is no separate
+`ls` executable to load, which is exactly why the binary is small and why
+`ps` output shows every applet as `busybox` in some listings.
+
+`/proc` and `/sys` are not files backed by storage — they're **synthetic
+filesystems** generated on the fly, in the kernel, at `read()` time. Every
+`/proc/<pid>/status` read triggers a kernel function that walks that
+process's `task_struct` and formats live fields into text; nothing is
+cached to disk. `/sys` goes further: each file under `/sys/class/...`
+usually maps directly to a `sysfs_ops` `show()`/`store()` pair the driver
+registered — writing to a `/sys/.../brightness` file literally calls into
+driver code synchronously, which is why sysfs became the standard
+one-value-per-file API for kernel-to-userspace control on embedded systems.
+
 ## Exercise
 
 Inside the guest, answer each question **using only `/proc` and `/sys`

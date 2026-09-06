@@ -266,6 +266,46 @@ hand-testing a freshly built `.ko`.
     it. Budget one build cycle to confirm symbol names against *your* kernel
     version — symbols are added, renamed and retired between releases.
 
+## How It Actually Works
+
+**Kconfig is a constraint solver over a dependency DAG, not a flat list
+of switches.** Every `Kconfig` file's `config FOO` stanza declares
+`depends on`, `select`, and `default` edges; `make menuconfig`'s ncurses
+frontend and `make olddefconfig`'s batch mode both run the same
+`libkconfig` evaluator, which propagates those constraints — turning on
+`CONFIG_USB_GADGET` can silently force `CONFIG_USB_COMMON=y` via
+`select` even though you never touched it, and turning off a dependency
+can silently *drop* something you explicitly set (`.config`'s next
+`olddefconfig` pass removes an option whose `depends on` no longer
+holds). This propagation is why "hand-editing `.config`" is fragile —
+you're mutating one node in a graph, and only re-running the evaluator
+(`olddefconfig`) makes the file internally consistent again.
+
+**Fragments avoid full-file diffs because the merge tool replays them
+as if typed at the prompt.** `scripts/kconfig/merge_config.sh` doesn't
+line-merge text files — it starts from a base `.config` (or empty),
+concatenates each fragment's `CONFIG_X=y` lines onto it in order, then
+runs the Kconfig evaluator once over the result via `olddefconfig`. A
+later fragment's setting for the same symbol always wins, and any
+resulting inconsistency (setting something whose dependency is off) gets
+silently resolved by the evaluator rather than erroring — which is why
+`merge_config.sh -y` is worth diffing against your fragments afterward.
+
+**A module is a stripped-down, relocatable ELF object, and insertion is
+runtime linking.** `.ko` files are ET_REL ELF objects containing an
+`__versions` section (symbol CRCs when `CONFIG_MODVERSIONS=y`) and a
+`.modinfo` section (license, `vermagic` string encoding the exact kernel
+version/config it was built against). `insmod`/`modprobe` call the
+`init_module()`/`finit_module()` syscall, which the kernel's module
+loader uses to relocate the object against the *running* kernel's symbol
+table (`kallsyms`) — resolving `EXPORT_SYMBOL` references the same way a
+userspace dynamic linker resolves shared-library symbols, except the
+"shared library" is the live kernel image itself. A `vermagic` mismatch
+(module built against a different kernel `Makefile` version/config) is
+rejected right there, before any relocation happens — that's the
+mechanism behind "invalid module format," not a generic compatibility
+guess.
+
 ## Exercise
 
 (1) Starting from `arch/arm64/configs/defconfig`, write a fragment that

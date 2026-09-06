@@ -271,6 +271,35 @@ not removing the diagnostic.
     cannot build or run a Linux kernel module). Treat it as review-verified
     source to build and test on your QEMU/target setup, not as executed code.
 
+## How It Actually Works
+
+**A char driver's `file_operations` table is how the VFS turns a
+generic `read()` syscall into your code.** When userspace opens
+`/dev/yourdev`, the VFS resolves the inode, sees its `i_rdev` matches a
+registered `cdev`, and from then on every `read()`/`write()`/`ioctl()`
+on that `struct file` is dispatched by *pointer indirection* through the
+`file_operations` you registered with `cdev_init()` — the kernel never
+"knows" what your driver does, it just calls `fops->read(file, buf,
+count, &pos)` and trusts you to do the `copy_to_user()` correctly.
+That's why a driver bug here is different from a userspace bug: `buf` is
+a *userspace* pointer even though your code runs in kernel context, and
+touching it with a plain `memcpy` instead of `copy_to_user`/
+`copy_from_user` either silently corrupts kernel memory or oopses,
+because those helpers are what actually validate the address range
+against the calling process's page tables first.
+
+**Major/minor numbers are a routing key, not an identity.** `dev_t` packs
+a 12-bit major (selects which driver's `file_operations` the kernel
+dispatches to, via the `cdev_map`) and a 20-bit minor (passed to your
+driver as-is, to distinguish instances) into one integer. `mknod`/udev
+creating `/dev/yourdev` with major 240 doesn't involve your driver code
+at all — it's purely a kernel-wide lookup table (`chrdevs[]`) populated
+by `register_chrdev_region()`/`cdev_add()` at module load, which is why
+`insmod`'ing your module *before* the device node exists still lets you
+manually `mknod` it and have it work: the routing table and the
+filesystem node are two separate, independently-created things that only
+have to agree on the major/minor pair.
+
 ## Exercise
 
 (1) Extend `hello_chr` with the three ioctls shown above, build it against

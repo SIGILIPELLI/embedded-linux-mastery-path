@@ -187,6 +187,36 @@ an actually-saturated box on `top` alone).
     percentages, latency values) is illustrative, not captured from a
     real profiling run on this machine.
 
+## How It Actually Works
+
+**`perf`'s sampling profiler works by arming a hardware performance
+counter to raise an NMI/IRQ every N events, not by polling.** `perf
+record -e cycles` programs a PMU (Performance Monitoring Unit) counter
+register to overflow after a configured number of CPU cycles and fires
+an interrupt on overflow; the kernel's perf subsystem catches that
+interrupt, walks the current call stack (frame-pointer chain, or DWARF
+CFI unwinding if `--call-graph dwarf` was requested), and appends one
+sample record to a shared ring buffer that `perf record` drains to
+`perf.data`. Statistically, a function that costs 40% of runtime shows
+up in roughly 40% of samples — this is why perf's overhead stays low
+even at reasonably high sample rates (thousands/sec, not millions): it's
+piggybacking on hardware that was going to count those cycles anyway,
+paying only for the periodic interrupt-and-record cost, not for
+instrumenting every function call the way `-pg`/gprof does.
+
+**Why the same `sensord`-style workload profiles differently on the
+target than on your host.** The PMU event set and its exact cycle-
+counting semantics are architecture- and even core-specific (a Cortex-A53
+core's PMU exposes a different, smaller event list than your x86 dev
+box's), and cross-compiled binaries carry the debug info your unwinder
+needs but the *symbol resolution* still has to match the exact binary
+running on target — this is why `perf report` run on the host against a
+target-collected `perf.data` needs `--symfs` pointed at a copy of the
+target rootfs's shared libraries, or symbols silently resolve to raw
+addresses. The profiling data describes real target-hardware behavior;
+only the human-readable presentation step can happen back on your dev
+machine.
+
 ## Exercise
 
 (1) Using the `mydev_irq`/`mydev_irq_thread` split from Module 4, add a

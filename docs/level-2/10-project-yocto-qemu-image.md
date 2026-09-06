@@ -283,6 +283,34 @@ design working.
     and image sizes as representative rather than exact, and expect to
     adjust variable names on a different release branch.
 
+## How It Actually Works
+
+**Why a custom image recipe inherits `core-image` instead of listing
+files directly.** `IMAGE_INSTALL` in your `.bb` is just a package list;
+the actual filesystem assembly happens in `rootfs.py`'s `RootfsBase`
+class (invoked at `do_rootfs`), which resolves that list plus every
+transitive `RDEPENDS` through the same package-manager backend
+(`opkg`/`rpm`/`dpkg`, chosen by `PACKAGE_CLASSES`) that a real device
+would use for field updates — installing into a scratch root exactly the
+way `opkg install` would on a live system, then running post-install
+`pkg_postinst` scripts in a `pseudo`-wrapped fakeroot so `chown`/device
+nodes work without real root. `IMAGE_FSTYPES` then hands that finished
+tree to per-format generators (`mkfs.ext4`, `mksquashfs`) — the image
+recipe is a *manifest*, the real construction work happens in shared
+BitBake classes every image recipe reuses.
+
+**Why QEMU boots the exact same kernel/rootfs a board would.** `runqemu`
+doesn't emulate your target SoC's actual silicon — it boots a QEMU
+machine model (`qemu-system-arm -M virt`, or SoC-specific machine for
+some BSPs) using the *same* `Image`/`zImage` and `rootfs.ext4` BitBake
+just produced, with a device tree describing QEMU's virtual peripherals
+instead of your board's real ones. This is exactly why the same
+`core-image-minimal` artifact set can target both — the kernel and
+userland are architecture- and driver-generic; only the DTB (and
+occasionally a machine-specific kernel config fragment) changes between
+"boots under QEMU" and "boots on real hardware," which is the practical
+value of testing your Yocto build in QEMU before ever touching a board.
+
 ## Stretch goals
 
 1. **Make it one image.** Replace `ext4` in `IMAGE_FSTYPES` with `wic` and

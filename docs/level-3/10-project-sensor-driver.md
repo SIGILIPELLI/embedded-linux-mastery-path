@@ -228,6 +228,35 @@ IIO context has 1 devices:
     this machine. Treat it as a build-and-bring-up starting point, not
     tested firmware.
 
+## How It Actually Works
+
+**Why this driver's `probe()` fires from a DT node and not from your
+`insmod` command.** As in module 2, `of_platform_populate()` (run once
+during board init, or on overlay application) walks the live device tree
+and instantiates a `platform_device` for every compatible node; the
+platform bus then matches your driver's `of_match_table` against that
+device the moment *both* are registered, in whichever order that
+happens. This is precisely why the same compiled `.ko` works whether you
+`insmod` it before or after applying the overlay that adds the sensor's
+DT node — the match is level-triggered against current bus state, not a
+one-shot event you have to sequence correctly.
+
+**Why the failure-mode walkthrough (modules 4/8/9) actually exercises
+independent kernel subsystems, not one code path with different
+inputs.** An I2C NACK surfaces through the bus driver's transfer
+function returning `-ENXIO`/`-EIO` to your driver's regmap/i2c calls
+directly — no interrupt or concurrency machinery involved. A genuinely
+concurrent access race (two threads hitting `read()`/`ioctl()`
+simultaneously) only manifests if your locking (module 4's spinlock/
+mutex choice) is actually wrong, and only under real scheduling
+pressure. A read-only-rootfs sysfs-attribute persistence failure
+(module 8) is a VFS-level `EROFS`, unrelated to the driver's I2C code at
+all. Reproducing all three deliberately is the point: each is caught by
+different kernel instrumentation (`dmesg` I2C errors,
+`CONFIG_DEBUG_ATOMIC_SLEEP`/lockdep splats, and `EROFS` return codes,
+respectively), and a driver that only gets tested against the happy path
+never exercises any of them.
+
 ## Stretch goals
 
 - Add a second trigger source (a periodic hrtimer trigger) alongside the

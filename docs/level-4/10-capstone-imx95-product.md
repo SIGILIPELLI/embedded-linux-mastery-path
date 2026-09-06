@@ -187,6 +187,37 @@ match the failure modes you're actually trying to catch.
     machine. Treat it as the starting architecture to validate against
     your actual hardware and organizational constraints.
 
+## How It Actually Works
+
+**Why this design's chain of trust, A/B slots, and container boundary
+compose into one property instead of three separate ones.** Secure boot
+(module 2) only guarantees the *bootloader and kernel* haven't been
+tampered with at power-on; it says nothing about a vulnerability in the
+vision-pipeline container discovered after deployment. That's exactly
+the gap A/B OTA (module 3) closes — a compromised or buggy container
+image is entirely contained within the currently-active rootfs slot and
+can be replaced by flipping to a freshly-signed B slot without ever
+touching the boot chain's root of trust. And the container boundary
+(module 6) means a vulnerability *inside* the vision pipeline (a
+malformed camera frame triggering a buffer overflow, say) is scoped to
+that container's namespace and device-cgroup allowlist rather than
+having direct access to the OTA client, the secure-storage keys, or the
+fleet identity certificate — three independent modules, but each one is
+specifically what prevents a single compromise from cascading into the
+next layer.
+
+**Why the design review step matters mechanically, not just as
+documentation.** Each module's mechanism has a *specific* failure mode
+it defends against (HAB/AHAB: boot-chain tampering; dm-verity: at-rest
+rootfs tampering; A/B: bad-update bricking; device cgroups: hardware-
+access blast radius; SPDX/SBOM: undetected license/CVE exposure). A
+production design review that maps each threat to the exact module
+mechanism defending against it — rather than a generic "we did security"
+checklist — is what surfaces gaps: a fleet with signed boot and A/B OTA
+but no dm-verity, for instance, is still vulnerable to a rootfs modified
+in place between boots, because nothing in that combination re-checks
+disk contents after the initial verified boot completes.
+
 ## Stretch goals
 
 - Extend the health-check script to include a canary inference against a

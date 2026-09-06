@@ -327,6 +327,55 @@ persist, use `Storage=persistent` with `SystemMaxUse=32M` and put
     writing this page — run `systemd-analyze verify` yourself after copying
     them, since directive availability varies with systemd version.
 
+## How It Actually Works
+
+**Ordering (`After=`/`Before=`) and dependency (`Requires=`/`Wants=`)
+are genuinely separate graphs that systemd merges only at transaction
+time.** Internally, every unit is a node with two distinct edge sets:
+requirement edges (should this unit even start because of that one) and
+ordering edges (if both are starting, which goes first). `systemd`'s
+`manager_run_generators`+`transaction_add_job` machinery builds the job
+transaction by first pulling in everything required, *then* topologically
+sorting the ordering edges among the units actually in that transaction —
+which is exactly why `Requires=` without a matching `After=` starts both
+units in parallel with no guaranteed order, a foot-gun this section's
+"two separate axes" framing exists specifically to prevent.
+
+**Socket activation works because the *socket itself* — not the service
+— is what's listening at boot.** `systemd` calls `bind()`+`listen()` on
+the socket described by a `.socket` unit itself, then, on first
+connection, does the `fork()`+`exec()` of the matching `.service` and
+hands it the already-listening file descriptor over `sd_listen_fds()`
+(a documented fd-numbering contract starting at fd 3). The service never
+calls `bind()` at all in this mode — this is exactly why a socket-
+activated service can restart or crash without dropping a single pending
+connection: the kernel's accept queue for that socket is unaffected by
+the service process's lifecycle, only fd hand-off changes.
+
+**A hardware watchdog is petted by systemd only if the manager itself
+is still making forward progress — that's the whole point.**
+`WatchdogSec=` in a unit configures *software* watchdog behavior
+(systemd kills and restarts the unit if it stops calling
+`sd_notify(WATCHDOG=1)` in time), but the separate `RuntimeWatchdogSec=`
+in `system.conf` arms the SoC's actual hardware watchdog timer via
+`/dev/watchdog`, and PID 1 itself pets that device on a timer *only as
+long as its own main loop is still running*. If systemd itself wedges —
+not just a service — nothing pets the hardware timer, and the SoC's
+watchdog IP block forces a hard reset with no software involved at all,
+which is the one failure mode software-only supervision (respawn units,
+`Restart=`) structurally cannot cover.
+
+**journald on flash is bounded by explicit rotation, and volatile
+storage is a deliberate wear-leveling decision, not a limitation.**
+`Storage=volatile` in `journald.conf` makes journald write only to a
+`tmpfs`-backed `/run/log/journal`, discarding history on reboot;
+`SystemMaxUse=`/`RuntimeMaxUse=` cap the on-disk (or in-RAM) journal size
+and journald enforces it by rotating to a new `.journal` file and
+deleting the oldest once the cap is hit, checked on every write — the
+same log-structured-append-then-reclaim pattern as JFFS2/UBIFS, applied
+here to log data instead of a filesystem, for the identical reason:
+bounding total writes to flash.
+
 ## Exercise
 
 (1) Write `appd.service` as above for any small daemon, run

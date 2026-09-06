@@ -234,6 +234,36 @@ the same pattern GPIO, LED, and hwmon subsystems all build on internally.
     core API and Level 2's device-tree material; no kernel was built or
     booted to execute this code on this machine.
 
+## How It Actually Works
+
+**The platform bus is a matchmaking service, and `probe()` is a
+callback, not an entry point you call.** Every `platform_device`
+(created from a DT node by `of_platform_populate`, or hardcoded on
+non-DT boards) and every `platform_driver` registers itself with the
+platform bus's `struct bus_type`; the bus's `match()` function
+(`platform_match`) is invoked by the driver core against *every*
+device/driver pair whenever either side changes, comparing
+`of_match_table` compatible strings (or `MODULE_DEVICE_TABLE` id
+tables) against the device's own `of_node->compatible` property. Only on
+a match does the core call your `probe()` — which means the order you
+insmod things in genuinely doesn't matter: if the driver loads first, it
+just waits registered on the bus until a matching device shows up (at DT
+population time), and vice versa. This deferred, bus-mediated binding
+is the entire reason platform drivers don't have a `main()`.
+
+**`devm_*` APIs work by attaching cleanup callbacks to the *device*'s
+lifetime, not the driver module's.** `devm_kzalloc()`,
+`devm_ioremap_resource()`, etc. register a release function on an
+internal list hanging off `struct device`, and the driver core walks
+that list and runs every release function during
+`device_release_driver()` — which fires on `probe()` failure *and* on
+normal unbind, automatically, in reverse allocation order. This is why
+switching from manual `kzalloc`/`iounmap` to `devm_*` equivalents
+eliminates whole categories of unbind-path leaks: you stop needing a
+correct `remove()` at all for anything acquired through a `devm_`
+call, because the device model itself guarantees the teardown call
+happens exactly once, at exactly the right time.
+
 ## Exercise
 
 (1) Write the DT node and platform driver for a fictional "watchdog pet"

@@ -237,6 +237,51 @@ about `sensord.c` or `healthcheck.sh` changes at all:
 | `/etc/issue` | Boot-time banner shown before login |
 | `kill $(cat /var/run/sensord.pid)` then re-check | Proves the respawn contract works |
 
+## How It Actually Works
+
+**Why `BR2_ROOTFS_OVERLAY` doesn't need a package.** Buildroot builds the
+root filesystem in `output/target/` by unpacking every selected package's
+`.ipk`/`.tar`-equivalent staging output into that tree, then running
+`fakeroot`-wrapped permission/device-node fixups, then handing the tree to
+the filesystem generator (`genext2fs`/`mke2fs`, `mksquashfs`, ...). The
+overlay step runs *after* every package is merged and *before* the image
+is generated: it is a plain recursive copy (`cp -a`) of your overlay
+directory on top of `output/target/`, so anything you put there — your
+`sensord` binary, `healthcheck.sh`, a custom `/etc/issue` — simply wins if
+paths collide with a package. This is why the overlay can inject files
+without you writing a Buildroot package/recipe at all; it is a filesystem
+merge, not a build step, and it has zero awareness of what any package
+installed.
+
+**Cross-compilation, concretely.** Buildroot's toolchain wrapper resolves
+`CC` to something like
+`output/host/bin/arm-buildroot-linux-gnueabihf-gcc`, which is a real GCC
+built with `--target=arm-buildroot-linux-gnueabihf` and a sysroot pointing
+at `output/host/arm-buildroot-linux-gnueabihf/sysroot`. `sensord.c` never
+touches your host's headers or libc — every `#include` resolves inside
+that sysroot, and the linker embeds an ELF `PT_INTERP` of
+`/lib/ld-musl-armhf.so.1` (or glibc/uClibc equivalent) so the *target's*
+dynamic linker, not the host's, is what resolves it at boot. `file` on
+the resulting binary shows `ELF 32-bit LSB, ARM` — that's the proof the
+sysroot substitution worked, and it's also why you can't just `gcc -o
+sensord sensord.c` on your host and drop the result in.
+
+**The two init paths hit different PID-1 code paths, not just different
+config syntax.** BusyBox `init`'s `inittab` parser reads
+`/etc/inittab` once at boot, and a `respawn`-tagged line goes into an
+in-memory action table that `init`'s main loop `waitpid()`s against
+forever — when `sensord` exits, `init` gets `SIGCHLD`, looks up the dead
+PID in that table, sees `respawn`, and `fork()+exec()`s it again,
+uncoditionally, with no backoff. systemd's `Restart=always` is a unit
+property consumed by `systemd`'s `manager_dispatch_run_queue`; each
+service unit is its own cgroup, restart goes through a `START_LIMIT`
+rate-check (`StartLimitIntervalSec`/`StartLimitBurst`, default 5 tries in
+10s) before it will actually respawn, and journald captures stdout/stderr
+per-unit automatically — behavior BusyBox init has no equivalent for at
+all. Killing `sensord` and watching it come back on both images is really
+exercising two structurally different supervision engines, not one
+feature toggled two ways.
+
 ## Exercise
 
 Take this capstone one step further, in the QEMU image you already have:

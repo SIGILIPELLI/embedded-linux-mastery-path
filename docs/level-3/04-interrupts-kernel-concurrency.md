@@ -203,6 +203,38 @@ lock-free handoffs.
     was compiled, booted, or stress-tested on real SMP hardware from this
     machine.
 
+## How It Actually Works
+
+**The top-half/bottom-half split exists because the CPU's interrupt
+controller genuinely can't wait.** When hardware asserts an IRQ line,
+the CPU vectors into `handle_irq_event()` with *that* interrupt (and, on
+most controllers, all interrupts at or below its priority) masked at the
+GIC/APIC level — your registered handler runs in true interrupt context,
+where the kernel forbids sleeping (no mutex, no `copy_from_user`, no
+allocations that can block) because there's no scheduler context to
+switch away *to*. `request_threaded_irq`'s primary handler is meant to
+do the absolute minimum (read a status register, ack the device, decide
+"was this mine?") and return `IRQ_WAKE_THREAD`, which wakes the paired
+kernel thread — the actual bottom-half work runs later, fully
+preemptible, with the hardware interrupt line already re-armed. Skipping
+this split and doing real work in the primary handler is what causes the
+classic "interrupts stay disabled for milliseconds, everything else on
+that core stalls" pathology.
+
+**Spinlocks vs mutexes is a decision forced by context, not style.** A
+spinlock's `lock()` busy-waits without ever calling `schedule()` — safe
+to call from interrupt context (nothing to switch to) but disastrous to
+hold across anything that sleeps, since another CPU spinning on it burns
+100% of a core the entire time. A mutex's `lock()` calls `schedule()`
+and parks the calling task on a wait queue if contended — which means it
+*must never* be taken from interrupt/atomic context, because there is no
+valid task to schedule out from an IRQ handler. `might_sleep()` calls
+compiled into mutex/allocation paths under
+`CONFIG_DEBUG_ATOMIC_SLEEP` are precisely instrumentation to catch this
+class of bug — calling a sleeping primitive while a spinlock is held or
+inside `atomic_t`-protected sections — at the exact call site, in a
+debug kernel, rather than as an intermittent hang.
+
 ## Exercise
 
 (1) Take Module 2's `mydev` platform driver, add an interrupt line with a

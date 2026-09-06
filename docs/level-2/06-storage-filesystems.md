@@ -226,6 +226,45 @@ with no useful detail.
     — always read `/sys/class/mtd/mtdN/{writesize,erasesize}` on your own
     part rather than copying them.
 
+## How It Actually Works
+
+**Flash has no "overwrite," and every filesystem choice here is a
+strategy for coping with that one fact.** NAND/eMMC cells must be
+erased in large blocks (128 KB–4 MB) before any bit can be flipped back
+to 1, but writes happen in much smaller pages — so any filesystem that
+does in-place updates (ext4 on raw NAND, for instance) either needs a
+Flash Translation Layer underneath doing that erase/rewrite dance
+invisibly (eMMC, SD, most SSDs) or it must be a log-structured filesystem
+that only ever appends and reclaims space later via garbage collection
+(UBIFS, JFFS2). This single hardware constraint is the reason "just use
+ext4" only works when there's an FTL between Linux and the physical
+cells, and doesn't work on raw NAND without one.
+
+**UBI is the Linux-side FTL equivalent, and UBIFS is layered strictly on
+top of it, never on raw MTD.** UBI's `ubiattach` scans the MTD device,
+builds a table mapping *logical* eraseblocks (LEBs) to *physical* ones
+(PEBs), and maintains a wear-leveling counter per PEB so hot LEBs get
+remapped to less-worn PEBs over time — transparently to anything above
+it. UBIFS then only ever issues LEB-level reads/writes/erases through
+that table; it never sees a raw flash offset. This is exactly why you
+attach `ubiattach` to an MTD partition and *then* mount UBIFS on the
+resulting `/dev/ubiX_Y` — two independent layers, wear-leveling below,
+journaling filesystem above, each with no knowledge of the other's
+internals.
+
+**overlayfs is a stackable union at the VFS layer, not a copy or a
+bind-mount trick.** Mounting `lowerdir=/ro,upperdir=/rw,workdir=/work`
+creates one `struct super_block` whose directory lookups check `upperdir`
+first, falling back to `lowerdir` on miss, and merges directory listings
+from both. The first write to any file triggers *copy-up*: the whole
+file (not just the changed bytes) is copied from lower to upper before
+the write proceeds, and a deletion of a lower-only file creates a
+character-device "whiteout" (`0/0` device node) in `upperdir` that tells
+future lookups to hide the lower entry — which is why `workdir` must be
+on the *same* filesystem as `upperdir` (atomic rename is what makes
+copy-up crash-safe) and why a large file getting one byte appended can
+cause a surprising burst of I/O the first time.
+
 ## Exercise
 
 (1) In QEMU, add a second virtual disk, partition it, format one partition

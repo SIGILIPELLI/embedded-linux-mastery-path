@@ -176,6 +176,35 @@ the same fd stays valid.
     real M-core/A-core silicon from this machine — treat it as a
     conceptual and structural reference, not tested firmware.
 
+## How It Actually Works
+
+**`remoteproc` is a boot loader for a *second* CPU, running inside your
+main CPU's kernel.** The remoteproc core parses the coprocessor's
+firmware as an ELF file, walks its `PT_LOAD` segments, and copies each
+one into the memory region the SoC's hardware actually maps that
+coprocessor to see (often carved-out DDR reserved via a `reserved-memory`
+DT node, or the coprocessor's own tightly-coupled SRAM) — then pokes the
+SoC's reset/boot-address control registers to release the coprocessor's
+own core from reset, pointed at the entry address from the ELF header.
+This is genuinely the same job U-Boot does for your main CPU at power-on,
+just executed by the Linux kernel, for a different core, at any time
+after boot — which is why remoteproc firmware crashes are recoverable
+without rebooting the whole board: `rproc_stop`+`rproc_start` just
+re-does that same load-and-release sequence.
+
+**rpmsg is a virtio transport whose "bus" is a pair of shared-memory
+ring buffers, not a real bus.** Once the coprocessor is running, both
+sides use virtio's vring format over a chunk of shared memory the DT/
+resource-table already agreed on: each side writes descriptors into a
+ring and signals the other via whatever lightweight cross-core interrupt
+mechanism the SoC provides (a mailbox IP block, or an IPI). There's no
+actual bus controller involved — "rpmsg bus" is a Linux driver-model
+abstraction laid over what is mechanically just two cores polling/
+signaling shared DDR, which is exactly why rpmsg channel setup is
+described by a `resource_table` embedded in the coprocessor's own ELF
+(a struct the firmware itself declares, that remoteproc parses out at
+load time) rather than by anything in the main CPU's device tree.
+
 ## Exercise
 
 (1) Starting from the `remoteproc0` sysfs sequence above, write a short

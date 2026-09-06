@@ -245,6 +245,44 @@ $ bitbake -c cleansstate busybox             # force a full rebuild of one recip
 | `bitbake -c cleansstate <recipe>` | Force one recipe to rebuild from scratch |
 | `DL_DIR` / `SSTATE_DIR` | Download cache / shared-state cache — keep outside `build/` |
 
+## How It Actually Works
+
+**BitBake is a dependency graph solver, not a script runner.** Each
+`.bb` recipe is parsed into a `bb.data.DataSmart` namespace of variables
+and *tasks* (`do_fetch`, `do_unpack`, `do_patch`, `do_configure`,
+`do_compile`, `do_install`, `do_package`, ...), each a shell or Python
+function with declared `[deptask]`/`[rdeptask]` flags. Before building
+anything, BitBake's `RunQueue` walks every recipe reachable from your
+image's `IMAGE_INSTALL`/`DEPENDS`/`RDEPENDS` and builds one giant task
+graph across *all* recipes — this is why a first `bitbake core-image-*`
+resolves and orders hundreds of recipes before a single compiler runs.
+Layers (`meta`, `meta-poky`, `meta-yourbsp`) only contribute
+`.bbclass`/`.bb`/`.bbappend` files and `bblayers.conf` priority — they
+don't nest or namespace, they merge, with `BBFILE_PRIORITY` breaking ties
+when two layers provide the same recipe name.
+
+**Why a `.bbappend` doesn't need to repeat the whole recipe.** BitBake
+matches `busybox_%.bbappend` against `busybox_1.36.1.bb` by filename glob
+at parse time, then *replays* the append's variable assignments and
+`do_install:append()` functions into the same `DataSmart` datastore the
+base recipe already populated — it's a second pass over the same
+in-memory config, not a text merge or an overlay file. That's also why a
+typo in the version-matching part of the filename (missing the `%`, or a
+stale pinned version) makes the append parse successfully but silently
+never attach — Yocto's most common footgun.
+
+**Where the sysroot boundary actually lives.** `do_populate_sysroot`
+copies each recipe's staged headers/libraries into
+`tmp/sysroots-components/<arch>/<recipe>/`, and every other recipe's
+`do_configure`/`do_compile` only ever sees that shared per-recipe sysroot
+tree via `-I`/`-L` flags injected by the toolchain wrapper — never your
+build host's `/usr/include`. Shared-state (`sstate`) then hashes each
+task's *inputs* (recipe metadata, dependency task hashes, not just file
+timestamps) into a signature; a cache hit swaps in a prebuilt tarball for
+that task and skips it entirely, which is why identical builds on two
+machines with a shared sstate-cache mirror can finish in minutes instead
+of hours.
+
 ## Exercise
 
 (1) Set up poky on the `scarthgap` branch, build `core-image-minimal` for

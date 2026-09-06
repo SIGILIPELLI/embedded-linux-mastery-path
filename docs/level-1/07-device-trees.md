@@ -149,6 +149,31 @@ okay? — which is why device-tree literacy is a hiring signal in embedded.
 | `dtc -I dtb -O dts f.dtb` | Decompile a blob back to source |
 | `/proc/device-tree/` | The live tree inside a running system |
 
+## How It Actually Works
+
+A `.dts` file is source; a `.dtb` is what the kernel actually parses, and
+the translation matters. `dtc` (device tree compiler) walks the DTS,
+resolves every `&label` phandle reference into a numeric handle, and emits
+a flattened binary — a linear sequence of tagged tokens (`FDT_BEGIN_NODE`,
+`FDT_PROP`, `FDT_END_NODE`) with a string table at the end holding all the
+property names once, deduplicated. This flat, pointer-free format is
+deliberate: the kernel's early boot code walks it before the MMU or heap
+allocator exists, using nothing but raw offset arithmetic (`libfdt`).
+
+At boot, the kernel doesn't just *read* the tree — it **unflattens** it into
+a live tree of `struct device_node` objects in normal kernel memory, then
+walks that tree matching each node's `compatible` string against every
+registered driver's `of_match_table`. A match triggers `probe()` — this is
+the exact mechanism module-2's platform-driver binding relies on, and why a
+typo in `compatible` (`"nxp,imx95-uart"` vs `"fsl,imx95-uart"`) doesn't
+error at boot, it just silently produces a device with no driver attached,
+visible only as a bare entry in `/sys/firmware/devicetree/base` with no
+matching `/dev` node. `#address-cells`/`#size-cells` and `reg` aren't
+arbitrary conventions either — they tell the parser exactly how many 32-bit
+cells to consume per address/length pair in a *parent-defined* addressing
+scheme, which is why nesting a node under the wrong parent changes how its
+own `reg` property must be written.
+
 ## Exercise
 
 (1) From the decompiled `virt.dts`, answer: at what address does the

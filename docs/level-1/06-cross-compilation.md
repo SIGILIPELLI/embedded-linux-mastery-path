@@ -173,6 +173,29 @@ Hello from Linux on aarch64!
 | `uname -m` / `Exec format error` | ISA check / the "wrong architecture" symptom |
 | triplet `arch-os-libc` | Reads as: what the output binary runs on |
 
+## How It Actually Works
+
+A cross-toolchain's triplet (`aarch64-linux-gnu-`) encodes four separate
+decisions baked into every binary it produces: **architecture** (instruction
+encoding — `aarch64` vs `arm`), **vendor** (cosmetic), **OS** (`linux` — which
+syscall ABI and ELF conventions to target), and **ABI** (`gnu`/glibc vs
+`musl` vs `gnueabihf` — which C library and, for 32-bit ARM, whether
+floating point args pass in VFP registers or on the integer stack). Get the
+ABI wrong — link `gnueabihf` code against a `gnueabi` (soft-float) target —
+and you get a binary that runs but computes garbage on every float
+argument, because caller and callee disagree on which register holds it.
+
+The linker is doing more than concatenating object files: it resolves the
+gap between what your code *asks for at compile time* (a symbol name like
+`printf`) and what actually exists *on the target at runtime*. Static
+linking bakes glibc's code directly into your binary, so it runs even if the
+target's libc differs — at the cost of size. Dynamic linking defers symbol
+resolution to `ld.so` on the target, which walks the ELF's `DT_NEEDED`
+entries at process startup and `mmap`s each shared library — meaning the
+classic "cross-compiled fine, `-bash: not found` on the board" failure is
+almost always the target missing the *exact* interpreter path baked into
+your binary's `.interp` section (`readelf -l` shows it), not a compiler bug.
+
 ## Exercise
 
 (1) Cross-compile a `sysinfo.c` that prints total and free RAM using

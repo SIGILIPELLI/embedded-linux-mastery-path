@@ -270,6 +270,54 @@ connections and the board appears to have no network at all.
     hardware testing was not possible while writing this page — run the
     check-only commands on your own target first.
 
+## How It Actually Works
+
+**`ip`/netlink replaced `ifconfig`/`route` because the kernel's network
+state is exposed as a structured, queryable object model, not text.**
+`ip addr`/`ip route` speak `NETLINK_ROUTE` — a socket protocol where
+requests and replies are binary `nlmsghdr` + `rtattr` structures
+(`RTM_NEWADDR`, `RTM_GETROUTE`, ...), the same protocol the kernel uses
+internally to notify listeners of changes. `ifconfig` was built on the
+much older `ioctl(SIOCSIFADDR, ...)` interface, which can't represent
+multiple addresses per interface or IPv6 scopes cleanly — that's the
+actual reason it was retired, not just command-syntax fashion.
+`systemd-networkd` itself is just another netlink client: it doesn't
+patch files the kernel reads, it opens the same `NETLINK_ROUTE` socket
+and issues the same `RTM_NEWADDR`/`RTM_NEWLINK` requests your `ip`
+commands would.
+
+**DNS resolution order is decided by NSS, not by "the network stack."**
+`/etc/nsswitch.conf`'s `hosts:` line tells glibc's Name Service Switch
+which shared objects (`libnss_files.so`, `libnss_dns.so`,
+`libnss_resolve.so` if `systemd-resolved` is in play) to `dlopen()` and
+query, in order, for every `getaddrinfo()` call any program makes —
+including `ping`, `curl`, and your own code. This is why editing
+`/etc/resolv.conf` has zero effect on a box using `systemd-resolved`'s
+stub: NSS is pointed at `libnss_resolve`, which queries the resolved
+daemon over D-Bus/a Unix socket instead of ever parsing that file.
+
+**`wpa_supplicant` is a state machine driving the kernel's `nl80211`
+interface, and the 4-way handshake is real cryptographic protocol, not
+config.** After association, `wpa_supplicant` receives EAPOL frames from
+the kernel's `cfg80211`/driver stack via a dedicated Ethertype
+(`0x888e`), and executes RSN's 4-way handshake purely in userspace:
+deriving the PTK from the PMK (itself from the PSK via `PBKDF2` over the
+passphrase+SSID) and nonces exchanged in messages 1–4, then installing
+the resulting session keys into the kernel driver via `nl80211`
+`SET_KEY` commands — only after that does the interface actually pass
+traffic. `wpa_cli status` showing `wpa_state=COMPLETED` means that
+exact key-installation step succeeded, not merely "associated to an AP."
+
+**nftables rules are compiled into a kernel bytecode VM, evaluated per
+packet at defined hook points.** `nft` translates your rule text into
+the netlink `NFT_MSG_NEWRULE` binary format, which the kernel loads as a
+sequence of expressions run by an in-kernel interpreter at Netfilter hook
+points (`NF_INET_PRE_ROUTING`, `NF_INET_LOCAL_IN`, ...) baked into the
+IP stack's packet-processing path itself — a `DROP` in a `chain` isn't
+"redirecting" traffic, it's a hook callback returning `NF_DROP` before the
+packet ever reaches the routing/socket-delivery code that would otherwise
+run next.
+
 ## Exercise
 
 (1) In your QEMU image, bring `eth0` up entirely by hand with `ip` (address,
