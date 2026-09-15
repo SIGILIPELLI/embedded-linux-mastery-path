@@ -221,6 +221,11 @@ fails verification the moment something tries to read it — that's the
 mechanism that closes the gap HAB/AHAB leave (they verify the kernel and
 initial boot artifacts, not a rootfs that keeps growing after boot).
 
+## 🔀 Related lessons on other tracks
+
+- [Embedded — Secure Boot & Encrypted OTA at Scale](https://sigilipelli.github.io/embedded-mastery-path/level-4/02-secure-boot-ota-scale/)
+- [S32K Automotive — Secure Boot & the HSE Security Engine](https://sigilipelli.github.io/s32k-mastery-path/level-3/07-secure-boot-hse/)
+
 ## Exercise
 
 (1) Write out, in order, every validation step you would perform on

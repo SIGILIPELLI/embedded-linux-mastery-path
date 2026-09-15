@@ -221,6 +221,10 @@ addresses. The profiling data describes real target-hardware behavior;
 only the human-readable presentation step can happen back on your dev
 machine.
 
+## 🔀 Related lessons on other tracks
+
+- [Embedded Python — Performance Profiling & Optimization](https://sigilipelli.github.io/embedded-python-mastery-path/level-3/02-performance-profiling/)
+
 ## Exercise
 
 (1) Using the `mydev_irq`/`mydev_irq_thread` split from Module 4, add a

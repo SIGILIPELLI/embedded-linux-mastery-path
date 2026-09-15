@@ -245,6 +245,12 @@ final "switch" is one directory-rename-equivalent, but every file that
 didn't change is deduplicated by content hash rather than re-flashed at
 all.
 
+## 🔀 Related lessons on other tracks
+
+- [Edge AI — OTA Model Updates](https://sigilipelli.github.io/edge-ai-mastery-path/level-4/02-ota-model-updates/)
+- [Embedded — OTA Firmware Updates](https://sigilipelli.github.io/embedded-mastery-path/level-2/05-ota-updates/)
+- [Embedded Python — OTA Updates for MicroPython Fleets](https://sigilipelli.github.io/embedded-python-mastery-path/level-4/02-ota-updates-fleets/)
+
 ## Exercise
 
 (1) Write the full boot-counter U-Boot environment sequence for a fresh

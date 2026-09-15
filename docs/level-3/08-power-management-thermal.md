@@ -260,6 +260,10 @@ utilization pegged at 100% while frequency stays pinned low: the
 scheduler's utilization signal and the QoS-capped frequency ceiling are
 computed independently, and the cap simply wins.
 
+## 🔀 Related lessons on other tracks
+
+- [NodeMCU/IoT — 03 · Deep Sleep & Power Management](https://sigilipelli.github.io/nodemcu-mastery-path/level-2/03-deep-sleep-power-management/)
+
 ## Exercise
 
 (1) Add `suspend`/`resume` callbacks to Module 2's `mydev` platform driver

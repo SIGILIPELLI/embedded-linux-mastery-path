@@ -269,6 +269,10 @@ on the *same* filesystem as `upperdir` (atomic rename is what makes
 copy-up crash-safe) and why a large file getting one byte appended can
 cause a surprising burst of I/O the first time.
 
+## 🔀 Related lessons on other tracks
+
+- [Embedded — Filesystems & Storage (LittleFS, SD)](https://sigilipelli.github.io/embedded-mastery-path/level-2/07-filesystems-storage/)
+
 ## Exercise
 
 (1) In QEMU, add a second virtual disk, partition it, format one partition

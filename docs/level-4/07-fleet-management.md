@@ -221,6 +221,12 @@ security property comes from the fact that "what can happen" is
 enumerated in code shipped months earlier, not in a message an operator
 sends today.
 
+## 🔀 Related lessons on other tracks
+
+- [Embedded — Fleet Management & Device Clouds](https://sigilipelli.github.io/embedded-mastery-path/level-4/09-fleet-management/)
+- [Embedded Python — Device Provisioning & Secrets Management](https://sigilipelli.github.io/embedded-python-mastery-path/level-4/03-provisioning-secrets/)
+- [NodeMCU/IoT — Fleet Management Concepts](https://sigilipelli.github.io/nodemcu-mastery-path/level-4/03-fleet-management-concepts/)
+
 ## Exercise
 
 (1) Write the provisioning script's idempotency check so it survives a

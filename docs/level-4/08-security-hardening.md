@@ -263,6 +263,12 @@ other kernel check, so a code-execution bug in it can't pivot to
 mounting filesystems or loading kernel modules even though the process
 "is root" in the traditional UID sense.
 
+## 🔀 Related lessons on other tracks
+
+- [Cybersecurity — 03 · Linux Security Hardening](https://sigilipelli.github.io/cybersecurity-mastery-path/level-2/03-linux-security-hardening/)
+- [Embedded Python — Security Hardening — TLS & Secure Storage](https://sigilipelli.github.io/embedded-python-mastery-path/level-4/06-security-hardening/)
+- [GitHub & Git — 08 · Security Hardening (CODEOWNERS, signed commits, SAST)](https://sigilipelli.github.io/github-mastery-path/level-4/08-security-hardening/)
+
 ## Exercise
 
 (1) Starting from the `ss -tulnp` output above, write the specific

@@ -200,6 +200,10 @@ classic "cross-compiled fine, `-bash: not found` on the board" failure is
 almost always the target missing the *exact* interpreter path baked into
 your binary's `.interp` section (`readelf -l` shows it), not a compiler bug.
 
+## 🔀 Related lessons on other tracks
+
+- [Cpp Testing — 06 · Cross-Compilation Test Strategies](https://sigilipelli.github.io/cpp-testing-mastery-path/level-4/06-cross-compilation-test-strategies/)
+
 ## Exercise
 
 (1) Cross-compile a `sysinfo.c` that prints total and free RAM using

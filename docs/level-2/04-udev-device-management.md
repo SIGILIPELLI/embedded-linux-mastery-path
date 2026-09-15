@@ -265,6 +265,11 @@ the device to a different port. That's the entire mechanism behind
 inputs (physical topology) don't change, not because udev remembers
 anything across boots by default.
 
+## 🔀 Related lessons on other tracks
+
+- [Embedded — Fleet Management & Device Clouds](https://sigilipelli.github.io/embedded-mastery-path/level-4/09-fleet-management/)
+- [Embedded Python — Device Provisioning & Secrets Management](https://sigilipelli.github.io/embedded-python-mastery-path/level-4/03-provisioning-secrets/)
+
 ## Exercise
 
 (1) On any Linux machine, plug in a USB serial adapter (or use an existing
