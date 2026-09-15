@@ -1,3 +1,7 @@
+---
+description: "Production BSP Maintenance — Everything through Level 3 assumed you're building a BSP once. A shipped product's BSP has a multi-year lifecycle: CVE…"
+---
+
 # 01 · Production BSP Maintenance
 
 Everything through Level 3 assumed you're building a BSP once. A shipped

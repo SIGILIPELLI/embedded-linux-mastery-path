@@ -1,3 +1,7 @@
+---
+description: "Containers & Virtualization on Embedded — Containers on a server solve 'isolate and deploy independently versioned services on one kernel.' On an embedded…"
+---
+
 # 06 · Containers & Virtualization on Embedded
 
 Containers on a server solve "isolate and deploy independently

@@ -1,3 +1,7 @@
+---
+description: "Running Embedded Linux in QEMU — Time to stop reading and start booting. QEMU is a free, open-source machine emulator that can pretend to be a complete…"
+---
+
 # 04 · Running Embedded Linux in QEMU
 
 Time to stop reading and start booting. **QEMU** is a free, open-source

@@ -1,3 +1,7 @@
+---
+description: "Security Hardening & CVE Management — Modules 1-7 built a chain of trust from boot through updates through fleet identity. Hardening is the discipline of…"
+---
+
 # 08 · Security Hardening & CVE Management
 
 Modules 1-7 built a chain of trust from boot through updates through

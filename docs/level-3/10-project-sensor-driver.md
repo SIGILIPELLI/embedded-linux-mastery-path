@@ -1,3 +1,7 @@
+---
+description: "Project — Sensor Driver + Userspace Stack — This project combines Modules 1–9 into one coherent deliverable: a production-shaped kernel driver for an I2C…"
+---
+
 # 10 · Project — Sensor Driver + Userspace Stack
 
 This project combines Modules 1–9 into one coherent deliverable: a

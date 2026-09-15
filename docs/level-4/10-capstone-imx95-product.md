@@ -1,3 +1,7 @@
+---
+description: "Capstone — Production-Grade i.MX95 Product — This capstone combines every Level 4 module into one coherent product design: a fleet-deployed i.MX95…"
+---
+
 # 10 · Capstone — Production-Grade i.MX95 Product
 
 This capstone combines every Level 4 module into one coherent product

@@ -1,3 +1,7 @@
+---
+description: "CPU Architectures 101 — 'ARM or x86?' is the first question about any computer, yet most developers can't say precisely what the difference is. This…"
+---
+
 # 02 · CPU Architectures 101
 
 "ARM or x86?" is the first question about any computer, yet most developers

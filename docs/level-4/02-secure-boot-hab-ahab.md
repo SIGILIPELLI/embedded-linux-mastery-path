@@ -1,3 +1,7 @@
+---
+description: "Secure Boot Chain (HAB/AHAB) — Nothing in this module should be run against real fuses until you have tested the entire chain exhaustively on a spare…"
+---
+
 # 02 · Secure Boot Chain (HAB/AHAB)
 
 Nothing in this module should be run against real fuses until you have

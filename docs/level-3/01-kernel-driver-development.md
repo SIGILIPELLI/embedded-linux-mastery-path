@@ -1,3 +1,7 @@
+---
+description: "Kernel Driver Development — Char Drivers — Level 2 built and configured kernels; this module writes code that runs inside one. A character driver is the…"
+---
+
 # 01 · Kernel Driver Development — Char Drivers
 
 Level 2 built and configured kernels; this module writes code that runs

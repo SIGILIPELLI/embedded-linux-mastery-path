@@ -1,3 +1,7 @@
+---
+description: "OTA Updates (RAUC, SWUpdate, OSTree) — A device that can be field-updated can also be field-bricked by that same mechanism — a power loss mid-flash, a…"
+---
+
 # 03 · OTA Updates (RAUC, SWUpdate, OSTree)
 
 A device that can be field-updated can also be field-bricked by that same

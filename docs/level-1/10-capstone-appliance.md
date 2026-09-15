@@ -1,3 +1,7 @@
+---
+description: "Capstone — Tiny Linux Appliance — Every module so far taught one piece of the stack in isolation. This capstone assembles all of them into one thing: a…"
+---
+
 # 10 · Capstone — Tiny Linux Appliance
 
 Every module so far taught one piece of the stack in isolation. This

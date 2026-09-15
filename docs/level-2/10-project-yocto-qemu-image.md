@@ -1,3 +1,7 @@
+---
+description: "Project — Custom Yocto Image for QEMU — Nine modules of parts; now one product. You build your own layer containing an application recipe, a systemd unit…"
+---
+
 # 10 · Project — Custom Yocto Image for QEMU
 
 Nine modules of parts; now one product. You build your own layer containing

@@ -1,3 +1,7 @@
+---
+description: "Storage & Filesystems (UBI, overlayfs) — Storage is where embedded Linux products die. Not from bugs — from power cuts. A desktop is shut down cleanly; a…"
+---
+
 # 06 · Storage & Filesystems (UBI, overlayfs)
 
 Storage is where embedded Linux products die. Not from bugs — from power

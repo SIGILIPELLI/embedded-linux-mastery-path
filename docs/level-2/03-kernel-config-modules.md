@@ -1,3 +1,7 @@
+---
+description: "Kernel Configuration & Modules — In Level 1 you booted a kernel someone else built. In a product you own that kernel: which drivers are compiled in, which…"
+---
+
 # 03 · Kernel Configuration & Modules
 
 In Level 1 you booted a kernel someone else built. In a product you own

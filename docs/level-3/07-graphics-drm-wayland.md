@@ -1,3 +1,7 @@
+---
+description: "Graphics — DRM/KMS & Wayland — Fbdev is gone from any modern embedded product with a display. The kernel side is DRM/KMS (Direct Rendering Manager /…"
+---
+
 # 07 · Graphics — DRM/KMS & Wayland
 
 Fbdev is gone from any modern embedded product with a display. The kernel

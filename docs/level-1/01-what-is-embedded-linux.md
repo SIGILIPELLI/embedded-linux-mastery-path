@@ -1,3 +1,7 @@
+---
+description: "What Is Embedded Linux? — Your WiFi router runs Linux. So does your smart TV, your car's infotainment system, the ticket machine at the station, the…"
+---
+
 # 01 · What Is Embedded Linux?
 
 Your WiFi router runs Linux. So does your smart TV, your car's infotainment

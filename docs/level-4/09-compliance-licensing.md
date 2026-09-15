@@ -1,3 +1,7 @@
+---
+description: "Compliance & Open-Source Licensing — A product built on Linux, U-Boot, BusyBox, and a hundred other open source packages inherits a hundred different…"
+---
+
 # 09 · Compliance & Open-Source Licensing
 
 A product built on Linux, U-Boot, BusyBox, and a hundred other open

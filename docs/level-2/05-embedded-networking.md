@@ -1,3 +1,7 @@
+---
+description: "Embedded Networking — A desktop distribution hides networking behind NetworkManager and a GUI. An embedded product usually has no GUI, no user to click…"
+---
+
 # 05 · Embedded Networking
 
 A desktop distribution hides networking behind NetworkManager and a GUI.

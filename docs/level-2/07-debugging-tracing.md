@@ -1,3 +1,7 @@
+---
+description: "Debugging & Tracing (gdbserver, strace) — Embedded debugging is different in one specific way: the machine running the program is not the machine running…"
+---
+
 # 07 · Debugging & Tracing (gdbserver, strace)
 
 Embedded debugging is different in one specific way: the machine running

@@ -1,3 +1,7 @@
+---
+description: "Real-Time Linux (PREEMPT_RT) — Vanilla Linux is fast on average and occasionally very slow — a spinlock held too long, an interrupt storm, a scheduling…"
+---
+
 # 06 · Real-Time Linux (PREEMPT_RT)
 
 Vanilla Linux is *fast on average* and occasionally very slow — a spinlock

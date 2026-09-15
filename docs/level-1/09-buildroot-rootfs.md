@@ -1,3 +1,7 @@
+---
+description: "Building a Rootfs with Buildroot — Every lab so far used images someone else built. Time to build your own: kernel, cross-toolchain, and BusyBox rootfs…"
+---
+
 # 09 · Building a Rootfs with Buildroot
 
 Every lab so far used images someone else built. Time to build your own:

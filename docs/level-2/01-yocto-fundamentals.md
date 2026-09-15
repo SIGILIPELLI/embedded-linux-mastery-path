@@ -1,3 +1,7 @@
+---
+description: "Yocto Fundamentals — Level 1 ended with a rule: Buildroot for one fixed image, Yocto once you consume a silicon vendor's BSP or maintain a product line.…"
+---
+
 # 01 · Yocto Fundamentals
 
 Level 1 ended with a rule: Buildroot for one fixed image, **Yocto** once

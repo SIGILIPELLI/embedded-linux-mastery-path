@@ -1,3 +1,7 @@
+---
+description: "Init Systems & Services — An embedded device has no user to double-click your program. Whatever your product does — reading sensors, serving a UI, talking…"
+---
+
 # 08 · Init Systems & Services
 
 An embedded device has no user to double-click your program. Whatever your

@@ -1,3 +1,7 @@
+---
+description: "Interrupts & Kernel Concurrency — Module 1's driver had exactly one writer and one reader, and neither ran concurrently with itself. Real drivers have…"
+---
+
 # 04 · Interrupts & Kernel Concurrency
 
 Module 1's driver had exactly one writer and one reader, and neither ran

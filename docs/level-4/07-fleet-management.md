@@ -1,3 +1,7 @@
+---
+description: "Fleet Management & Provisioning — One device is a bring-up problem. Ten thousand devices in the field is a different discipline entirely: every device…"
+---
+
 # 07 · Fleet Management & Provisioning
 
 One device is a bring-up problem. Ten thousand devices in the field is a

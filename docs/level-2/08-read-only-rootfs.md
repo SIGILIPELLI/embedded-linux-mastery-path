@@ -1,3 +1,7 @@
+---
+description: "Read-Only Rootfs & Factory Reset — Module 6 established the problem: flash plus unexpected power loss equals corruption. This module is the standard…"
+---
+
 # 08 · Read-Only Rootfs & Factory Reset
 
 Module 6 established the problem: flash plus unexpected power loss equals

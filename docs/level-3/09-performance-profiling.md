@@ -1,3 +1,7 @@
+---
+description: "Performance Profiling (perf, ftrace) — 'It feels slow' is not a diagnosis. Before Level 3 you had top and dmesg; that's enough to tell you something is…"
+---
+
 # 09 · Performance Profiling (perf, ftrace)
 
 "It feels slow" is not a diagnosis. Before Level 3 you had `top` and

@@ -1,3 +1,7 @@
+---
+description: "NPU & ML Acceleration (eIQ) — Running an ML model on an embedded SoC's CPU is usually a nonstarter for anything real-time — object detection at even…"
+---
+
 # 05 · NPU & ML Acceleration (eIQ)
 
 Running an ML model on an embedded SoC's CPU is usually a nonstarter for

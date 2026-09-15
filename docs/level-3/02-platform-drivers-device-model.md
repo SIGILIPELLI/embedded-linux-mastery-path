@@ -1,3 +1,7 @@
+---
+description: "Platform Drivers & the Device Model — Module 1's driver only existed because you typed insmod. Real hardware on a real board is described declaratively …"
+---
+
 # 02 · Platform Drivers & the Device Model
 
 Module 1's driver only existed because you typed `insmod`. Real hardware

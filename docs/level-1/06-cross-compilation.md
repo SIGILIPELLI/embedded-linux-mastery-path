@@ -1,3 +1,7 @@
+---
+description: "Cross-Compilation — Your laptop is (probably) x86-64 or Apple Silicon; your target is an ARM Linux board. The target can't build its own software…"
+---
+
 # 06 · Cross-Compilation
 
 Your laptop is (probably) x86-64 or Apple Silicon; your target is an ARM

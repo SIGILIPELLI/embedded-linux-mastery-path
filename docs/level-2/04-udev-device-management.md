@@ -1,3 +1,7 @@
+---
+description: "udev & Device Management — /dev is not a directory of files someone created. It is a live view of the hardware the kernel currently knows about…"
+---
+
 # 04 · udev & Device Management
 
 `/dev` is not a directory of files someone created. It is a live view of

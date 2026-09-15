@@ -1,3 +1,7 @@
+---
+description: "The Boot Flow — Between applying power and seeing login: on the console, an embedded Linux board walks through a fixed relay race: boot ROM → SPL → U-Boot…"
+---
+
 # 03 · The Boot Flow
 
 Between applying power and seeing `login:` on the console, an embedded Linux

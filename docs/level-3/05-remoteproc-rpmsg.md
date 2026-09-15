@@ -1,3 +1,7 @@
+---
+description: "Heterogeneous Compute — remoteproc & RPMsg — Most i.MX8/i.MX9 SoCs ship a Cortex-M core alongside the Cortex-A cluster Linux runs on — for real-time I/O…"
+---
+
 # 05 · Heterogeneous Compute — remoteproc & RPMsg
 
 Most i.MX8/i.MX9 SoCs ship a Cortex-M core alongside the Cortex-A cluster

@@ -1,3 +1,7 @@
+---
+description: "U-Boot Deep Dive — Level 1's boot-flow module named U-Boot as the relay runner between the boot ROM and the kernel. That was the tourist view. On a real…"
+---
+
 # 02 · U-Boot Deep Dive
 
 Level 1's boot-flow module named U-Boot as the relay runner between the

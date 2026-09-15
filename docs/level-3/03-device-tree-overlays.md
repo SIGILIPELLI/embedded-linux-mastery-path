@@ -1,3 +1,7 @@
+---
+description: "Device Tree Overlays — Level 2 treated the device tree as a fixed description compiled once into the boot image. In production that's rarely true: a…"
+---
+
 # 03 · Device Tree Overlays
 
 Level 2 treated the device tree as a fixed description compiled once into

@@ -1,3 +1,7 @@
+---
+description: "Device Trees — How does the kernel know your board has a UART at address 0x9000000? On a PC it can ask — but on embedded ARM, nobody answers. The device…"
+---
+
 # 07 · Device Trees
 
 How does the kernel know your board has a UART at address `0x9000000`? On a

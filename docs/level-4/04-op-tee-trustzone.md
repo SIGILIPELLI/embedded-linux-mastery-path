@@ -1,3 +1,7 @@
+---
+description: "Trusted Execution — OP-TEE & TrustZone — Secure boot (Module 2) protects what runs at startup. TrustZone protects something different: a region of the…"
+---
+
 # 04 · Trusted Execution — OP-TEE & TrustZone
 
 Secure boot (Module 2) protects what runs at startup. TrustZone protects

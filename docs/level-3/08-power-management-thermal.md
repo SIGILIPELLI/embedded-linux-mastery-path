@@ -1,3 +1,7 @@
+---
+description: "Power Management & Thermal — A battery-powered or fanless product lives or dies by power management done right. Linux's PM stack spans four largely…"
+---
+
 # 08 · Power Management & Thermal
 
 A battery-powered or fanless product lives or dies by power management

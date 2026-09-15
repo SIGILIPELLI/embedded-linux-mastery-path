@@ -1,3 +1,7 @@
+---
+description: "BusyBox & the Minimal Userland — Log into an embedded device and it feels like Linux — ls, ps, mount all work — but almost nothing is what it seems…"
+---
+
 # 05 · BusyBox & the Minimal Userland
 
 Log into an embedded device and it *feels* like Linux — `ls`, `ps`, `mount`
