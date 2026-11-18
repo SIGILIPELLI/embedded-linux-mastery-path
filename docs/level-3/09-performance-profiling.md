@@ -223,7 +223,7 @@ machine.
 
 ## 🔀 Related lessons on other tracks
 
-- [Embedded Python — Performance Profiling & Optimization](https://sigilipelli.github.io/embedded-python-mastery-path/level-3/02-performance-profiling/)
+- [Embedded Python — Performance Profiling & Optimization](https://learnmasterypath.com/embedded-python-mastery-path/level-3/02-performance-profiling/)
 
 ## Exercise
 

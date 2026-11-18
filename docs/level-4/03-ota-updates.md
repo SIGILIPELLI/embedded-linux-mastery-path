@@ -247,9 +247,9 @@ all.
 
 ## 🔀 Related lessons on other tracks
 
-- [Edge AI — OTA Model Updates](https://sigilipelli.github.io/edge-ai-mastery-path/level-4/02-ota-model-updates/)
-- [Embedded — OTA Firmware Updates](https://sigilipelli.github.io/embedded-mastery-path/level-2/05-ota-updates/)
-- [Embedded Python — OTA Updates for MicroPython Fleets](https://sigilipelli.github.io/embedded-python-mastery-path/level-4/02-ota-updates-fleets/)
+- [Edge AI — OTA Model Updates](https://learnmasterypath.com/edge-ai-mastery-path/level-4/02-ota-model-updates/)
+- [Embedded — OTA Firmware Updates](https://learnmasterypath.com/embedded-mastery-path/level-2/05-ota-updates/)
+- [Embedded Python — OTA Updates for MicroPython Fleets](https://learnmasterypath.com/embedded-python-mastery-path/level-4/02-ota-updates-fleets/)
 
 ## Exercise
 

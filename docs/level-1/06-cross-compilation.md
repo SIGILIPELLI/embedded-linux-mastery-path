@@ -202,7 +202,7 @@ your binary's `.interp` section (`readelf -l` shows it), not a compiler bug.
 
 ## 🔀 Related lessons on other tracks
 
-- [Cpp Testing — 06 · Cross-Compilation Test Strategies](https://sigilipelli.github.io/cpp-testing-mastery-path/level-4/06-cross-compilation-test-strategies/)
+- [Cpp Testing — 06 · Cross-Compilation Test Strategies](https://learnmasterypath.com/cpp-testing-mastery-path/level-4/06-cross-compilation-test-strategies/)
 
 ## Exercise
 

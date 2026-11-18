@@ -223,8 +223,8 @@ initial boot artifacts, not a rootfs that keeps growing after boot).
 
 ## 🔀 Related lessons on other tracks
 
-- [Embedded — Secure Boot & Encrypted OTA at Scale](https://sigilipelli.github.io/embedded-mastery-path/level-4/02-secure-boot-ota-scale/)
-- [S32K Automotive — Secure Boot & the HSE Security Engine](https://sigilipelli.github.io/s32k-mastery-path/level-3/07-secure-boot-hse/)
+- [Embedded — Secure Boot & Encrypted OTA at Scale](https://learnmasterypath.com/embedded-mastery-path/level-4/02-secure-boot-ota-scale/)
+- [S32K Automotive — Secure Boot & the HSE Security Engine](https://learnmasterypath.com/s32k-mastery-path/level-3/07-secure-boot-hse/)
 
 ## Exercise
 

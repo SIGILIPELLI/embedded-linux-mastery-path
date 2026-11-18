@@ -267,8 +267,8 @@ anything across boots by default.
 
 ## 🔀 Related lessons on other tracks
 
-- [Embedded — Fleet Management & Device Clouds](https://sigilipelli.github.io/embedded-mastery-path/level-4/09-fleet-management/)
-- [Embedded Python — Device Provisioning & Secrets Management](https://sigilipelli.github.io/embedded-python-mastery-path/level-4/03-provisioning-secrets/)
+- [Embedded — Fleet Management & Device Clouds](https://learnmasterypath.com/embedded-mastery-path/level-4/09-fleet-management/)
+- [Embedded Python — Device Provisioning & Secrets Management](https://learnmasterypath.com/embedded-python-mastery-path/level-4/03-provisioning-secrets/)
 
 ## Exercise
 

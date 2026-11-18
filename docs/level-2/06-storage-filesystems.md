@@ -271,7 +271,7 @@ cause a surprising burst of I/O the first time.
 
 ## 🔀 Related lessons on other tracks
 
-- [Embedded — Filesystems & Storage (LittleFS, SD)](https://sigilipelli.github.io/embedded-mastery-path/level-2/07-filesystems-storage/)
+- [Embedded — Filesystems & Storage (LittleFS, SD)](https://learnmasterypath.com/embedded-mastery-path/level-2/07-filesystems-storage/)
 
 ## Exercise
 

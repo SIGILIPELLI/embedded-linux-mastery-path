@@ -21,7 +21,7 @@ You are free to:
 
 **No permission needed, no fee, no login required.** The only condition is
 attribution — credit "Embedded Linux & Architectures Mastery Path" (or the wider [Mastery Path
-series](https://sigilipelli.github.io/embedded-linux-mastery-path/)) and link back to the
+series](https://learnmasterypath.com/embedded-linux-mastery-path/)) and link back to the
 original page.
 
 ## Code snippets
