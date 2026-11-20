@@ -1,6 +1,6 @@
 ---
 title: "Learn Embedded Linux Free: ARM, i.MX, QEMU Course"
-description: "Free embedded Linux course covering ARM, i.MX95, and QEMU -- runnable in a simulator, no hardware needed. Part of a 37-course free learning library."
+description: "Free embedded Linux course covering ARM, i.MX95, and QEMU -- runnable in a simulator, no hardware needed. Part of a 100+ course free learning library."
 ---
 
 # Embedded Linux & Architectures Mastery Path

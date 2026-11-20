@@ -1,3 +1,7 @@
+---
+description: "Level 2 (Intermediate) of the free Embedded Linux & Architectures Mastery Path. Move from using prebuilt images to owning the whole build — Yocto layers and…"
+---
+
 # Level 2 · Intermediate <span class="level-badge">Intermediate</span>
 
 Goal: move from using prebuilt images to owning the whole build — Yocto layers and recipes, U-Boot scripting and environment, kernel configuration and out-of-tree modules, udev rules, embedded networking, flash-aware storage, on-target debugging, read-only root filesystems, and production systemd — ending with a fully custom Yocto image booted in QEMU.

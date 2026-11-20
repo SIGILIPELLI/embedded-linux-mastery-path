@@ -1,3 +1,7 @@
+---
+description: "Level 4 (Master) of the free Embedded Linux & Architectures Mastery Path. Operate like a production BSP team — maintain long-lived board support, implement…"
+---
+
 # Level 4 · Master <span class="level-badge">Master</span>
 
 Goal: operate like a production BSP team — maintain long-lived board support, implement the secure boot chain (HAB/AHAB), ship OTA updates safely, use TrustZone/OP-TEE, accelerate ML on the NPU with eIQ, manage fleets, harden and patch for CVEs, and stay compliant with open-source licenses — ending with a production-grade i.MX95 product capstone.

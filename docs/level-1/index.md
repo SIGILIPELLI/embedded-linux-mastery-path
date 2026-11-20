@@ -1,3 +1,7 @@
+---
+description: "Level 1 (Entry) of the free Embedded Linux & Architectures Mastery Path. Understand what embedded Linux is and how it differs from both desktop Linux and…"
+---
+
 # Level 1 · Entry <span class="level-badge">Foundations</span>
 
 Goal: understand what embedded Linux is and how it differs from both desktop
