@@ -53,9 +53,11 @@ markdown_extensions:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/progress-tracker.css
+  - stylesheets/final-quiz.css
 
 extra_javascript:
   - javascripts/progress-tracker.js
+  - javascripts/final-quiz.js
 
 
 
@@ -125,3 +127,5 @@ nav:
       - "08 · Security Hardening & CVE Management": level-4/08-security-hardening.md
       - "09 · Compliance & Open-Source Licensing": level-4/09-compliance-licensing.md
       - "10 · Capstone — Production-Grade i.MX95 Product": level-4/10-capstone-imx95-product.md
+  - "🎯 Final Quiz": quiz.md
+
