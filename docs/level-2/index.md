@@ -18,4 +18,3 @@ Goal: move from using prebuilt images to owning the whole build — Yocto layers
 8. [Read-Only Rootfs & Factory Reset](08-read-only-rootfs.md)
 9. [systemd Deep Dive](09-systemd-deep-dive.md)
 10. [Project — Custom Yocto Image for QEMU](10-project-yocto-qemu-image.md)
-

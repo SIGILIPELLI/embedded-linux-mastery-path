@@ -18,4 +18,3 @@ Goal: go below the userland — write kernel drivers against the device model, e
 8. [Power Management & Thermal](08-power-management-thermal.md)
 9. [Performance Profiling (perf, ftrace)](09-performance-profiling.md)
 10. [Project — Sensor Driver + Userspace Stack](10-project-sensor-driver.md)
-

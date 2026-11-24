@@ -18,4 +18,3 @@ Goal: operate like a production BSP team — maintain long-lived board support, 
 8. [Security Hardening & CVE Management](08-security-hardening.md)
 9. [Compliance & Open-Source Licensing](09-compliance-licensing.md)
 10. [Capstone — Production-Grade i.MX95 Product](10-capstone-imx95-product.md)
-
