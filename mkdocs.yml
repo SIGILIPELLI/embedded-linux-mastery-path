@@ -94,7 +94,7 @@ nav:
       - "07 · Device Trees": level-1/07-device-trees.md
       - "08 · Init Systems & Services": level-1/08-init-systems-services.md
       - "09 · Building a Rootfs with Buildroot": level-1/09-buildroot-rootfs.md
-      - "10 · Capstone — Tiny Linux Appliance": level-1/10-capstone-appliance.md
+      - "10 · Project — Tiny Linux Appliance": level-1/10-capstone-appliance.md
   - "Level 2 · Intermediate":
       - Overview: level-2/index.md
       - "01 · Yocto Fundamentals": level-2/01-yocto-fundamentals.md
