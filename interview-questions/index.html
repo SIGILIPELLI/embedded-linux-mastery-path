@@ -1,0 +1,4227 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="179 Embedded Linux & Architectures interview questions with answers and explanations, from beginner to advanced, organised by level. Free, from the Embedded Linux & Architectures Mastery Path.">
+      
+      
+      
+        <link rel="canonical" href="https://learnmasterypath.com/embedded-linux-mastery-path/interview-questions/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../cheat-sheet/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+  
+  <title>Embedded Linux &amp; Architectures Interview Questions and Answers (179 Questions)</title>
+
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../stylesheets/progress-tracker.css">
+    
+      <link rel="stylesheet" href="../stylesheets/final-quiz.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-05VBGCXN12"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-05VBGCXN12');
+  </script>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mastery Path">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Embedded Linux &amp; Architectures Interview Questions and Answers (179 Questions)">
+  <meta property="og:description" content="179 Embedded Linux &amp; Architectures interview questions with answers and explanations, from beginner to advanced, organised by level. Free, from the Embedded Linux &amp; Architectures Mastery Path.">
+  <meta property="og:url" content="https://learnmasterypath.com/embedded-linux-mastery-path/interview-questions/">
+  <meta property="og:image" content="https://learnmasterypath.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mastery Path: free structured courses, beginner to master">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Embedded Linux &amp; Architectures Interview Questions and Answers (179 Questions)">
+  <meta name="twitter:description" content="179 Embedded Linux &amp; Architectures interview questions with answers and explanations, from beginner to advanced, organised by level. Free, from the Embedded Linux &amp; Architectures Mastery Path.">
+  <meta name="twitter:image" content="https://learnmasterypath.com/og-image.png">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9440969811959397"
+     crossorigin="anonymous"></script><script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Mastery Path", "item": "https://learnmasterypath.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Embedded Linux \u0026 Architectures Mastery Path", "item": "https://learnmasterypath.com/embedded-linux-mastery-path/"},
+      {"@type": "ListItem", "position": 3, "name": "Interview Questions", "item": "https://learnmasterypath.com/embedded-linux-mastery-path/interview-questions/"}
+    ]
+  }
+  </script>
+  <style>
+    .md-banner a:hover { text-decoration: underline !important; }
+    .mp-related { margin-top: 2.4rem; padding-top: 1rem; border-top: 1px solid var(--md-default-fg-color--lightest); font-size: .78rem; }
+    .mp-related h2 { font-size: .9rem; margin: 0 0 .5rem; }
+    .mp-related ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem .9rem; }
+    .mp-related li { margin: 0 !important; }
+  </style>
+  <script type="application/json" id="mp-course-meta">{"home": false, "id": "embedded-linux-mastery-path", "name": "Embedded Linux \u0026 Architectures Mastery Path", "repo": "https://github.com/SIGILIPELLI/embedded-linux-mastery-path", "src": "interview-questions.md", "url": "https://learnmasterypath.com/embedded-linux-mastery-path/"}</script>
+  <link rel="stylesheet" href="https://learnmasterypath.com/assets/learn.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://learnmasterypath.com/assets/course.css?v=1">
+  <script src="https://learnmasterypath.com/assets/learn.js" defer></script>
+  <script src="https://learnmasterypath.com/assets/signup.js" defer></script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#embedded-linux-architectures-interview-questions-and-answers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+  <a href="https://learnmasterypath.com/" style="color: inherit; text-decoration: none;">
+    &larr; Mastery Path &middot; all 100+ free courses
+  </a>
+  <span style="opacity: .6; margin: 0 .6em;">|</span>
+  <a href="https://learnmasterypath.com/search/" style="color: inherit; text-decoration: none;">Search all courses</a>
+  <span style="opacity: .6; margin: 0 .6em;">|</span>
+  <a href="https://learnmasterypath.com/resume/" style="color: inherit; font-weight: 700; text-decoration: none;">
+    Got the skills? Free resume ATS check &rarr;
+  </a>
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Embedded Linux &amp; Architectures Mastery Path" class="md-header__button md-logo" aria-label="Embedded Linux & Architectures Mastery Path" data-md-component="logo">
+      <svg class="mp-mark" viewBox="0 0 160 160" role="img" aria-label="Mastery Path logo">
+  <circle cx="80" cy="80" r="74" fill="#FAF7EF" stroke="#2FA98D" stroke-width="5"/>
+  <rect class="mp-bar mp-bar-1" x="36" y="90" width="17" height="24" rx="5" fill="#2FA98D"/>
+  <rect class="mp-bar mp-bar-2" x="59" y="74" width="17" height="40" rx="5" fill="#7FC9B7"/>
+  <rect class="mp-bar mp-bar-3" x="82" y="56" width="17" height="58" rx="5" fill="#E0B457"/>
+  <rect class="mp-bar mp-bar-4" x="105" y="38" width="17" height="76" rx="5" fill="#C97B4A"/>
+  <circle class="mp-dot" cx="44.5" cy="82" r="7" fill="#22261f"/>
+</svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Embedded Linux & Architectures Mastery Path
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Embedded Linux & Architectures Interview Questions and Answers (179 Questions)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SIGILIPELLI/embedded-linux-mastery-path" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    embedded-linux-mastery-path
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Interview Questions
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cheat-sheet/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cheat Sheet
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../level-1/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Level 1 · Entry
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../level-2/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Level 2 · Intermediate
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../level-3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Level 3 · Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../level-4/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Level 4 · Master
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../quiz/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Final Quiz
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Embedded Linux &amp; Architectures Mastery Path" class="md-nav__button md-logo" aria-label="Embedded Linux & Architectures Mastery Path" data-md-component="logo">
+      <svg class="mp-mark" viewBox="0 0 160 160" role="img" aria-label="Mastery Path logo">
+  <circle cx="80" cy="80" r="74" fill="#FAF7EF" stroke="#2FA98D" stroke-width="5"/>
+  <rect class="mp-bar mp-bar-1" x="36" y="90" width="17" height="24" rx="5" fill="#2FA98D"/>
+  <rect class="mp-bar mp-bar-2" x="59" y="74" width="17" height="40" rx="5" fill="#7FC9B7"/>
+  <rect class="mp-bar mp-bar-3" x="82" y="56" width="17" height="58" rx="5" fill="#E0B457"/>
+  <rect class="mp-bar mp-bar-4" x="105" y="38" width="17" height="76" rx="5" fill="#C97B4A"/>
+  <circle class="mp-dot" cx="44.5" cy="82" r="7" fill="#22261f"/>
+</svg>
+    </a>
+    Embedded Linux & Architectures Mastery Path
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SIGILIPELLI/embedded-linux-mastery-path" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    embedded-linux-mastery-path
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Questions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#level-1-entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 1 · Entry
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Level 1 · Entry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-what-is-embedded-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01 · What Is Embedded Linux?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-cpu-architectures-101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02 · CPU Architectures 101
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-the-boot-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03 · The Boot Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04-running-embedded-linux-in-qemu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04 · Running Embedded Linux in QEMU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05-busybox-the-minimal-userland" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05 · BusyBox &amp; the Minimal Userland
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06-cross-compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06 · Cross-Compilation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07-device-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07 · Device Trees
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#08-init-systems-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08 · Init Systems &amp; Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#09-building-a-rootfs-with-buildroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09 · Building a Rootfs with Buildroot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-capstone-tiny-linux-appliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 · Capstone — Tiny Linux Appliance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#level-2-intermediate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 2 · Intermediate
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Level 2 · Intermediate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-yocto-fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01 · Yocto Fundamentals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-u-boot-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02 · U-Boot Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-kernel-configuration-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03 · Kernel Configuration &amp; Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04-udev-device-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04 · udev &amp; Device Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05-embedded-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05 · Embedded Networking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06-storage-filesystems-ubi-overlayfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06 · Storage &amp; Filesystems (UBI, overlayfs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07-debugging-tracing-gdbserver-strace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07 · Debugging &amp; Tracing (gdbserver, strace)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#08-read-only-rootfs-factory-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08 · Read-Only Rootfs &amp; Factory Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#09-systemd-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09 · systemd Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-project-custom-yocto-image-for-qemu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 · Project — Custom Yocto Image for QEMU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#level-3-advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 3 · Advanced
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Level 3 · Advanced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-kernel-driver-development-char-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01 · Kernel Driver Development — Char Drivers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-platform-drivers-the-device-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02 · Platform Drivers &amp; the Device Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-device-tree-overlays" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03 · Device Tree Overlays
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04-interrupts-kernel-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04 · Interrupts &amp; Kernel Concurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05-heterogeneous-compute-remoteproc-rpmsg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05 · Heterogeneous Compute — remoteproc &amp; RPMsg
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06-real-time-linux-preempt_rt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06 · Real-Time Linux (PREEMPT_RT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07-graphics-drmkms-wayland" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07 · Graphics — DRM/KMS &amp; Wayland
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#08-power-management-thermal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08 · Power Management &amp; Thermal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#09-performance-profiling-perf-ftrace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09 · Performance Profiling (perf, ftrace)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-project-sensor-driver-userspace-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 · Project — Sensor Driver + Userspace Stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#level-4-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 4 · Master
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Level 4 · Master">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-production-bsp-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01 · Production BSP Maintenance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-secure-boot-chain-habahab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02 · Secure Boot Chain (HAB/AHAB)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-ota-updates-rauc-swupdate-ostree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03 · OTA Updates (RAUC, SWUpdate, OSTree)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04-trusted-execution-op-tee-trustzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04 · Trusted Execution — OP-TEE &amp; TrustZone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05-npu-ml-acceleration-eiq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05 · NPU &amp; ML Acceleration (eIQ)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06-containers-virtualization-on-embedded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06 · Containers &amp; Virtualization on Embedded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07-fleet-management-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07 · Fleet Management &amp; Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#08-security-hardening-cve-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08 · Security Hardening &amp; CVE Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#09-compliance-open-source-licensing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09 · Compliance &amp; Open-Source Licensing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-capstone-production-grade-imx95-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 · Capstone — Production-Grade i.MX95 Product
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mixed-questions-across-all-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mixed questions across all levels
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-coding-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical coding questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical coding questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ab-update-with-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A/B update with rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match-device-tree-nodes-to-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Match device tree nodes to drivers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheat-sheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cheat Sheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../level-1/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Level 1 · Entry
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Level 1 · Entry
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/01-what-is-embedded-linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · What Is Embedded Linux?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/02-cpu-architectures-101/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · CPU Architectures 101
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/03-boot-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · The Boot Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/04-qemu-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · Running Embedded Linux in QEMU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/05-busybox-minimal-userland/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · BusyBox & the Minimal Userland
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/06-cross-compilation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Cross-Compilation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/07-device-trees/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · Device Trees
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/08-init-systems-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    08 · Init Systems & Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/09-buildroot-rootfs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · Building a Rootfs with Buildroot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-1/10-capstone-appliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Project — Tiny Linux Appliance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../level-2/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Level 2 · Intermediate
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Level 2 · Intermediate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/01-yocto-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · Yocto Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/02-u-boot-deep-dive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · U-Boot Deep Dive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/03-kernel-config-modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · Kernel Configuration & Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/04-udev-device-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · udev & Device Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/05-embedded-networking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Embedded Networking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/06-storage-filesystems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Storage & Filesystems (UBI, overlayfs)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/07-debugging-tracing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · Debugging & Tracing (gdbserver, strace)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/08-read-only-rootfs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    08 · Read-Only Rootfs & Factory Reset
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/09-systemd-deep-dive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · systemd Deep Dive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-2/10-project-yocto-qemu-image/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Project — Custom Yocto Image for QEMU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../level-3/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Level 3 · Advanced
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Level 3 · Advanced
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/01-kernel-driver-development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · Kernel Driver Development — Char Drivers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/02-platform-drivers-device-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · Platform Drivers & the Device Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/03-device-tree-overlays/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · Device Tree Overlays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/04-interrupts-kernel-concurrency/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · Interrupts & Kernel Concurrency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/05-remoteproc-rpmsg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Heterogeneous Compute — remoteproc & RPMsg
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/06-real-time-preempt-rt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Real-Time Linux (PREEMPT_RT)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/07-graphics-drm-wayland/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · Graphics — DRM/KMS & Wayland
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/08-power-management-thermal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    08 · Power Management & Thermal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/09-performance-profiling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · Performance Profiling (perf, ftrace)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-3/10-project-sensor-driver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Project — Sensor Driver + Userspace Stack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../level-4/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Level 4 · Master
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Level 4 · Master
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/01-production-bsp-maintenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · Production BSP Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/02-secure-boot-hab-ahab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · Secure Boot Chain (HAB/AHAB)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/03-ota-updates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · OTA Updates (RAUC, SWUpdate, OSTree)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/04-op-tee-trustzone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · Trusted Execution — OP-TEE & TrustZone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/05-npu-ml-acceleration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · NPU & ML Acceleration (eIQ)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/06-containers-virtualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Containers & Virtualization on Embedded
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/07-fleet-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · Fleet Management & Provisioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/08-security-hardening/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    08 · Security Hardening & CVE Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/09-compliance-licensing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · Compliance & Open-Source Licensing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../level-4/10-capstone-imx95-product/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Capstone — Production-Grade i.MX95 Product
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quiz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Final Quiz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#level-1-entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 1 · Entry
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Level 1 · Entry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-what-is-embedded-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01 · What Is Embedded Linux?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-cpu-architectures-101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02 · CPU Architectures 101
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-the-boot-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03 · The Boot Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04-running-embedded-linux-in-qemu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04 · Running Embedded Linux in QEMU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05-busybox-the-minimal-userland" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05 · BusyBox &amp; the Minimal Userland
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06-cross-compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06 · Cross-Compilation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07-device-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07 · Device Trees
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#08-init-systems-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08 · Init Systems &amp; Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#09-building-a-rootfs-with-buildroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09 · Building a Rootfs with Buildroot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-capstone-tiny-linux-appliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 · Capstone — Tiny Linux Appliance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#level-2-intermediate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 2 · Intermediate
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Level 2 · Intermediate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-yocto-fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01 · Yocto Fundamentals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-u-boot-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02 · U-Boot Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-kernel-configuration-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03 · Kernel Configuration &amp; Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04-udev-device-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04 · udev &amp; Device Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05-embedded-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05 · Embedded Networking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06-storage-filesystems-ubi-overlayfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06 · Storage &amp; Filesystems (UBI, overlayfs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07-debugging-tracing-gdbserver-strace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07 · Debugging &amp; Tracing (gdbserver, strace)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#08-read-only-rootfs-factory-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08 · Read-Only Rootfs &amp; Factory Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#09-systemd-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09 · systemd Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-project-custom-yocto-image-for-qemu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 · Project — Custom Yocto Image for QEMU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#level-3-advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 3 · Advanced
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Level 3 · Advanced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-kernel-driver-development-char-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01 · Kernel Driver Development — Char Drivers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-platform-drivers-the-device-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02 · Platform Drivers &amp; the Device Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-device-tree-overlays" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03 · Device Tree Overlays
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04-interrupts-kernel-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04 · Interrupts &amp; Kernel Concurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05-heterogeneous-compute-remoteproc-rpmsg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05 · Heterogeneous Compute — remoteproc &amp; RPMsg
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06-real-time-linux-preempt_rt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06 · Real-Time Linux (PREEMPT_RT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07-graphics-drmkms-wayland" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07 · Graphics — DRM/KMS &amp; Wayland
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#08-power-management-thermal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08 · Power Management &amp; Thermal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#09-performance-profiling-perf-ftrace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09 · Performance Profiling (perf, ftrace)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-project-sensor-driver-userspace-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 · Project — Sensor Driver + Userspace Stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#level-4-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 4 · Master
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Level 4 · Master">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-production-bsp-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01 · Production BSP Maintenance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-secure-boot-chain-habahab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02 · Secure Boot Chain (HAB/AHAB)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-ota-updates-rauc-swupdate-ostree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03 · OTA Updates (RAUC, SWUpdate, OSTree)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04-trusted-execution-op-tee-trustzone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04 · Trusted Execution — OP-TEE &amp; TrustZone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05-npu-ml-acceleration-eiq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05 · NPU &amp; ML Acceleration (eIQ)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06-containers-virtualization-on-embedded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06 · Containers &amp; Virtualization on Embedded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07-fleet-management-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07 · Fleet Management &amp; Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#08-security-hardening-cve-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08 · Security Hardening &amp; CVE Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#09-compliance-open-source-licensing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09 · Compliance &amp; Open-Source Licensing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-capstone-production-grade-imx95-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 · Capstone — Production-Grade i.MX95 Product
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mixed-questions-across-all-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mixed questions across all levels
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-coding-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical coding questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical coding questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ab-update-with-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A/B update with rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match-device-tree-nodes-to-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Match device tree nodes to drivers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+                  
+
+
+  
+  
+
+
+<h1 id="embedded-linux-architectures-interview-questions-and-answers">Embedded Linux &amp; Architectures Interview Questions and Answers<a class="headerlink" href="#embedded-linux-architectures-interview-questions-and-answers" title="Permanent link">&para;</a></h1>
+<p><strong>179 questions</strong> with the correct answer and a short explanation, organised from beginner (Level 1) to advanced (Level 4). Every question comes from a lesson in the free Embedded Linux &amp; Architectures Mastery Path, so you can open the lesson to go deeper.</p>
+<div class="admonition tip">
+<p class="admonition-title">Practise, don't just read</p>
+<p>Each lesson also ends with an interactive quiz, and the <a href="../quiz/">final quiz</a> tests all four levels. Try to answer each question below before reading the answer.</p>
+</div>
+<h2 id="level-1-entry">Level 1 · Entry<a class="headerlink" href="#level-1-entry" title="Permanent link">&para;</a></h2>
+<h3 id="01-what-is-embedded-linux"><a href="../level-1/01-what-is-embedded-linux/">01 · What Is Embedded Linux?</a><a class="headerlink" href="#01-what-is-embedded-linux" title="Permanent link">&para;</a></h3>
+<p><strong>Q1.</strong> Why is Linux used in so many embedded products?</p>
+<p><strong>Answer:</strong> Free, portable, scalable and with a huge driver and software ecosystem</p>
+<p>Routers, TVs, cars, controllers.</p>
+<p><strong>Q2.</strong> What does 'embedded Linux' mean?</p>
+<p><strong>Answer:</strong> Linux customized for a dedicated device, typically headless and built from source</p>
+<p>You own the whole stack.</p>
+<p><strong>Q3.</strong> Why is there no package manager like apt on most products?</p>
+<p><strong>Answer:</strong> Images are minimal and fixed for size, security and reproducibility</p>
+<p>You rebuild the image.</p>
+<p><strong>Q4.</strong> Which is a typical embedded constraint?</p>
+<p><strong>Answer:</strong> Limited RAM/flash, no display and power-loss risks</p>
+<p>Design for it.</p>
+<h3 id="02-cpu-architectures-101"><a href="../level-1/02-cpu-architectures-101/">02 · CPU Architectures 101</a><a class="headerlink" href="#02-cpu-architectures-101" title="Permanent link">&para;</a></h3>
+<p><strong>Q5.</strong> What is an ISA?</p>
+<p><strong>Answer:</strong> The instruction set architecture defining the instructions a CPU executes</p>
+<p>ARM, x86, RISC-V.</p>
+<p><strong>Q6.</strong> Why can't you run an ARM binary on x86 directly?</p>
+<p><strong>Answer:</strong> Different instruction sets require emulation or cross-compilation</p>
+<p>QEMU emulates.</p>
+<p><strong>Q7.</strong> What are the Arm Cortex families A, R and M for?</p>
+<p><strong>Answer:</strong> A: application (Linux), R: real-time, M: microcontroller</p>
+<p>Different roles.</p>
+<p><strong>Q8.</strong> What does the 'endianness' of a CPU describe?</p>
+<p><strong>Answer:</strong> The byte order of multi-byte values in memory</p>
+<p>Mostly little-endian today.</p>
+<h3 id="03-the-boot-flow"><a href="../level-1/03-boot-flow/">03 · The Boot Flow</a><a class="headerlink" href="#03-the-boot-flow" title="Permanent link">&para;</a></h3>
+<p><strong>Q9.</strong> What's the typical boot order?</p>
+<p><strong>Answer:</strong> Boot ROM, SPL, U-Boot, kernel, init</p>
+<p>A relay race.</p>
+<p><strong>Q10.</strong> What does the boot ROM do?</p>
+<p><strong>Answer:</strong> Runs from on-chip memory to load the first-stage bootloader from boot media</p>
+<p>Fixed in silicon.</p>
+<p><strong>Q11.</strong> What does U-Boot do?</p>
+<p><strong>Answer:</strong> Initializes hardware, loads the kernel, device tree and initramfs, then jumps to the kernel</p>
+<p>Interactive for debugging.</p>
+<p><strong>Q12.</strong> What does the kernel hand control to at the end of boot?</p>
+<p><strong>Answer:</strong> The init process (PID 1)</p>
+<p>Starts userspace.</p>
+<h3 id="04-running-embedded-linux-in-qemu"><a href="../level-1/04-qemu-lab/">04 · Running Embedded Linux in QEMU</a><a class="headerlink" href="#04-running-embedded-linux-in-qemu" title="Permanent link">&para;</a></h3>
+<p><strong>Q13.</strong> What is QEMU used for in the course?</p>
+<p><strong>Answer:</strong> Emulating a full ARM board on a laptop for safe practice</p>
+<p>No hardware needed.</p>
+<p><strong>Q14.</strong> How do you stop a QEMU session started with -nographic?</p>
+<p><strong>Answer:</strong> Ctrl-A then X</p>
+<p>QEMU's escape sequence.</p>
+<p><strong>Q15.</strong> What does <code>-M virt</code> select?</p>
+<p><strong>Answer:</strong> A generic virtual ARM machine type</p>
+<p>Board model.</p>
+<p><strong>Q16.</strong> Why is emulation slower than native?</p>
+<p><strong>Answer:</strong> Instructions are translated at run time</p>
+<p>Fine for labs.</p>
+<h3 id="05-busybox-the-minimal-userland"><a href="../level-1/05-busybox-minimal-userland/">05 · BusyBox &amp; the Minimal Userland</a><a class="headerlink" href="#05-busybox-the-minimal-userland" title="Permanent link">&para;</a></h3>
+<p><strong>Q17.</strong> What is BusyBox?</p>
+<p><strong>Answer:</strong> A single binary providing many Unix utilities via applet names (symlinks)</p>
+<p>Small userland.</p>
+<p><strong>Q18.</strong> Why is <code>ls</code> in BusyBox a symlink?</p>
+<p><strong>Answer:</strong> BusyBox decides what to run from argv[0], the name it was invoked with</p>
+<p>Multi-call binary.</p>
+<p><strong>Q19.</strong> What's missing in a minimal userland?</p>
+<p><strong>Answer:</strong> apt, bash and a compiler</p>
+<p>By design.</p>
+<p><strong>Q20.</strong> Why minimize userland?</p>
+<p><strong>Answer:</strong> Smaller attack surface and flash footprint</p>
+<p>Ship what you need.</p>
+<h3 id="06-cross-compilation"><a href="../level-1/06-cross-compilation/">06 · Cross-Compilation</a><a class="headerlink" href="#06-cross-compilation" title="Permanent link">&para;</a></h3>
+<p><strong>Q21.</strong> Why can't the target compile its own software?</p>
+<p><strong>Answer:</strong> Production images ship no compiler and have limited resources</p>
+<p>Cross-compile on the host.</p>
+<p><strong>Q22.</strong> What does a cross-compiler's prefix like arm-linux-gnueabihf- indicate?</p>
+<p><strong>Answer:</strong> Target architecture, OS and ABI</p>
+<p>CROSS_COMPILE.</p>
+<p><strong>Q23.</strong> What is a sysroot?</p>
+<p><strong>Answer:</strong> The target's headers and libraries used while cross-compiling</p>
+<p>--sysroot.</p>
+<p><strong>Q24.</strong> Why match the ABI and libc?</p>
+<p><strong>Answer:</strong> Binaries must be compatible with the target's libraries</p>
+<p>glibc vs musl.</p>
+<h3 id="07-device-trees"><a href="../level-1/07-device-trees/">07 · Device Trees</a><a class="headerlink" href="#07-device-trees" title="Permanent link">&para;</a></h3>
+<p><strong>Q25.</strong> Why do ARM boards need a device tree?</p>
+<p><strong>Answer:</strong> The hardware isn't discoverable, so the tree describes it to the kernel</p>
+<p>PCs enumerate via ACPI/PCI.</p>
+<p><strong>Q26.</strong> What format is the compiled device tree?</p>
+<p><strong>Answer:</strong> A .dtb binary produced by dtc from .dts source</p>
+<p>U-Boot passes it to the kernel.</p>
+<p><strong>Q27.</strong> What does a node's <code>compatible</code> property do?</p>
+<p><strong>Answer:</strong> Matches the node to a driver</p>
+<p>Driver binding.</p>
+<p><strong>Q28.</strong> What does <code>status = "disabled"</code> do?</p>
+<p><strong>Answer:</strong> Tells the kernel not to use that device</p>
+<p>Overlays can enable.</p>
+<h3 id="08-init-systems-services"><a href="../level-1/08-init-systems-services/">08 · Init Systems &amp; Services</a><a class="headerlink" href="#08-init-systems-services" title="Permanent link">&para;</a></h3>
+<p><strong>Q29.</strong> What does an init system do?</p>
+<p><strong>Answer:</strong> Starts services at boot and supervises them</p>
+<p>PID 1.</p>
+<p><strong>Q30.</strong> What's the difference between BusyBox init and systemd?</p>
+<p><strong>Answer:</strong> BusyBox init is tiny and script-based; systemd adds dependencies, supervision and features</p>
+<p>Choose by need.</p>
+<p><strong>Q31.</strong> Why restart a crashed service automatically?</p>
+<p><strong>Answer:</strong> A headless device has no user to restart it</p>
+<p>Restart=always.</p>
+<p><strong>Q32.</strong> What does a service need to start reliably?</p>
+<p><strong>Answer:</strong> Correct dependencies and ordering</p>
+<p>After= and Requires=.</p>
+<h3 id="09-building-a-rootfs-with-buildroot"><a href="../level-1/09-buildroot-rootfs/">09 · Building a Rootfs with Buildroot</a><a class="headerlink" href="#09-building-a-rootfs-with-buildroot" title="Permanent link">&para;</a></h3>
+<p><strong>Q33.</strong> What is Buildroot?</p>
+<p><strong>Answer:</strong> A build system generating a complete embedded Linux image from source</p>
+<p>Simple and fixed-image oriented.</p>
+<p><strong>Q34.</strong> What does <code>make menuconfig</code> do in Buildroot?</p>
+<p><strong>Answer:</strong> Configures the target, toolchain, kernel and packages</p>
+<p>Writes .config.</p>
+<p><strong>Q35.</strong> When is Buildroot a better fit than Yocto?</p>
+<p><strong>Answer:</strong> One fixed image with a simple workflow</p>
+<p>Yocto scales for BSPs.</p>
+<p><strong>Q36.</strong> What does Buildroot output include?</p>
+<p><strong>Answer:</strong> Kernel image, rootfs and bootloader images ready to boot</p>
+<p>output/images.</p>
+<h3 id="10-capstone-tiny-linux-appliance"><a href="../level-1/10-capstone-appliance/">10 · Capstone — Tiny Linux Appliance</a><a class="headerlink" href="#10-capstone-tiny-linux-appliance" title="Permanent link">&para;</a></h3>
+<p><strong>Q37.</strong> What does the appliance capstone assemble?</p>
+<p><strong>Answer:</strong> A Buildroot QEMU image running a cross-compiled C application as a service</p>
+<p>All Level 1 pieces.</p>
+<p><strong>Q38.</strong> How do you verify it boots?</p>
+<p><strong>Answer:</strong> Boot in QEMU and check the service output and logs</p>
+<p>Test.</p>
+<p><strong>Q39.</strong> What makes it an 'appliance'?</p>
+<p><strong>Answer:</strong> It does one job automatically at boot</p>
+<p>No user needed.</p>
+<p><strong>Q40.</strong> What should the service do on crash?</p>
+<p><strong>Answer:</strong> Restart automatically</p>
+<p>Supervised.</p>
+<h2 id="level-2-intermediate">Level 2 · Intermediate<a class="headerlink" href="#level-2-intermediate" title="Permanent link">&para;</a></h2>
+<h3 id="01-yocto-fundamentals"><a href="../level-2/01-yocto-fundamentals/">01 · Yocto Fundamentals</a><a class="headerlink" href="#01-yocto-fundamentals" title="Permanent link">&para;</a></h3>
+<p><strong>Q41.</strong> What is Yocto?</p>
+<p><strong>Answer:</strong> A framework for building custom Linux distributions with layers and recipes</p>
+<p>BitBake builds.</p>
+<p><strong>Q42.</strong> What is a layer?</p>
+<p><strong>Answer:</strong> A collection of recipes and config (e.g. a vendor BSP layer)</p>
+<p>meta-*.</p>
+<p><strong>Q43.</strong> What does BitBake do?</p>
+<p><strong>Answer:</strong> Executes recipes' tasks to fetch, build and package software</p>
+<p>The build engine.</p>
+<p><strong>Q44.</strong> Why do SoC vendors ship Yocto layers?</p>
+<p><strong>Answer:</strong> Product lines need reproducible, maintainable BSPs across boards</p>
+<p>Standard practice.</p>
+<h3 id="02-u-boot-deep-dive"><a href="../level-2/02-u-boot-deep-dive/">02 · U-Boot Deep Dive</a><a class="headerlink" href="#02-u-boot-deep-dive" title="Permanent link">&para;</a></h3>
+<p><strong>Q45.</strong> What problem does U-Boot's environment solve?</p>
+<p><strong>Answer:</strong> Stores boot commands and variables like bootargs</p>
+<p>printenv/setenv.</p>
+<p><strong>Q46.</strong> What's <code>bootargs</code>?</p>
+<p><strong>Answer:</strong> The kernel command line passed by the bootloader</p>
+<p>root=, console=.</p>
+<p><strong>Q47.</strong> What does <code>saveenv</code> do?</p>
+<p><strong>Answer:</strong> Persists environment changes to storage</p>
+<p>Else lost on reboot.</p>
+<p><strong>Q48.</strong> If the kernel won't load, what do you check in U-Boot?</p>
+<p><strong>Answer:</strong> Load addresses, file locations and device tree/bootargs</p>
+<p>Common issues.</p>
+<h3 id="03-kernel-configuration-modules"><a href="../level-2/03-kernel-config-modules/">03 · Kernel Configuration &amp; Modules</a><a class="headerlink" href="#03-kernel-configuration-modules" title="Permanent link">&para;</a></h3>
+<p><strong>Q49.</strong> What's the difference between built-in and a module?</p>
+<p><strong>Answer:</strong> Built-in code is in the kernel image; modules load at run time</p>
+<p>=y vs =m.</p>
+<p><strong>Q50.</strong> What does <code>modprobe</code> do?</p>
+<p><strong>Answer:</strong> Loads a module and its dependencies</p>
+<p>insmod doesn't resolve deps.</p>
+<p><strong>Q51.</strong> What does <code>make menuconfig</code> produce for the kernel?</p>
+<p><strong>Answer:</strong> A .config of selected options</p>
+<p>Then build.</p>
+<p><strong>Q52.</strong> Why trim kernel config for products?</p>
+<p><strong>Answer:</strong> Smaller size, faster boot and smaller attack surface</p>
+<p>Only needed drivers.</p>
+<h3 id="04-udev-device-management"><a href="../level-2/04-udev-device-management/">04 · udev &amp; Device Management</a><a class="headerlink" href="#04-udev-device-management" title="Permanent link">&para;</a></h3>
+<p><strong>Q53.</strong> What does udev do?</p>
+<p><strong>Answer:</strong> Creates device nodes in /dev in response to kernel uevents</p>
+<p>Rules-driven.</p>
+<p><strong>Q54.</strong> What's a udev rule used for?</p>
+<p><strong>Answer:</strong> Naming devices, setting permissions and running actions on events</p>
+<p>/etc/udev/rules.d.</p>
+<p><strong>Q55.</strong> What does devtmpfs provide?</p>
+<p><strong>Answer:</strong> A kernel-populated /dev with basic nodes before userspace runs</p>
+<p>mdev/udev refine.</p>
+<p><strong>Q56.</strong> What triggers a uevent?</p>
+<p><strong>Answer:</strong> Hardware being added, removed or changed</p>
+<p>Netlink.</p>
+<h3 id="05-embedded-networking"><a href="../level-2/05-embedded-networking/">05 · Embedded Networking</a><a class="headerlink" href="#05-embedded-networking" title="Permanent link">&para;</a></h3>
+<p><strong>Q57.</strong> What must an embedded network setup handle?</p>
+<p><strong>Answer:</strong> Automatic link recovery without user interaction</p>
+<p>Robust.</p>
+<p><strong>Q58.</strong> What do systemd-networkd or ifupdown replace?</p>
+<p><strong>Answer:</strong> NetworkManager's GUI-oriented management on headless devices</p>
+<p>Lightweight.</p>
+<p><strong>Q59.</strong> What does a static IP vs DHCP choice depend on?</p>
+<p><strong>Answer:</strong> Deployment: fixed infrastructure vs flexible networks</p>
+<p>Both supported.</p>
+<p><strong>Q60.</strong> Why configure timeouts and retries?</p>
+<p><strong>Answer:</strong> Links come and go; recovery shouldn't need a human</p>
+<p>At 3 a.m.</p>
+<h3 id="06-storage-filesystems-ubi-overlayfs"><a href="../level-2/06-storage-filesystems/">06 · Storage &amp; Filesystems (UBI, overlayfs)</a><a class="headerlink" href="#06-storage-filesystems-ubi-overlayfs" title="Permanent link">&para;</a></h3>
+<p><strong>Q61.</strong> What kills embedded products most often?</p>
+<p><strong>Answer:</strong> Power cuts corrupting writable flash filesystems</p>
+<p>Plan for it.</p>
+<p><strong>Q62.</strong> Why use UBIFS/F2FS or read-only squashfs on raw flash/eMMC?</p>
+<p><strong>Answer:</strong> Flash wear and corruption require suitable filesystems</p>
+<p>ext4 can work with care.</p>
+<p><strong>Q63.</strong> What is wear leveling?</p>
+<p><strong>Answer:</strong> Spreading writes across flash blocks to extend life</p>
+<p>FTL or filesystem.</p>
+<p><strong>Q64.</strong> What does <code>fsync</code> guarantee?</p>
+<p><strong>Answer:</strong> That data has reached storage before returning</p>
+<p>Critical for durability.</p>
+<h3 id="07-debugging-tracing-gdbserver-strace"><a href="../level-2/07-debugging-tracing/">07 · Debugging &amp; Tracing (gdbserver, strace)</a><a class="headerlink" href="#07-debugging-tracing-gdbserver-strace" title="Permanent link">&para;</a></h3>
+<p><strong>Q65.</strong> What tools debug a remote target?</p>
+<p><strong>Answer:</strong> gdbserver on the target with gdb on the host, plus strace/ltrace and logs</p>
+<p>Debug cross.</p>
+<p><strong>Q66.</strong> What does <code>strace</code> show?</p>
+<p><strong>Answer:</strong> System calls a process makes</p>
+<p>Great for behavior.</p>
+<p><strong>Q67.</strong> Why keep an unstripped copy of binaries on the host?</p>
+<p><strong>Answer:</strong> Symbols are needed for readable backtraces and gdb</p>
+<p>Strip only the deployed copy.</p>
+<p><strong>Q68.</strong> What does <code>dmesg</code> show?</p>
+<p><strong>Answer:</strong> Kernel log messages</p>
+<p>Driver and boot issues.</p>
+<h3 id="08-read-only-rootfs-factory-reset"><a href="../level-2/08-read-only-rootfs/">08 · Read-Only Rootfs &amp; Factory Reset</a><a class="headerlink" href="#08-read-only-rootfs-factory-reset" title="Permanent link">&para;</a></h3>
+<p><strong>Q69.</strong> What does a read-only rootfs prevent?</p>
+<p><strong>Answer:</strong> Corruption of the root filesystem from unexpected power loss</p>
+<p>Writable data goes elsewhere.</p>
+<p><strong>Q70.</strong> Where does writable data go?</p>
+<p><strong>Answer:</strong> Separate /data partition (and tmpfs for volatile data)</p>
+<p>Persistent vs temporary.</p>
+<p><strong>Q71.</strong> How do you handle /var and /tmp on a read-only root?</p>
+<p><strong>Answer:</strong> Mount tmpfs or bind to /data</p>
+<p>Overlay or tmpfs.</p>
+<p><strong>Q72.</strong> What's an overlayfs used for?</p>
+<p><strong>Answer:</strong> Layering a writable layer over a read-only base</p>
+<p>Volatile or persistent.</p>
+<h3 id="09-systemd-deep-dive"><a href="../level-2/09-systemd-deep-dive/">09 · systemd Deep Dive</a><a class="headerlink" href="#09-systemd-deep-dive" title="Permanent link">&para;</a></h3>
+<p><strong>Q73.</strong> What does a systemd <code>Restart=on-failure</code> do?</p>
+<p><strong>Answer:</strong> Restarts the service if it exits with failure</p>
+<p>RestartSec sets delay.</p>
+<p><strong>Q74.</strong> What does the watchdog (WatchdogSec) enable?</p>
+<p><strong>Answer:</strong> Systemd restarts a service that stops sending heartbeats</p>
+<p>Detect hangs.</p>
+<p><strong>Q75.</strong> What does <code>Type=notify</code> mean?</p>
+<p><strong>Answer:</strong> The service tells systemd when it's ready</p>
+<p>sd_notify.</p>
+<p><strong>Q76.</strong> How do you see why a unit failed?</p>
+<p><strong>Answer:</strong> journalctl -u name and systemctl status</p>
+<p>Logs.</p>
+<h3 id="10-project-custom-yocto-image-for-qemu"><a href="../level-2/10-project-yocto-qemu-image/">10 · Project — Custom Yocto Image for QEMU</a><a class="headerlink" href="#10-project-custom-yocto-image-for-qemu" title="Permanent link">&para;</a></h3>
+<p><strong>Q77.</strong> What does the Yocto QEMU project combine?</p>
+<p><strong>Answer:</strong> A custom layer with an app recipe, unit, image recipe and persistent /data partition, booted with a read-only root</p>
+<p>Capstone for Level 2.</p>
+<p><strong>Q78.</strong> How do you verify read-only root?</p>
+<p><strong>Answer:</strong> Try writing to / (should fail) and confirm data persists in /data</p>
+<p>Test.</p>
+<p><strong>Q79.</strong> What's in an image recipe?</p>
+<p><strong>Answer:</strong> Which packages and features go into the rootfs</p>
+<p>IMAGE_INSTALL.</p>
+<p><strong>Q80.</strong> Why a custom layer?</p>
+<p><strong>Answer:</strong> Keep your changes separate from upstream layers</p>
+<p>Maintainability.</p>
+<h2 id="level-3-advanced">Level 3 · Advanced<a class="headerlink" href="#level-3-advanced" title="Permanent link">&para;</a></h2>
+<h3 id="01-kernel-driver-development-char-drivers"><a href="../level-3/01-kernel-driver-development/">01 · Kernel Driver Development — Char Drivers</a><a class="headerlink" href="#01-kernel-driver-development-char-drivers" title="Permanent link">&para;</a></h3>
+<p><strong>Q81.</strong> What's the smallest complete kernel driver unit?</p>
+<p><strong>Answer:</strong> A character driver with file operations</p>
+<p>open/read/write/release.</p>
+<p><strong>Q82.</strong> What does <code>insmod</code> do?</p>
+<p><strong>Answer:</strong> Loads a kernel module into the running kernel</p>
+<p>rmmod removes.</p>
+<p><strong>Q83.</strong> Why use copy_to_user instead of memcpy to userspace?</p>
+<p><strong>Answer:</strong> It safely handles user pointers and faults</p>
+<p>Kernel/user boundary.</p>
+<p><strong>Q84.</strong> What does a driver's major/minor identify?</p>
+<p><strong>Answer:</strong> The device number mapping a node to the driver</p>
+<p>cdev_add.</p>
+<h3 id="02-platform-drivers-the-device-model"><a href="../level-3/02-platform-drivers-device-model/">02 · Platform Drivers &amp; the Device Model</a><a class="headerlink" href="#02-platform-drivers-the-device-model" title="Permanent link">&para;</a></h3>
+<p><strong>Q85.</strong> What does the platform bus do?</p>
+<p><strong>Answer:</strong> Matches platform devices (from DT) to platform drivers by compatible string</p>
+<p>Non-discoverable devices.</p>
+<p><strong>Q86.</strong> What does <code>probe()</code> do?</p>
+<p><strong>Answer:</strong> Initializes the device when a driver is bound to it</p>
+<p>Allocate resources.</p>
+<p><strong>Q87.</strong> What's devm_ for?</p>
+<p><strong>Answer:</strong> Managed resource allocation freed automatically on unbind</p>
+<p>Prevents leaks.</p>
+<p><strong>Q88.</strong> How does the driver core match a driver?</p>
+<p><strong>Answer:</strong> Using of_match_table compatible strings</p>
+<p>Declarative.</p>
+<h3 id="03-device-tree-overlays"><a href="../level-3/03-device-tree-overlays/">03 · Device Tree Overlays</a><a class="headerlink" href="#03-device-tree-overlays" title="Permanent link">&para;</a></h3>
+<p><strong>Q89.</strong> What do device tree overlays do?</p>
+<p><strong>Answer:</strong> Modify the running hardware description without rebuilding the base dtb</p>
+<p>Daughter cards.</p>
+<p><strong>Q90.</strong> Why are overlays useful?</p>
+<p><strong>Answer:</strong> Support optional hardware or per-unit configuration</p>
+<p>Flexibility.</p>
+<p><strong>Q91.</strong> How are overlays applied?</p>
+<p><strong>Answer:</strong> By the bootloader (fdt apply) or at runtime via configfs</p>
+<p>Platform-dependent.</p>
+<p><strong>Q92.</strong> What must match for an overlay to apply?</p>
+<p><strong>Answer:</strong> Target nodes/labels in the base tree</p>
+<p>Else fails.</p>
+<h3 id="04-interrupts-kernel-concurrency"><a href="../level-3/04-interrupts-kernel-concurrency/">04 · Interrupts &amp; Kernel Concurrency</a><a class="headerlink" href="#04-interrupts-kernel-concurrency" title="Permanent link">&para;</a></h3>
+<p><strong>Q93.</strong> What's the top-half/bottom-half interrupt split?</p>
+<p><strong>Answer:</strong> Minimal work in the handler, deferred work to softirq/tasklet/workqueue</p>
+<p>Keep ISRs short.</p>
+<p><strong>Q94.</strong> Why can't you sleep in an interrupt handler?</p>
+<p><strong>Answer:</strong> It runs in atomic context with no process to schedule</p>
+<p>Use threaded IRQs.</p>
+<p><strong>Q95.</strong> What protects data shared between an ISR and process context?</p>
+<p><strong>Answer:</strong> spin_lock_irqsave</p>
+<p>Mutex can sleep.</p>
+<p><strong>Q96.</strong> What's SMP's effect on drivers?</p>
+<p><strong>Answer:</strong> Code can run concurrently on multiple CPUs, requiring locking</p>
+<p>Concurrency.</p>
+<h3 id="05-heterogeneous-compute-remoteproc-rpmsg"><a href="../level-3/05-remoteproc-rpmsg/">05 · Heterogeneous Compute — remoteproc &amp; RPMsg</a><a class="headerlink" href="#05-heterogeneous-compute-remoteproc-rpmsg" title="Permanent link">&para;</a></h3>
+<p><strong>Q97.</strong> What is remoteproc?</p>
+<p><strong>Answer:</strong> A framework to load and control firmware on a coprocessor like a Cortex-M</p>
+<p>Heterogeneous cores.</p>
+<p><strong>Q98.</strong> What is RPMsg?</p>
+<p><strong>Answer:</strong> A messaging protocol between Linux and remote processors over virtio/shared memory</p>
+<p>Mailbox + vrings.</p>
+<p><strong>Q99.</strong> Why use a Cortex-M alongside Linux?</p>
+<p><strong>Answer:</strong> Hard real-time and low-power tasks Linux can't guarantee</p>
+<p>Offload.</p>
+<p><strong>Q100.</strong> How is firmware loaded?</p>
+<p><strong>Answer:</strong> Via the remoteproc sysfs interface from /lib/firmware</p>
+<p>echo start &gt; state.</p>
+<h3 id="06-real-time-linux-preempt_rt"><a href="../level-3/06-real-time-preempt-rt/">06 · Real-Time Linux (PREEMPT_RT)</a><a class="headerlink" href="#06-real-time-linux-preempt_rt" title="Permanent link">&para;</a></h3>
+<p><strong>Q101.</strong> What does PREEMPT_RT do?</p>
+<p><strong>Answer:</strong> Makes the kernel mostly preemptible to bound latency</p>
+<p>Hard-ish real time.</p>
+<p><strong>Q102.</strong> What's a typical way to measure latency?</p>
+<p><strong>Answer:</strong> cyclictest</p>
+<p>Worst-case matters.</p>
+<p><strong>Q103.</strong> What causes latency spikes?</p>
+<p><strong>Answer:</strong> Long non-preemptible sections, interrupts and priority inversion</p>
+<p>RT tuning.</p>
+<p><strong>Q104.</strong> Which scheduling policy for RT tasks?</p>
+<p><strong>Answer:</strong> SCHED_FIFO or SCHED_RR with priorities</p>
+<p>Set via chrt.</p>
+<h3 id="07-graphics-drmkms-wayland"><a href="../level-3/07-graphics-drm-wayland/">07 · Graphics — DRM/KMS &amp; Wayland</a><a class="headerlink" href="#07-graphics-drmkms-wayland" title="Permanent link">&para;</a></h3>
+<p><strong>Q105.</strong> What does DRM/KMS handle?</p>
+<p><strong>Answer:</strong> Display modes and scanout via the kernel graphics subsystem</p>
+<p>Direct display.</p>
+<p><strong>Q106.</strong> What's Wayland?</p>
+<p><strong>Answer:</strong> A display server protocol where compositors manage clients (e.g. Weston)</p>
+<p>Replacing X11.</p>
+<p><strong>Q107.</strong> Why prefer DRM/Wayland in embedded?</p>
+<p><strong>Answer:</strong> Lean, modern and efficient versus X11</p>
+<p>Fewer components.</p>
+<p><strong>Q108.</strong> What's a framebuffer?</p>
+<p><strong>Answer:</strong> A memory region mapped to pixels on the display</p>
+<p>fbdev legacy.</p>
+<h3 id="08-power-management-thermal"><a href="../level-3/08-power-management-thermal/">08 · Power Management &amp; Thermal</a><a class="headerlink" href="#08-power-management-thermal" title="Permanent link">&para;</a></h3>
+<p><strong>Q109.</strong> What do runtime PM and cpuidle do?</p>
+<p><strong>Answer:</strong> Lower power by suspending idle devices and CPUs</p>
+<p>Battery life.</p>
+<p><strong>Q110.</strong> What does the thermal framework do?</p>
+<p><strong>Answer:</strong> Monitors temperatures and throttles via cooling devices</p>
+<p>Trip points.</p>
+<p><strong>Q111.</strong> What is DVFS?</p>
+<p><strong>Answer:</strong> Dynamic voltage and frequency scaling to trade power for speed</p>
+<p>cpufreq.</p>
+<p><strong>Q112.</strong> How do you check wake sources?</p>
+<p><strong>Answer:</strong> /sys/power and device wakeup attributes</p>
+<p>Debug suspend.</p>
+<h3 id="09-performance-profiling-perf-ftrace"><a href="../level-3/09-performance-profiling/">09 · Performance Profiling (perf, ftrace)</a><a class="headerlink" href="#09-performance-profiling-perf-ftrace" title="Permanent link">&para;</a></h3>
+<p><strong>Q113.</strong> What does <code>perf</code> do?</p>
+<p><strong>Answer:</strong> Profiles CPU events and finds hotspots</p>
+<p>perf top/record.</p>
+<p><strong>Q114.</strong> What's ftrace?</p>
+<p><strong>Answer:</strong> A kernel tracing framework for function and event tracing</p>
+<p>/sys/kernel/tracing.</p>
+<p><strong>Q115.</strong> What first for a performance problem?</p>
+<p><strong>Answer:</strong> Measure to find the bottleneck</p>
+<p>Evidence.</p>
+<p><strong>Q116.</strong> What does <code>top</code> show?</p>
+<p><strong>Answer:</strong> Processes' CPU and memory use</p>
+<p>Starting point.</p>
+<h3 id="10-project-sensor-driver-userspace-stack"><a href="../level-3/10-project-sensor-driver/">10 · Project — Sensor Driver + Userspace Stack</a><a class="headerlink" href="#10-project-sensor-driver-userspace-stack" title="Permanent link">&para;</a></h3>
+<p><strong>Q117.</strong> What does the sensor driver project combine?</p>
+<p><strong>Answer:</strong> A platform driver bound via DT, an IIO/char interface and tests</p>
+<p>Level 3 capstone.</p>
+<p><strong>Q118.</strong> What's IIO?</p>
+<p><strong>Answer:</strong> The Industrial I/O subsystem for sensors and converters</p>
+<p>Standard interface.</p>
+<p><strong>Q119.</strong> How do you test a driver without hardware?</p>
+<p><strong>Answer:</strong> Emulate with QEMU or a mock device</p>
+<p>Simulate.</p>
+<p><strong>Q120.</strong> What should the driver handle?</p>
+<p><strong>Answer:</strong> Probe errors, locking and cleanup on removal</p>
+<p>Robust.</p>
+<h2 id="level-4-master">Level 4 · Master<a class="headerlink" href="#level-4-master" title="Permanent link">&para;</a></h2>
+<h3 id="01-production-bsp-maintenance"><a href="../level-4/01-production-bsp-maintenance/">01 · Production BSP Maintenance</a><a class="headerlink" href="#01-production-bsp-maintenance" title="Permanent link">&para;</a></h3>
+<p><strong>Q121.</strong> What does BSP maintenance involve?</p>
+<p><strong>Answer:</strong> Tracking upstream kernel/bootloader updates, security fixes and vendor layers</p>
+<p>Long product life.</p>
+<p><strong>Q122.</strong> Why pin versions and track CVEs?</p>
+<p><strong>Answer:</strong> Reproducible builds and timely security patches</p>
+<p>Supply chain.</p>
+<p><strong>Q123.</strong> What's an LTS kernel for?</p>
+<p><strong>Answer:</strong> Long-term stable updates for products</p>
+<p>Plan for it.</p>
+<p><strong>Q124.</strong> What helps product maintenance?</p>
+<p><strong>Answer:</strong> CI building images and tests on every change</p>
+<p>Automation.</p>
+<h3 id="02-secure-boot-chain-habahab"><a href="../level-4/02-secure-boot-hab-ahab/">02 · Secure Boot Chain (HAB/AHAB)</a><a class="headerlink" href="#02-secure-boot-chain-habahab" title="Permanent link">&para;</a></h3>
+<p><strong>Q125.</strong> What does secure boot do?</p>
+<p><strong>Answer:</strong> Verifies each boot stage's signature before running it</p>
+<p>Chain of trust.</p>
+<p><strong>Q126.</strong> What's the root of trust?</p>
+<p><strong>Answer:</strong> Immutable boot ROM and fused keys in the SoC</p>
+<p>HAB/AHAB.</p>
+<p><strong>Q127.</strong> What protects the private signing key?</p>
+<p><strong>Answer:</strong> Offline HSM or secured infrastructure, never on developer laptops</p>
+<p>Key management.</p>
+<p><strong>Q128.</strong> What happens when a signature check fails?</p>
+<p><strong>Answer:</strong> Boot is halted (or a fallback used)</p>
+<p>Closed devices.</p>
+<h3 id="03-ota-updates-rauc-swupdate-ostree"><a href="../level-4/03-ota-updates/">03 · OTA Updates (RAUC, SWUpdate, OSTree)</a><a class="headerlink" href="#03-ota-updates-rauc-swupdate-ostree" title="Permanent link">&para;</a></h3>
+<p><strong>Q129.</strong> What does an A/B OTA scheme do?</p>
+<p><strong>Answer:</strong> Updates the inactive slot and switches, rolling back if boot fails</p>
+<p>Safe updates.</p>
+<p><strong>Q130.</strong> What tools implement OTA?</p>
+<p><strong>Answer:</strong> RAUC, SWUpdate and Mender</p>
+<p>Signed bundles.</p>
+<p><strong>Q131.</strong> Why sign update bundles?</p>
+<p><strong>Answer:</strong> Prevent installing tampered or malicious images</p>
+<p>Integrity.</p>
+<p><strong>Q132.</strong> What triggers rollback?</p>
+<p><strong>Answer:</strong> A failed health check or boot count exceeded</p>
+<p>Watchdog + bootcount.</p>
+<h3 id="04-trusted-execution-op-tee-trustzone"><a href="../level-4/04-op-tee-trustzone/">04 · Trusted Execution — OP-TEE &amp; TrustZone</a><a class="headerlink" href="#04-trusted-execution-op-tee-trustzone" title="Permanent link">&para;</a></h3>
+<p><strong>Q133.</strong> What does ARM TrustZone provide?</p>
+<p><strong>Answer:</strong> Hardware-isolated secure world for sensitive code and data</p>
+<p>Secure vs normal world.</p>
+<p><strong>Q134.</strong> What is OP-TEE?</p>
+<p><strong>Answer:</strong> An open-source Trusted Execution Environment OS</p>
+<p>Trusted applications.</p>
+<p><strong>Q135.</strong> What would you store in the secure world?</p>
+<p><strong>Answer:</strong> Keys, certificates and security-sensitive operations</p>
+<p>Minimize exposure.</p>
+<p><strong>Q136.</strong> How does Linux talk to OP-TEE?</p>
+<p><strong>Answer:</strong> Through the TEE driver and client API (libteec)</p>
+<p>SMC calls.</p>
+<h3 id="05-npu-ml-acceleration-eiq"><a href="../level-4/05-npu-ml-acceleration/">05 · NPU &amp; ML Acceleration (eIQ)</a><a class="headerlink" href="#05-npu-ml-acceleration-eiq" title="Permanent link">&para;</a></h3>
+<p><strong>Q137.</strong> How do embedded NPUs integrate?</p>
+<p><strong>Answer:</strong> Via vendor drivers and runtimes (e.g. eIQ, Ethos-U) from userspace</p>
+<p>Delegate.</p>
+<p><strong>Q138.</strong> What must a model be for an NPU?</p>
+<p><strong>Answer:</strong> Quantized to supported ops, compiled with the vendor tool</p>
+<p>Fallbacks hurt.</p>
+<p><strong>Q139.</strong> What should you benchmark?</p>
+<p><strong>Answer:</strong> End-to-end latency and power on the target</p>
+<p>Real data.</p>
+<p><strong>Q140.</strong> What does the kernel provide to NPU stacks?</p>
+<p><strong>Answer:</strong> Drivers, memory management (CMA/DMA-BUF) and scheduling</p>
+<p>Plumbing.</p>
+<h3 id="06-containers-virtualization-on-embedded"><a href="../level-4/06-containers-virtualization/">06 · Containers &amp; Virtualization on Embedded</a><a class="headerlink" href="#06-containers-virtualization-on-embedded" title="Permanent link">&para;</a></h3>
+<p><strong>Q141.</strong> What do containers use from Linux?</p>
+<p><strong>Answer:</strong> Namespaces and cgroups for isolation and limits</p>
+<p>Lightweight.</p>
+<p><strong>Q142.</strong> Why containers on embedded?</p>
+<p><strong>Answer:</strong> Deploy apps independently with isolation and easy updates</p>
+<p>Podman/Docker, LXC.</p>
+<p><strong>Q143.</strong> What's the overhead trade-off?</p>
+<p><strong>Answer:</strong> More storage/RAM and complexity</p>
+<p>Choose deliberately.</p>
+<p><strong>Q144.</strong> What does a hypervisor add?</p>
+<p><strong>Answer:</strong> Stronger isolation between guests on one SoC</p>
+<p>Jailhouse, Xen.</p>
+<h3 id="07-fleet-management-provisioning"><a href="../level-4/07-fleet-management/">07 · Fleet Management &amp; Provisioning</a><a class="headerlink" href="#07-fleet-management-provisioning" title="Permanent link">&para;</a></h3>
+<p><strong>Q145.</strong> What does fleet management provide?</p>
+<p><strong>Answer:</strong> Remote monitoring, updates and configuration of many devices</p>
+<p>Scale.</p>
+<p><strong>Q146.</strong> What should each device report?</p>
+<p><strong>Answer:</strong> Health, version and metrics</p>
+<p>Telemetry.</p>
+<p><strong>Q147.</strong> What's a device identity?</p>
+<p><strong>Answer:</strong> A unique credential (cert/key) per device for authentication</p>
+<p>Provision securely.</p>
+<p><strong>Q148.</strong> How do you roll out safely?</p>
+<p><strong>Answer:</strong> Staged rollouts with monitoring and rollback</p>
+<p>Canary.</p>
+<h3 id="08-security-hardening-cve-management"><a href="../level-4/08-security-hardening/">08 · Security Hardening &amp; CVE Management</a><a class="headerlink" href="#08-security-hardening-cve-management" title="Permanent link">&para;</a></h3>
+<p><strong>Q149.</strong> Name a hardening measure.</p>
+<p><strong>Answer:</strong> Disable unused services, least privilege, read-only root and secure boot</p>
+<p>Reduce attack surface.</p>
+<p><strong>Q150.</strong> Why remove debug interfaces in production?</p>
+<p><strong>Answer:</strong> They can give attackers access (UART, JTAG)</p>
+<p>Lock them down.</p>
+<p><strong>Q151.</strong> What does a firewall do?</p>
+<p><strong>Answer:</strong> Restricts inbound/outbound traffic by policy</p>
+<p>nftables.</p>
+<p><strong>Q152.</strong> Why drop privileges after start?</p>
+<p><strong>Answer:</strong> A compromised service has limited power</p>
+<p>Least privilege.</p>
+<h3 id="09-compliance-open-source-licensing"><a href="../level-4/09-compliance-licensing/">09 · Compliance &amp; Open-Source Licensing</a><a class="headerlink" href="#09-compliance-open-source-licensing" title="Permanent link">&para;</a></h3>
+<p><strong>Q153.</strong> Why track open-source licenses?</p>
+<p><strong>Answer:</strong> Compliance obligations (GPL source offers, attribution)</p>
+<p>Legal risk.</p>
+<p><strong>Q154.</strong> What does the GPL require when you distribute binaries?</p>
+<p><strong>Answer:</strong> Offering corresponding source under the same license</p>
+<p>Include notices.</p>
+<p><strong>Q155.</strong> What's an SBOM?</p>
+<p><strong>Answer:</strong> A software bill of materials listing components and versions</p>
+<p>Generated by Yocto/Buildroot.</p>
+<p><strong>Q156.</strong> What's a license-compliance tool?</p>
+<p><strong>Answer:</strong> FOSSology/ORT/Yocto's license manifest</p>
+<p>Automate.</p>
+<h3 id="10-capstone-production-grade-imx95-product"><a href="../level-4/10-capstone-imx95-product/">10 · Capstone — Production-Grade i.MX95 Product</a><a class="headerlink" href="#10-capstone-production-grade-imx95-product" title="Permanent link">&para;</a></h3>
+<p><strong>Q157.</strong> What does the i.MX95 capstone combine?</p>
+<p><strong>Answer:</strong> BSP, secure boot, OTA, containers/NPU and compliance for a product</p>
+<p>Full product.</p>
+<p><strong>Q158.</strong> How do you prove production readiness?</p>
+<p><strong>Answer:</strong> Reproducible builds, tests on hardware, rollback drills and compliance review</p>
+<p>Operate it.</p>
+<p><strong>Q159.</strong> What documentation matters?</p>
+<p><strong>Answer:</strong> Architecture, BSP maintenance, update and security procedures</p>
+<p>Lifecycle.</p>
+<p><strong>Q160.</strong> What's the lifecycle concern?</p>
+<p><strong>Answer:</strong> Years of security updates and field support</p>
+<p>Plan for it.</p>
+<h2 id="mixed-questions-across-all-levels">Mixed questions across all levels<a class="headerlink" href="#mixed-questions-across-all-levels" title="Permanent link">&para;</a></h2>
+<p><strong>Q161.</strong> List the boot stages in order.</p>
+<p><strong>Answer:</strong> Boot ROM, SPL/bootloader, U-Boot, kernel, init</p>
+<p>Each stage hands off to the next.</p>
+<p><strong>Q162.</strong> The kernel boots but can't find the UART on an ARM board. What is the likely cause?</p>
+<p><strong>Answer:</strong> The device tree doesn't describe it (or marks it disabled), since the hardware isn't discoverable</p>
+<p>Check the dts, compatible and status.</p>
+<p><strong>Q163.</strong> <code>ls</code> on a BusyBox system is a symlink to busybox. How does it know to act as ls?</p>
+<p><strong>Answer:</strong> It inspects argv[0], the name it was invoked with</p>
+<p>A multi-call binary.</p>
+<p><strong>Q164.</strong> You must build a C app for a 64 MB ARM board with no compiler. What do you do?</p>
+<p><strong>Answer:</strong> Cross-compile on the host with the matching toolchain/sysroot and copy the binary</p>
+<p>Match ABI and libc.</p>
+<p><strong>Q165.</strong> A service must restart if it crashes and be flagged if it hangs. What systemd settings help?</p>
+<p><strong>Answer:</strong> Restart=on-failure and a watchdog (WatchdogSec with sd_notify)</p>
+<p>Supervision.</p>
+<p><strong>Q166.</strong> Field units lose power often and the root filesystem corrupts. What's the standard design?</p>
+<p><strong>Answer:</strong> A read-only root with writable data on a separate partition (and tmpfs for volatile files)</p>
+<p>Prevents corruption by construction.</p>
+<p><strong>Q167.</strong> A kernel driver needs to share data between an interrupt handler and process context. What lock?</p>
+<p><strong>Answer:</strong> spin_lock_irqsave (a mutex can sleep, which is forbidden in IRQ context)</p>
+<p>Atomic context.</p>
+<p><strong>Q168.</strong> Why do threaded IRQs help?</p>
+<p><strong>Answer:</strong> Handlers run in process context where they can sleep, keeping hard IRQ time short</p>
+<p>Use for slow buses.</p>
+<p><strong>Q169.</strong> An optional daughter card appears on some units. How do you avoid maintaining two device trees?</p>
+<p><strong>Answer:</strong> Use a device tree overlay applied by the bootloader or at runtime</p>
+<p>Overlays.</p>
+<p><strong>Q170.</strong> A Cortex-M core handles hard real-time I/O beside Linux. Which frameworks connect them?</p>
+<p><strong>Answer:</strong> remoteproc to load/control firmware and RPMsg for messaging</p>
+<p>Heterogeneous SoCs.</p>
+<p><strong>Q171.</strong> Latency spikes appear on a Linux control loop. What do you try?</p>
+<p><strong>Answer:</strong> PREEMPT_RT with SCHED_FIFO priorities, measured with cyclictest</p>
+<p>Measure worst case.</p>
+<p><strong>Q172.</strong> What chain does secure boot rely on?</p>
+<p><strong>Answer:</strong> Each stage verifies the next stage's signature, anchored in the immutable boot ROM and fused keys</p>
+<p>Chain of trust.</p>
+<p><strong>Q173.</strong> A firmware update fails halfway and the device must still boot. What OTA design handles it?</p>
+<p><strong>Answer:</strong> A/B slots with a boot counter and automatic rollback</p>
+<p>Always keep a known-good image.</p>
+<p><strong>Q174.</strong> Why sign OTA bundles?</p>
+<p><strong>Answer:</strong> So devices only install authentic, untampered images</p>
+<p>Integrity and authenticity.</p>
+<p><strong>Q175.</strong> Where should secrets such as keys live on an i.MX board?</p>
+<p><strong>Answer:</strong> In the TrustZone secure world (OP-TEE) or secure hardware, not in the Linux rootfs</p>
+<p>Isolate.</p>
+<p><strong>Q176.</strong> Why must you track open-source licenses in a product?</p>
+<p><strong>Answer:</strong> GPL and other licenses impose obligations on distribution (source offers, notices)</p>
+<p>Generate an SBOM.</p>
+<p><strong>Q177.</strong> A Yocto build is not reproducible and security fixes are missed. What practices help?</p>
+<p><strong>Answer:</strong> Pin layer revisions, track CVEs, and build in CI</p>
+<p>Maintain the BSP.</p>
+<p><strong>Q178.</strong> What reduces the attack surface of a shipped device?</p>
+<p><strong>Answer:</strong> Remove unused services/packages, disable debug ports, least privilege and a firewall</p>
+<p>Hardening.</p>
+<p><strong>Q179.</strong> How do you roll out an update to a fleet safely?</p>
+<p><strong>Answer:</strong> Staged rollout with health telemetry and automatic rollback</p>
+<p>Canary first.</p>
+<h2 id="practical-coding-questions">Practical coding questions<a class="headerlink" href="#practical-coding-questions" title="Permanent link">&para;</a></h2>
+<h3 id="ab-update-with-rollback">A/B update with rollback<a class="headerlink" href="#ab-update-with-rollback" title="Permanent link">&para;</a></h3>
+<p>Complete the toy A/B bootloader: after install(), boot() should commit the pending slot when healthy, otherwise count failed tries and roll back to the active slot after MAX_TRIES (discarding the pending image). Print the sequence for a bad v2 update followed by a good v3.</p>
+<p>Starter code:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>class ABBoot:
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    """Toy bootloader state for an A/B OTA scheme with a boot counter."""
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    MAX_TRIES = 3
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    def __init__(self):
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        self.slots = {"A": "v1", "B": None}
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        self.active = "A"
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        self.pending = None       # slot being trialled after an update
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        self.tries = 0
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    def install(self, version):
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        inactive = "B" if self.active == "A" else "A"
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        self.slots[inactive] = version
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        self.pending = inactive
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        self.tries = 0
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        return inactive
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    def boot(self, healthy):
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        """Simulate one boot of the pending slot (or the active one if nothing is pending).
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        Healthy: commit the pending slot as active. Unhealthy: count the try; after MAX_TRIES
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        roll back to the active slot and discard the pending one. Return a status string."""
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        return ""
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>b = ABBoot()
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>b.install("v2")
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>for h in [False, False, False]:
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    print(b.boot(h))
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>print(b.boot(True))
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>b.install("v3")
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>print(b.boot(True))
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>print(b.boot(True))
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>boot failed 1x -&gt; retry B
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>boot failed 2x -&gt; retry B
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>boot failed 3x -&gt; rollback to A (v1)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>boot A (v1)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>boot B (v3) -&gt; committed
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>boot B (v3)
+</code></pre></div>
+<p>??? success "Show a solution"</p>
+<div class="highlight"><pre><span></span><code>```
+class ABBoot:
+    """Toy bootloader state for an A/B OTA scheme with a boot counter."""
+    MAX_TRIES = 3
+
+    def __init__(self):
+        self.slots = {"A": "v1", "B": None}
+        self.active = "A"
+        self.pending = None       # slot being trialled after an update
+        self.tries = 0
+
+    def install(self, version):
+        inactive = "B" if self.active == "A" else "A"
+        self.slots[inactive] = version
+        self.pending = inactive
+        self.tries = 0
+        return inactive
+
+    def boot(self, healthy):
+        """Simulate one boot. `healthy` says whether the new software comes up fine."""
+        if self.pending is None:
+            return f"boot {self.active} ({self.slots[self.active]})"
+        if healthy:
+            self.active, self.pending = self.pending, None
+            return f"boot {self.active} ({self.slots[self.active]}) -&gt; committed"
+        self.tries += 1
+        if self.tries &gt;= self.MAX_TRIES:
+            bad = self.pending
+            self.pending = None
+            self.slots[bad] = None
+            return f"boot failed {self.tries}x -&gt; rollback to {self.active} ({self.slots[self.active]})"
+        return f"boot failed {self.tries}x -&gt; retry {self.pending}"
+
+b = ABBoot()
+b.install("v2")
+for h in [False, False, False]:
+    print(b.boot(h))
+print(b.boot(True))
+b.install("v3")
+print(b.boot(True))
+print(b.boot(True))
+```
+
+The active slot is never overwritten, so a failed update falls back to a known-good image. Real systems (RAUC, SWUpdate, Mender with U-Boot boot counts) implement the same idea. This is a teaching model. Verified by running the solution.
+</code></pre></div>
+<h3 id="match-device-tree-nodes-to-drivers">Match device tree nodes to drivers<a class="headerlink" href="#match-device-tree-nodes-to-drivers" title="Permanent link">&para;</a></h3>
+<p>Implement match(node): skip nodes whose status is not okay, then walk the node's compatible list in order (most specific first) and return the first driver whose table contains one of the strings, along with the matching string.</p>
+<p>Starter code:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a># A tiny model of the Linux driver core matching a device-tree node to a driver.
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>DRIVERS = {
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    "imx-uart": ["fsl,imx6q-uart", "fsl,imx21-uart"],
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    "ns16550": ["ns16550a", "ns16550"],
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    "gpio-led": ["gpio-leds"],
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>}
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>NODES = [
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    {"name": "serial@4000", "compatible": ["fsl,imx6q-uart", "fsl,imx21-uart"], "status": "okay"},
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    {"name": "serial@5000", "compatible": ["vendor,new-uart", "ns16550a"], "status": "okay"},
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    {"name": "leds", "compatible": ["gpio-leds"], "status": "disabled"},
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    {"name": "mystery@9000", "compatible": ["acme,unknown"], "status": "okay"},
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>]
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>def match(node):
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    # return (driver, matching compatible string) or None; skip nodes whose status is not "okay";
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>    # check node["compatible"] in order (most specific first) against each driver table
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    return None
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>for n in NODES:
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>    r = match(n)
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>    print(n["name"], "-&gt;", f"{r[0]} (via {r[1]})" if r else "no driver bound")
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>serial@4000 -&gt; imx-uart (via fsl,imx6q-uart)
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>serial@5000 -&gt; ns16550 (via ns16550a)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>leds -&gt; no driver bound
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>mystery@9000 -&gt; no driver bound
+</code></pre></div>
+<p>??? success "Show a solution"</p>
+<div class="highlight"><pre><span></span><code>```
+# A tiny model of the Linux driver core matching a device-tree node to a driver.
+DRIVERS = {
+    "imx-uart": ["fsl,imx6q-uart", "fsl,imx21-uart"],
+    "ns16550": ["ns16550a", "ns16550"],
+    "gpio-led": ["gpio-leds"],
+}
+
+NODES = [
+    {"name": "serial@4000", "compatible": ["fsl,imx6q-uart", "fsl,imx21-uart"], "status": "okay"},
+    {"name": "serial@5000", "compatible": ["vendor,new-uart", "ns16550a"], "status": "okay"},
+    {"name": "leds", "compatible": ["gpio-leds"], "status": "disabled"},
+    {"name": "mystery@9000", "compatible": ["acme,unknown"], "status": "okay"},
+]
+
+def match(node):
+    if node["status"] != "okay":
+        return None
+    # compatible is ordered most specific first; the first string any driver claims wins
+    for compat in node["compatible"]:
+        for driver, table in DRIVERS.items():
+            if compat in table:
+                return driver, compat
+    return None
+
+for n in NODES:
+    r = match(n)
+    print(n["name"], "-&gt;", f"{r[0]} (via {r[1]})" if r else "no driver bound")
+```
+
+The driver core binds a driver by compatible string, preferring the earliest (most specific) entry, so serial@5000 binds to ns16550 via its fallback string. Disabled or unknown nodes bind nothing. This models the idea, not the kernel's actual code. Verified by running the solution.
+</code></pre></div>
+<hr />
+<p>More free practice: the <a href="../">Embedded Linux &amp; Architectures Mastery Path</a> curriculum, the <a href="https://learnmasterypath.com/interview-pack/">Interview Prep Pack</a> and the <a href="https://learnmasterypath.com/resume/">free resume ATS check</a>.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+  
+  <nav class="mp-related" aria-label="Related free courses">
+    <h2>Related free courses</h2>
+    <ul>
+      <li><a href="https://learnmasterypath.com/embedded-mastery-path/">Embedded</a></li><li><a href="https://learnmasterypath.com/embedded-python-mastery-path/">Embedded Python</a></li><li><a href="https://learnmasterypath.com/freertos-mastery-path/">FreeRTOS</a></li><li><a href="https://learnmasterypath.com/s32k-mastery-path/">S32K</a></li>
+      <li><a href="https://learnmasterypath.com/">All 100+ courses &rarr;</a></li>
+    </ul>
+  </nav>
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../cheat-sheet/" class="md-footer__link md-footer__link--next" aria-label="Next: Cheat Sheet">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Cheat Sheet
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+  <div class="mp-foot">
+    <div class="mp-foot-inner">
+      <a class="mp-foot-brand" href="https://learnmasterypath.com/"><svg class="mp-mark" viewBox="0 0 160 160" role="img" aria-label="Mastery Path logo">
+  <circle cx="80" cy="80" r="74" fill="#FAF7EF" stroke="#2FA98D" stroke-width="5"/>
+  <rect class="mp-bar mp-bar-1" x="36" y="90" width="17" height="24" rx="5" fill="#2FA98D"/>
+  <rect class="mp-bar mp-bar-2" x="59" y="74" width="17" height="40" rx="5" fill="#7FC9B7"/>
+  <rect class="mp-bar mp-bar-3" x="82" y="56" width="17" height="58" rx="5" fill="#E0B457"/>
+  <rect class="mp-bar mp-bar-4" x="105" y="38" width="17" height="76" rx="5" fill="#C97B4A"/>
+  <circle class="mp-dot" cx="44.5" cy="82" r="7" fill="#22261f"/>
+</svg><span>Mastery Path</span></a>
+      <nav class="mp-sitelinks" aria-label="Site and legal links">
+        <a href="https://learnmasterypath.com/">All courses</a>
+        <a href="https://learnmasterypath.com/about.html">About</a>
+        <a href="https://learnmasterypath.com/contact.html">Contact</a>
+        <a href="https://learnmasterypath.com/embedded-linux-mastery-path/privacy/">Privacy Policy</a>
+        <a href="https://learnmasterypath.com/terms.html">Terms</a>
+        <a href="https://learnmasterypath.com/embedded-linux-mastery-path/license/">License</a>
+        <a href="https://learnmasterypath.com/verify/">Verify a certificate</a>
+      </nav>
+    </div>
+    <p class="mp-license-note">
+      © 2026 Vinod Kumar Sigilipelli · Except where otherwise noted, lesson content is licensed under
+      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> and code examples under the
+      <a href="https://opensource.org/license/mit">MIT License</a>.
+    </p>
+  </div>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.path", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="../javascripts/progress-tracker.js"></script>
+      
+        <script src="../javascripts/final-quiz.js"></script>
+      
+    
+  </body>
+</html>
